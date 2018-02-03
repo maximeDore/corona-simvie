@@ -11,15 +11,11 @@ local spriteSheet = require("ogre_anim")
 local myImageSheet = graphics.newImageSheet("ogre_anim.png", spriteSheet:getSheet() )
 
 -- Méthode init du perso
-function Perso:init(xorig, yorig, ispeed, score, map)
-    speed = ispeed      -- vitesse de déplacement du personnage passée en paramètre (+élevé = +lent)
+function Perso:init(xorig, yorig, map)
     local perso = display.newGroup()
     -- Constructeur de Perso
     function perso:init()
         local avatar = display.newSprite(myImageSheet, spriteSheet:getSpriteIndex())
-        local partdesigner = require("particleDesigner")
-        local emitter = partdesigner.newEmitter("emitter44878.rg")
-        self:insert(emitter)
         self:insert(avatar)
         self.avatar = avatar
         self.x = xorig
@@ -40,7 +36,7 @@ function Perso:init(xorig, yorig, ispeed, score, map)
             local dy = e.y-display.contentHeight/2
             local d = math.sqrt(dx*dx+dy*dy)
             local angRad = math.atan2(dy,dx)
-            self.vit = d/30
+            self.vit = d/100
             self.angRad = angRad
         end
     end
@@ -90,7 +86,7 @@ function Perso:init(xorig, yorig, ispeed, score, map)
             self.avatar:setSequence(seq)
         end
         -- Si la distance à parcourir vers le point d'arrivée est plus grande que la valeur, on joue l'animation du perso, sinon on la met en pause
-        if self.vit>3 then
+        if self.vit>0.25 then
             self.avatar:play()
         else
             self.avatar:pause()
@@ -99,12 +95,7 @@ function Perso:init(xorig, yorig, ispeed, score, map)
     end
 
     function perso:collision(e)
-        if e.other.type == "plant" then
-            e.other:flameOn()
-        elseif e.other.type == "diamant" then
-            e.other:collect()
-            score:update(1)
-        end
+        
     end
 
     function perso:kill()
@@ -119,7 +110,6 @@ function Perso:init(xorig, yorig, ispeed, score, map)
     perso:addEventListener( "collision" )
     Runtime:addEventListener( "touch", perso )
     Runtime:addEventListener( "enterFrame", perso )
-    map:insert(perso)
     return perso
 end
 

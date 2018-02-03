@@ -25,7 +25,7 @@ function Menu:init()
     end
 
     function listener2()
-        -- cInstructions:init()
+        cInstructions:init()
         menu:removeSelf()
     end
 

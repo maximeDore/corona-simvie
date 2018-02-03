@@ -32,7 +32,7 @@ function Splash:init()
         local degrade = {
             type = "gradient",
             color1 = { 1, .1, .1, 1 },
-            color2 = { .5, .1, .1, 1 },
+            color2 = { .75, .1, .1, 1 },
             direction = "down"
         }
         bg.fill = degrade
