@@ -9,6 +9,7 @@ function Map:init()
 
     local map = display.newGroup()
     local cCamera = require("cCamera")
+    local cBatiment = require("cBatiment")
 
     function map:init()
         local ville = display.newImageRect("map.jpg",6800,3400)

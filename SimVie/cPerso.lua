@@ -11,12 +11,11 @@ local spriteSheet = require("ogre_anim")
 local myImageSheet = graphics.newImageSheet("ogre_anim.png", spriteSheet:getSheet() )
 
 -- Méthode init du perso
-function Perso:init(xorig, yorig, map)
+function Perso:init(xorig, yorig, map, joystick)
     local perso = display.newGroup()
     -- Constructeur de Perso
     function perso:init()
-        local avatar = display.newSprite(myImageSheet, spriteSheet:getSpriteIndex())
-        self:insert(avatar)
+        local avatar = display.newSprite(self, myImageSheet, spriteSheet:getSpriteIndex())
         self.avatar = avatar
         self.x = xorig
         self.y = yorig
@@ -26,25 +25,31 @@ function Perso:init(xorig, yorig, map)
         self.isFixedRotation = true
     end
     -- Appelée dès que l'on touche l'écran, met à jour le point d'arrivée du personnage sur la position touchée, ou sur son point de départ une fois le contact rompu
-    function perso:touch(e)
-        if e.phase == "ended" then
-            self.avatar:pause()
-            self.vit = 0
-        else
-            self.avatar:play()
-            local dx = e.x-display.contentWidth/2
-            local dy = e.y-display.contentHeight/2
-            local d = math.sqrt(dx*dx+dy*dy)
-            local angRad = math.atan2(dy,dx)
-            self.vit = d/100
-            self.angRad = angRad
-        end
-    end
+    -- function perso:touch(e)
+    --     if e.phase == "ended" then
+    --         self.avatar:pause()
+    --         -- self.vit = 0
+    --     else
+            
+    --         self.avatar:play()
+    --         local dx = e.x-display.contentWidth/2
+    --         local dy = e.y-display.contentHeight/2
+    --         local d = math.sqrt(dx*dx+dy*dy)
+    --         local angRad = math.atan2(dy,dx)
+    --         self.angRad = angRad
+    --     end
+    -- end
     -- Appelée à chaque frame, utilisée pour déplacer le personnage et définir son orientation
     function perso:enterFrame(e)
+        self.vit = joystick:getDistance()*5
+        self.angRad = joystick:getAngRad()
         self.x = self.x + self.vit*math.cos(self.angRad)
         self.y = self.y + self.vit*math.sin(self.angRad)
-        local angle = self.angRad*180/math.pi
+        -- local angle = self.angRad*180/math.pi
+        local angle = joystick:getAngle()*-1
+        if angle < -180 then
+            angle = angle+360
+        end
 
         local seq
         local sca = 1
@@ -108,7 +113,7 @@ function Perso:init(xorig, yorig, map)
     perso:init()
     physics.addBody( perso, { density=1.0, friction=1, bounce=0, radius=perso.width/2.5 } )
     perso:addEventListener( "collision" )
-    Runtime:addEventListener( "touch", perso )
+    -- Runtime:addEventListener( "touch", perso )
     Runtime:addEventListener( "enterFrame", perso )
     return perso
 end
