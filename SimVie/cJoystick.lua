@@ -28,12 +28,8 @@ function Joystick:init(innerRadius, outerRadius)
     local stopRadius = outerRadius - innerRadius/2
     
     -- return a direction identifier, angle, distance
-    local directionId = 0
     local angle = 0
     local distance = 0
-    function joyGroup.getDirection()
-    	return directionId
-    end
     function joyGroup:getAngle()
     	return angle
     end
@@ -64,20 +60,19 @@ function Joystick:init(innerRadius, outerRadius)
             
             if( distance >= stopRadius ) then
                 distance = stopRadius
-                radAngle = angle*degToRad
-                self.x = distance*math.cos(radAngle)
-                self.y = -distance*math.sin(radAngle)
             else
                 self.x = posX
                 self.y = posY
             end
+            radAngle = angle*degToRad
+            self.x = distance*math.cos(radAngle)
+            self.y = -distance*math.sin(radAngle)
             
         else
             self.x = 0
 			self.y = 0
             stage:setFocus(nil, event.id)
             
-            directionId = 0
             angle = 0
             distance = 0
         end
@@ -86,17 +81,17 @@ function Joystick:init(innerRadius, outerRadius)
     
     function joyGroup:activate()
         self:addEventListener("touch", self.joystick )
-        self.directionId = 0
         self.angle = 0
         self.distance = 0
     end
     function joyGroup:deactivate()
         self:removeEventListener("touch", self.joystick )
-        self.directionId = 0
         self.angle = 0
         self.distance = 0
     end
 
+    joyGroup.x = display.screenOriginX+outerRadius+innerRadius;
+    joyGroup.y = display.contentHeight-outerRadius-innerRadius;
     return( joyGroup )
 end
 
