@@ -33,16 +33,24 @@ function Jeu:init(spawnX,spawnY)
         self:insert(monJoystick)
     end
 
-    function jeu:changerScene(destination)
+    -- Désactiver le monde et charger l'interface d'intérieur d'un batiment
+    function jeu:entrerBatiment(destination)
         -- self:kill()
         maMap:sleep()
         monJoystick:kill()
-        print(destination)
-        interieur = cInterieur:init(destination)
+        interieur = cInterieur:init(destination,self)
     end
 
+    -- Réactiver le monde et décharger l'interface d'intérieur
+    function jeu:sortirBatiment()
+        interieur:removeSelf()
+        maMap:wake()
+        monJoystick:activate()
+    end
+
+    -- Quand le personnage meurt ou perd la partie
     function jeu:mourir()
-        self:kill()
+        -- self:kill()
     end
 
     function jeu:kill()
@@ -57,7 +65,7 @@ function Jeu:init(spawnX,spawnY)
             end
         end
         recursiveKill(self)
-        listener()
+        -- listener()
     end
 
     jeu:init()

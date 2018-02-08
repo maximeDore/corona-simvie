@@ -90,7 +90,7 @@ function Perso:init(xorig, yorig, map, joystick, jeu)
     function perso:collision(e)
         if e.phase=="began" then
             if e.other.type=="porte" then
-                jeu:changerScene(e.other.destination)
+                jeu:entrerBatiment(e.other.destination)
             elseif e.other.type=="auto" then
                 jeu:mourir()
             end

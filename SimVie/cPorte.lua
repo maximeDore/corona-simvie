@@ -8,7 +8,7 @@ local Porte = {}
 
 function Porte:init(parent,x,y,destination)
 
-    local porte = display.newRect(0,0,75,5)
+    local porte = display.newRect(0,0,75,2.5)
 
     function porte:init()
         self.destination = destination

@@ -29,7 +29,6 @@ function Joystick:init(innerRadius, outerRadius)
     
     local angle = 0
     local distance = 0
-    local touchFlag = 0
 
     function joyGroup:getAngle()
     	return angle
@@ -43,10 +42,7 @@ function Joystick:init(innerRadius, outerRadius)
     
     function joystick:touch(event)
         local phase = event.phase
-        if phase=="began" then 
-            touchFlag = 1
-        end
-        if phase=='began' or phase=="moved" and touchFlag==1  then
+        if phase=='began' or phase=="moved"  then
         	if phase == 'began'  then
                 stage:setFocus(event.target, event.id)
             end
@@ -76,7 +72,6 @@ function Joystick:init(innerRadius, outerRadius)
 			self.y = 0
             stage:setFocus(nil, event.id)
             
-            touchFlag = 0
             angle = 0
             distance = 0
         end
@@ -87,15 +82,16 @@ function Joystick:init(innerRadius, outerRadius)
         self:addEventListener("touch", self.joystick )
         angle = 0
         distance = 0
-        touchFlag = 0
         self.isVisible = true
     end
     
     function joyGroup:kill()
         self:removeEventListener("touch", self.joystick )
+        stage:setFocus(nil)
+        joystick.x = 0
+        joystick.y = 0
         angle = 0
         distance = 0
-        ouchFlag = 0
         self.isVisible = false
     end
 

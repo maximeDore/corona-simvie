@@ -5,9 +5,9 @@
 -----------------------------------------------------------------------------------------
 local Interieur = {}
 
-function Interieur:init(map)
+function Interieur:init(destination,jeu)
 
-    local interieur = {}
+    local interieur = display.newGroup()
     local cJeu = require("cJeu")
     local cBouton = require("cBouton")
     local bgMusic = audio.loadStream( "Miami Viceroy.mp3" )
@@ -18,11 +18,14 @@ function Interieur:init(map)
         -- local bg = display.newImage("bg.jpg",display.contentCenterX,display.contentCenterY)
 
         local function retour()
-            map:resume()
+            jeu:sortirBatiment()
+            self:kill()
         end
 
         local bg = display.newRect(display.contentCenterX,display.contentCenterY,display.contentWidth,display.contentHeight)
         local btRetour = cBouton:init("btContinuer.png",display.contentCenterX,display.contentCenterY,retour)
+        self:insert(bg)
+        self:insert(btRetour)
     end
 
     function interieur:kill()

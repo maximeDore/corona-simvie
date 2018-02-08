@@ -15,16 +15,18 @@ function Map:init()
     function map:init()
         local ville = display.newImageRect("map.png",6800,3400)
         local gym = cBatiment:init("gym.png",744,484,-display.contentCenterX*2.65,display.contentCenterY*2.225,"gym")
+        local auto1 = cAuto:init(4)
         self:insert(ville)
-        self:insert(gym);
+        self:insert(auto1)
+        self:insert(gym)
     end
 
     function map:sleep()
-        
+        -- désactiver les voitures
     end
 
-    function map:resume()
-
+    function map:wake()
+        -- réactiver les voitures
     end
 
     function map:kill()
