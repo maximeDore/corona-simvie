@@ -11,7 +11,7 @@ local spriteSheet = require("ogre_anim")
 local myImageSheet = graphics.newImageSheet("ogre_anim.png", spriteSheet:getSheet() )
 
 -- Méthode init du perso
-function Perso:init(xorig, yorig, map, joystick)
+function Perso:init(xorig, yorig, map, joystick, jeu)
     local perso = display.newGroup()
     -- Constructeur de Perso
     function perso:init()
@@ -88,11 +88,16 @@ function Perso:init(xorig, yorig, map, joystick)
     end
 
     function perso:collision(e)
-        print(e.type)
+        if e.phase=="began" then
+            if e.other.type=="porte" then
+                jeu:changerScene(e.other.destination)
+            elseif e.other.type=="auto" then
+                jeu:mourir()
+            end
+        end
     end
 
     function perso:kill()
-        Runtime:removeEventListener( "touch", self )
         Runtime:removeEventListener( "enterFrame", self )
         self:removeEventListener( "collision" )
     end

@@ -5,14 +5,14 @@
 -----------------------------------------------------------------------------------------
 local Batiment = {}
 
-function Batiment:init(img,scaleX,scaleY,x,y)
+function Batiment:init(img,scaleX,scaleY,x,y,destination)
 
     local batiment = display.newGroup()
     local cPorte = require("cPorte")
 
     function batiment:init()
         local sprite = display.newImageRect(self,img,scaleX,scaleY)
-        local porte = cPorte:init(self,x+scaleX/3.85,y+scaleY/2,50,2.5)
+        local porte = cPorte:init(self,x+scaleX/3.85,y+scaleY/2,destination)
         sprite.type = "batiment"
         sprite.x = x
         sprite.y = y

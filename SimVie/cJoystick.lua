@@ -27,9 +27,10 @@ function Joystick:init(innerRadius, outerRadius)
     -- distance à laquelle le joystick s'arrête
     local stopRadius = outerRadius - innerRadius/2
     
-    -- return a direction identifier, angle, distance
     local angle = 0
     local distance = 0
+    local touchFlag = 0
+
     function joyGroup:getAngle()
     	return angle
     end
@@ -42,19 +43,22 @@ function Joystick:init(innerRadius, outerRadius)
     
     function joystick:touch(event)
         local phase = event.phase
-        if( (phase=='began') or (phase=="moved") ) then
-        	if( phase == 'began' ) then
-            	stage:setFocus(event.target, event.id)
+        if phase=="began" then 
+            touchFlag = 1
+        end
+        if phase=='began' or phase=="moved" and touchFlag==1  then
+        	if phase == 'began'  then
+                stage:setFocus(event.target, event.id)
             end
             local parent = self.parent
             local posX, posY = parent:contentToLocal(event.x, event.y)
             angle = (math.atan2( posX, posY )*radToDeg)-90
             if( angle < 0 ) then
-            	angle = 360 + angle
+                angle = 360 + angle
             end
-			
-			-- could emit "direction" events here
-			--Runtime:dispatchEvent( {name='direction',directionId=directionId } )
+            
+            -- could emit "direction" events here
+            --Runtime:dispatchEvent( {name='direction',directionId=directionId } )
             
             distance = math.sqrt((posX*posX)+(posY*posY))
             
@@ -67,12 +71,12 @@ function Joystick:init(innerRadius, outerRadius)
             radAngle = angle*degToRad
             self.x = distance*math.cos(radAngle)
             self.y = -distance*math.sin(radAngle)
-            
         else
             self.x = 0
 			self.y = 0
             stage:setFocus(nil, event.id)
             
+            touchFlag = 0
             angle = 0
             distance = 0
         end
@@ -81,13 +85,18 @@ function Joystick:init(innerRadius, outerRadius)
     
     function joyGroup:activate()
         self:addEventListener("touch", self.joystick )
-        self.angle = 0
-        self.distance = 0
+        angle = 0
+        distance = 0
+        touchFlag = 0
+        self.isVisible = true
     end
-    function joyGroup:deactivate()
+    
+    function joyGroup:kill()
         self:removeEventListener("touch", self.joystick )
-        self.angle = 0
-        self.distance = 0
+        angle = 0
+        distance = 0
+        ouchFlag = 0
+        self.isVisible = false
     end
 
     joyGroup.x = display.screenOriginX+outerRadius+innerRadius;

@@ -67,7 +67,7 @@ function MenuCommencer:init()
             }
         local titre = display.newText( optionsTitre )
         local optionsAptitudes = {
-                text = "Points : Force : Intelligence : Charisme :",     
+                text = "Points : Force : Intelligence : Chance :",     
                 x = display.contentCenterX/1.75,
                 y = display.contentCenterY*.93,
                 width = 250,
