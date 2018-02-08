@@ -16,32 +16,20 @@ function Perso:init(xorig, yorig, map, joystick)
     -- Constructeur de Perso
     function perso:init()
         local avatar = display.newSprite(self, myImageSheet, spriteSheet:getSpriteIndex())
+        self.type = "perso"
         self.avatar = avatar
         self.x = xorig
         self.y = yorig
+        self.vitModif = 15
         self.vit = 0
         self.angRad = 0
         self.avatar:play()
         self.isFixedRotation = true
     end
-    -- Appelée dès que l'on touche l'écran, met à jour le point d'arrivée du personnage sur la position touchée, ou sur son point de départ une fois le contact rompu
-    -- function perso:touch(e)
-    --     if e.phase == "ended" then
-    --         self.avatar:pause()
-    --         -- self.vit = 0
-    --     else
-            
-    --         self.avatar:play()
-    --         local dx = e.x-display.contentWidth/2
-    --         local dy = e.y-display.contentHeight/2
-    --         local d = math.sqrt(dx*dx+dy*dy)
-    --         local angRad = math.atan2(dy,dx)
-    --         self.angRad = angRad
-    --     end
-    -- end
+    
     -- Appelée à chaque frame, utilisée pour déplacer le personnage et définir son orientation
     function perso:enterFrame(e)
-        self.vit = joystick:getDistance()*5
+        self.vit = joystick:getDistance()*self.vitModif
         self.angRad = joystick:getAngRad()
         self.x = self.x + self.vit*math.cos(self.angRad)
         self.y = self.y + self.vit*math.sin(self.angRad)
@@ -100,7 +88,7 @@ function Perso:init(xorig, yorig, map, joystick)
     end
 
     function perso:collision(e)
-        
+        print(e.type)
     end
 
     function perso:kill()
@@ -111,7 +99,7 @@ function Perso:init(xorig, yorig, map, joystick)
 
     -- Appel du constructeur de la fonction et ajouts d'écouteurs
     perso:init()
-    physics.addBody( perso, { density=1.0, friction=1, bounce=0, radius=perso.width/2.5 } )
+    physics.addBody( perso, { density=0, friction=1, bounce=0, radius=perso.width/4 } )
     perso:addEventListener( "collision" )
     -- Runtime:addEventListener( "touch", perso )
     Runtime:addEventListener( "enterFrame", perso )

@@ -10,7 +10,7 @@ function Menu:init()
 
     local menu = display.newGroup()
     local bg
-    local bgMusic = audio.loadStream( "Miami Viceroy.mp3" )
+    local bgMusic = audio.loadStream( "Chill Wave.mp3" )
     local bouton = require("cBouton")
     local autoMenu = require("cAutoMenu")
     local cMenuCommencer = require("cMenuCommencer")
