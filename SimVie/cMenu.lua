@@ -7,15 +7,17 @@ local physics = require("physics")
  
 local Menu = {}
 function Menu:init()
-    display.setDefault( "magTextureFilter", "nearest" )
 
     local menu = display.newGroup()
-    local bg
     local bgMusic = audio.loadStream( "Chill Wave.mp3" )
     local bouton = require("cBouton")
     local autoMenu = require("cAutoMenu")
     local cMenuCommencer = require("cMenuCommencer")
     local cInstructions = require("cInstructions")
+    local forNum
+    local intNum
+    local chaNum
+    local bg
     local menuCommencer
     local btCommencer
     local btContinuer
@@ -26,11 +28,15 @@ function Menu:init()
     end
 
     function listener2()
-        cInstructions:init()
+        cInstructions:init(forNum,intNum,chaNum)
         menu:removeSelf()
     end
 
     function menu:init()
+        -- Affiche la barre de notificationsw
+        display.setStatusBar( display.LightTransparentStatusBar )
+        -- Applique un filtre qui rend l'image moins floue
+        display.setDefault( "magTextureFilter", "nearest" )
         
         local function commencer()
             menuCommencer = cMenuCommencer:init()
@@ -63,6 +69,12 @@ function Menu:init()
         self:insert(btCommencer)
         self:insert(btContinuer)
 
+    end
+
+    function menu:setPoints(f,i,c)
+        forNum = f
+        intNum = i
+        chaNum = c
     end
         
     function menu:retour()

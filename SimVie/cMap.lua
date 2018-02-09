@@ -17,12 +17,14 @@ function Map:init()
         -- cBatiment:init( "image", x, y, "destination" )
         local gym = cBatiment:init("gym.png",-1356.8,854.4,"gym",193.24)
         local depanneur = cBatiment:init("depanneur.png",-2566.5,854.4,"depanneur",-64)
+        local universite = cBatiment:init("depanneur.png",-130,854.4,"appartement",-64)
         for i=1,8,2 do
             local auto = cAuto:init(i)
             self:insert(auto)
         end
         self:insert(gym)
         self:insert(depanneur)
+        self:insert(universite)
     end
 
     function map:sleep()

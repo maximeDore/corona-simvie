@@ -5,7 +5,7 @@
 -----------------------------------------------------------------------------------------
 local Jeu = {}
 
-function Jeu:init(spawnX,spawnY)
+function Jeu:init(spawnX,spawnY,force,intelligence,chance)
 
     local jeu = display.newGroup()
     local cMap = require("cMap")
@@ -16,7 +16,11 @@ function Jeu:init(spawnX,spawnY)
     local cMenu = require("cMenu")
     local cHoraire = require("cHoraire")
     local bgMusic = audio.loadStream( "Miami Viceroy.mp3" )
+    local force = force
+    local intelligence = intelligence
+    local chance = chance
     local maMap
+    local monHoraire
     local interieur
     local monJoystick
     local money = 100
@@ -25,11 +29,11 @@ function Jeu:init(spawnX,spawnY)
     function jeu:init()
         display.setStatusBar( display.HiddenStatusBar )
         -- local bgMusicChannel = audio.play( bgMusic, { channel=1, loops=-1, fadein=2000 } )
-        monJoystick = cJoystick:init(50,100)
+        monJoystick = cJoystick:init(50,125)
         local monPerso = cPerso:init(spawnX,spawnY,0,monJoystick,self)
         maMap = cMap:init()
         local maCamera = cCamera:init(monPerso,maMap)
-        local monHoraire = cHoraire:init(7)
+        monHoraire = cHoraire:init(7)
 
         monJoystick:toFront()
         monJoystick:activate()
@@ -51,7 +55,7 @@ function Jeu:init(spawnX,spawnY)
         -- self:kill()
         maMap:sleep()
         monJoystick:kill()
-        interieur = cInterieur:init(destination,self)
+        interieur = cInterieur:init(destination,self,monHoraire)
     end
 
     -- Réactiver le monde et décharger l'interface d'intérieur

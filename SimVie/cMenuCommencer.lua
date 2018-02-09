@@ -50,6 +50,7 @@ function MenuCommencer:init()
         end
 
         local function jouer()
+            self.parent.setPoints(1,forNum,intNum,chaNum)
             self.parent:kill()
         end
 

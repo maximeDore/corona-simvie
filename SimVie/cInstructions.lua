@@ -5,13 +5,13 @@
 -----------------------------------------------------------------------------------------
 local Instructions = {}
 
-function Instructions:init()
+function Instructions:init(force,intelligence,chance)
 
     local instructions = display.newGroup()
     local cJeu = require("cJeu")
 
     function instructions:init()
-        cJeu:init()
+        cJeu:init(-3007.5,-295,force,intelligence,chance)
     end
 
     instructions:init()
