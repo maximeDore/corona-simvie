@@ -13,6 +13,7 @@ function Jeu:init(spawnX,spawnY)
     local cPerso = require("cPerso")
     local cJoystick = require("cJoystick")
     local cInterieur = require("cInterieur")
+    local cMenu = require("cMenu")
     local bgMusic = audio.loadStream( "Miami Viceroy.mp3" )
     local maMap
     local interieur
@@ -50,7 +51,7 @@ function Jeu:init(spawnX,spawnY)
 
     -- Quand le personnage meurt ou perd la partie
     function jeu:mourir()
-        -- self:kill()
+        self:kill()
     end
 
     function jeu:kill()
@@ -65,7 +66,7 @@ function Jeu:init(spawnX,spawnY)
             end
         end
         recursiveKill(self)
-        -- listener()
+        cMenu:init()
     end
 
     jeu:init()
