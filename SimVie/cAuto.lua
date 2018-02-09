@@ -5,7 +5,7 @@
 -----------------------------------------------------------------------------------------
 local Auto = {}
 
-function Auto:init(scale)
+function Auto:init(actualWp)
 
     local auto = display.newGroup()
     local sprite
@@ -35,16 +35,20 @@ function Auto:init(scale)
         sprite.type = "auto"
         sprite.xScale = 1.5
         sprite.yScale = 1.5
-        sprite.x = -3186,5
-        sprite.y = -120,5
+        if actualWp==1 then
+            sprite.x = -3186,5
+            sprite.y = -120,5
+        else
+            sprite.x = waypoints[actualWp-1].x
+            sprite.y = waypoints[actualWp-1].y
+        end
         physics.addBody( sprite, "static", { density=0.0, friction=0, bounce=0} )
         self:start()
     end
 
     function auto:start()
-        local index = 1
+        local index = actualWp
         local function trajet()
-            print(index)
             transition.to ( sprite, waypoints[index])
             timer.performWithDelay(waypoints[index].time, function()
                 if active then

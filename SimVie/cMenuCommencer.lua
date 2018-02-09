@@ -114,7 +114,7 @@ function MenuCommencer:init()
         self:insert(btChaMoins)
 
         -- Boutons navigation
-        btRetour = bouton:init("btContinuer.png",display.contentCenterX/1.6,display.contentHeight/1.3,retour)
+        btRetour = bouton:init("btRetour.png",display.contentCenterX/1.6,display.contentHeight/1.3,retour)
         btCommencerPartie = bouton:init("btCommencer.png",display.contentCenterX/.725,display.contentHeight/1.3,jouer)
         self:insert(btRetour)
         self:insert(btCommencerPartie)

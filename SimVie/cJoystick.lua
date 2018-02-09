@@ -72,7 +72,6 @@ function Joystick:init(innerRadius, outerRadius)
 			self.y = 0
             stage:setFocus(nil, event.id)
             
-            angle = 0
             distance = 0
         end
         return true

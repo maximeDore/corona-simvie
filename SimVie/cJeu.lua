@@ -14,17 +14,22 @@ function Jeu:init(spawnX,spawnY)
     local cJoystick = require("cJoystick")
     local cInterieur = require("cInterieur")
     local cMenu = require("cMenu")
+    local cHoraire = require("cHoraire")
     local bgMusic = audio.loadStream( "Miami Viceroy.mp3" )
     local maMap
     local interieur
     local monJoystick
+    local money = 100
+    local inventaire = {}
 
     function jeu:init()
+        display.setStatusBar( display.HiddenStatusBar )
         -- local bgMusicChannel = audio.play( bgMusic, { channel=1, loops=-1, fadein=2000 } )
         monJoystick = cJoystick:init(50,100)
         local monPerso = cPerso:init(spawnX,spawnY,0,monJoystick,self)
         maMap = cMap:init()
         local maCamera = cCamera:init(monPerso,maMap)
+        local monHoraire = cHoraire:init(7)
 
         monJoystick:toFront()
         monJoystick:activate()
@@ -32,6 +37,13 @@ function Jeu:init(spawnX,spawnY)
 
         self:insert(maCamera)
         self:insert(monJoystick)
+    end
+
+    function jeu:getMoney()
+        return money
+    end
+    function jeu:setMoney(value)
+        money = value
     end
 
     -- Désactiver le monde et charger l'interface d'intérieur d'un batiment
