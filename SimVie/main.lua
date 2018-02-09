@@ -8,13 +8,12 @@ local physics = require( "physics" )
 physics.start()
 -- physics.setDrawMode("hybrid")
 physics.setGravity(0,0)
-display.setDefault( "magTextureFilter", "nearest" )
 
-local cSplash = require("cSplashscreen")
-cSplash:init()
+-- local cSplash = require("cSplashscreen")
+-- cSplash:init()
 
 -- local cMenu = require("cMenu")
 -- cMenu:init()
 
--- local cJeu = require("cJeu")
--- cJeu:init(-display.contentCenterX*2.5,display.contentCenterY*3.25)
+local cJeu = require("cJeu")
+cJeu:init(-display.contentCenterX*2.5,display.contentCenterY*3.25)

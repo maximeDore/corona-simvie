@@ -7,6 +7,7 @@ local physics = require("physics")
  
 local Menu = {}
 function Menu:init()
+    display.setDefault( "magTextureFilter", "nearest" )
 
     local menu = display.newGroup()
     local bg
