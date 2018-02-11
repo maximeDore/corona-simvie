@@ -10,6 +10,7 @@ function MenuCommencer:init()
     local menuCommencer = display.newGroup()
     local bouton = require("cBouton")
     local aptitudesNum
+    local erreurMsg
     local pointsRestants = 10
     local forNum = 5
     local intNum = 5
@@ -50,8 +51,15 @@ function MenuCommencer:init()
         end
 
         local function jouer()
-            self.parent.setPoints(1,forNum,intNum,chaNum)
-            self.parent:kill()
+            erreurMsg.isVisible = true
+            if forNum == intNum and pointsRestants == 0 then
+                erreurMsg.text = "Votre INTELLIGENCE et votre FORCE ne peuvent etre egaux"
+            elseif pointsRestants ~= 0 then
+                erreurMsg.text = "Vous devez assigner tous vos points"
+            else
+                self.parent.setPoints(1,forNum,intNum,chaNum)
+                self.parent:kill()
+            end
         end
 
         -- fond de l'interface
@@ -59,7 +67,7 @@ function MenuCommencer:init()
 
         -- textes
         local optionsTitre = {
-                text = "Nouvelle vie",     
+                text = "Nouvelle vie",
                 x = display.contentCenterX,
                 y = display.contentCenterY/2.75,
                 font = "Diskun.ttf",   
@@ -77,7 +85,7 @@ function MenuCommencer:init()
                 align = "right"  -- Alignment parameter
             }
         local aptitudes = display.newText( optionsAptitudes )
-        optionsAptitudesNum = {
+        local optionsAptitudesNum = {
                 text = pointsRestants.." "..forNum.." "..intNum.." "..chaNum,
                 x = display.contentWidth/1.5,
                 y = display.contentCenterY*.93,
@@ -87,13 +95,25 @@ function MenuCommencer:init()
                 align = "center"  -- Alignment parameter
             }
         aptitudesNum = display.newText( optionsAptitudesNum )
+        local optionsErreur = {
+            text = "",
+            x = display.contentCenterX,
+            y = display.contentCenterY/1.8,
+            font = "Diskun.ttf",   
+            fontSize = 35,
+            align = "center"  -- Alignment parameter
+        }
+        erreurMsg = display.newText( optionsErreur )
+        erreurMsg.isVisible = false
         titre:setFillColor(1,0,0)
         aptitudes:setFillColor(1,0,0)
         aptitudesNum:setFillColor(1,0,0)
+        erreurMsg:setFillColor(1,0,0)
         self:insert(box)
         self:insert(titre)
         self:insert(aptitudes)
         self:insert(aptitudesNum)
+        self:insert(erreurMsg)
 
         -- boutons aptitudes 
         btForPlus = bouton:init("btFleche.png",display.contentWidth/1.35,display.contentCenterY*.86,ajouterPoint,"for")

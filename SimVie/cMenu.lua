@@ -28,14 +28,20 @@ function Menu:init()
     end
 
     function listener2()
-        cInstructions:init(forNum,intNum,chaNum)
+        local carriere
+        if forNum>intNum then
+            carriere = "sports"
+        else
+            carriere = "sciences"            
+        end
+        cInstructions:init(forNum,intNum,chaNum,carriere)
         menu:removeSelf()
     end
 
     function menu:init()
         -- Affiche la barre de notificationsw
         display.setStatusBar( display.LightTransparentStatusBar )
-        -- Applique un filtre qui rend l'image moins floue
+        -- Applique un filtre qui rend l'image moins floue (pour mieux voir les pixels)
         display.setDefault( "magTextureFilter", "nearest" )
         
         local function commencer()

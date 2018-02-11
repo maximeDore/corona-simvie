@@ -5,7 +5,7 @@
 -----------------------------------------------------------------------------------------
 local Jeu = {}
 
-function Jeu:init(spawnX,spawnY,force,intelligence,chance)
+function Jeu:init(spawnX,spawnY,force,intelligence,chance, carriere)
 
     local jeu = display.newGroup()
     local cMap = require("cMap")
@@ -19,6 +19,7 @@ function Jeu:init(spawnX,spawnY,force,intelligence,chance)
     local force = force
     local intelligence = intelligence
     local chance = chance
+    local carriere = carriere
     local maMap
     local monHoraire
     local interieur
@@ -43,14 +44,7 @@ function Jeu:init(spawnX,spawnY,force,intelligence,chance)
         self:insert(monJoystick)
     end
 
-    function jeu:getMoney()
-        return money
-    end
-    function jeu:setMoney(value)
-        money = value
-    end
-
-    -- Désactiver le monde et charger l'interface d'intérieur d'un batiment
+    -- Désactiver le monde/joystick et charger l'interface d'intérieur d'un batiment
     function jeu:entrerBatiment(destination)
         -- self:kill()
         maMap:sleep()
@@ -58,7 +52,7 @@ function Jeu:init(spawnX,spawnY,force,intelligence,chance)
         interieur = cInterieur:init(destination,self,monHoraire)
     end
 
-    -- Réactiver le monde et décharger l'interface d'intérieur
+    -- Réactiver le monde/joystick et décharger l'interface d'intérieur
     function jeu:sortirBatiment()
         interieur:removeSelf()
         maMap:wake()
@@ -82,7 +76,16 @@ function Jeu:init(spawnX,spawnY,force,intelligence,chance)
             end
         end
         recursiveKill(self)
+        monHoraire:removeSelf()
+        self:removeSelf()
         cMenu:init()
+    end
+
+    function jeu:getMoney()
+        return money
+    end
+    function jeu:setMoney(value)
+        money = value
     end
 
     jeu:init()
