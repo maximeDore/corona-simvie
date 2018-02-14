@@ -12,9 +12,9 @@ function MenuCommencer:init()
     local aptitudesNum
     local erreurMsg
     local pointsRestants = 10
-    local forNum = 5
-    local intNum = 5
-    local chaNum = 5
+    _G.forNum = 5
+    _G.intNum = 5
+    _G.chaNum = 5
 
     function menuCommencer:init()
 
