@@ -3,7 +3,6 @@
 -- cMenu.lua
 --
 -----------------------------------------------------------------------------------------
-local physics = require("physics")
  
 local Menu = {}
 function Menu:init()

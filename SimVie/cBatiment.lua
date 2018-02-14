@@ -5,7 +5,7 @@
 -----------------------------------------------------------------------------------------
 local Batiment = {}
 
-function Batiment:init(img,x,y,destination,porteX)
+function Batiment:init(parent,img,x,y,destination,porteX)
 
     local batiment = display.newGroup()
     local cPorte = require("cPorte")
@@ -17,6 +17,7 @@ function Batiment:init(img,x,y,destination,porteX)
         local porte = cPorte:init(self,x+porteX,y+sprite.height/2,destination)
         sprite.type = "batiment"
         physics.addBody( sprite, "static", { density=0.0, friction=0, bounce=0} )
+        parent:insert(self)
     end
     batiment:init()
     return batiment
