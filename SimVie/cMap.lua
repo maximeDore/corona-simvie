@@ -47,7 +47,7 @@ function Map:init()
     end
 
     function map:sleep()
-        print("sleep")
+        -- print("sleep")
         -- désactiver les voitures
     end
 
