@@ -15,18 +15,18 @@ function Auto:init(actualWp)
     local src = {srcRouge,srcJaune,srcBleue}
     local active = true
 
-    local wp1 = { time = 6000, x = -3186.5, y = 1496.5}
-    local wp2 = { time = 12000, x = 3195.5, y = 1496.5}
-    local wp3 = { time = 6000, x = 3195.5, y = -1502.5}
-    local wp4 = { time = 8000, x = -791.5, y = -1502,5}
-    local wp5 = { time = 5000, x = -791.5, y = 61.5}
-    local wp6 = { time = 6000, x = 2991.5, y = 61.5}
-    local wp7 = { time = 5000, x = 2991.5, y = 1316,5}
-    local wp8 = { time = 8000, x = -577.5, y = 1316,5}
-    local wp9 = { time = 8000, x = -577.5, y = -1286}
-    local wp10 = { time = 6000, x = 2972.5, y = -1286}
-    local wp11 = { time = 5000, x = 2972.5, y = -120,5}
-    local wp12 = { time = 12000, x = -3186.5, y = -120,5}
+    local wp1 = { time = 6000, x = -3186.5, y = 1496.5, transition=easing.inOutSine }
+    local wp2 = { time = 12000, x = 3195.5, y = 1496.5, transition=easing.inOutSine }
+    local wp3 = { time = 6000, x = 3195.5, y = -1502.5, transition=easing.inOutSine }
+    local wp4 = { time = 8000, x = -791.5, y = -1502,5, transition=easing.inOutSine }
+    local wp5 = { time = 5000, x = -791.5, y = 61.5, transition=easing.inOutSine }
+    local wp6 = { time = 6000, x = 2991.5, y = 61.5, transition=easing.inOutSine }
+    local wp7 = { time = 5000, x = 2991.5, y = 1316,5, transition=easing.inOutSine }
+    local wp8 = { time = 8000, x = -577.5, y = 1316,5, transition=easing.inOutSine }
+    local wp9 = { time = 8000, x = -577.5, y = -1286, transition=easing.inOutSine }
+    local wp10 = { time = 6000, x = 2972.5, y = -1286, transition=easing.inOutSine }
+    local wp11 = { time = 5000, x = 2972.5, y = -120,5, transition=easing.inOutSine }
+    local wp12 = { time = 12000, x = -3186.5, y = -120,5, transition=easing.inOutSine }
     local waypoints = {wp1,wp2,wp3,wp4,wp5,wp6,wp7,wp8,wp9,wp10,wp11,wp12}
 
     function auto:init()
