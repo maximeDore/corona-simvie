@@ -5,7 +5,7 @@
 -----------------------------------------------------------------------------------------
 local Interieur = {}
 
-function Interieur:init(destination,jeu)
+function Interieur:init(destination,jeu,map)
 
     local interieur = display.newGroup()
     local cJeu = require("cJeu")
@@ -18,15 +18,25 @@ function Interieur:init(destination,jeu)
         depanneur =     { titre = "Depanneur", bg = "bg.jpg", bt1 = "btFleche.png", bt2 = "btFleche.png", bt3 = "btFleche.png" },
         banque =        { titre = "Banque", bg = "bg.jpg", bt1 = "btFleche.png", bt2 = "btFleche.png", bt3 = "btFleche.png" },
         appartement =   { titre = "Appartement", bg = "bg.jpg", bt1 = "btContinuer.png" },
-        centresportif = { titre = "Centre Sportif", bg = "bg.jpg", bt1 = "btFleche.png", bt2 = "btFleche.png" },
-        faculte =       { titre = "Faculte des sciences", bg = "bg.jpg", bt1 = "btFleche.png", bt2 = "btFleche.png" }
+        centresportif = { titre = "Centre Sportif", bg = "bg.jpg", bt1 = "btTravailler.png", bt2 = "btPromotion.png" },
+        faculte =       { titre = "Faculte des sciences", bg = "bg.jpg", bt1 = "btTravailler.png", bt2 = "btPromotion.png" }
+    }
+
+    local tPromotions = {
+        sports = {
+            "Porteur d'eau", "Rechauffe-banc", "Joueur remplaçant", "Squatteur de gym", "Athlete", "Petit culturiste", "Culturiste", "Athlete professionnel", "Athlete sur steroides", "Champion du monde"
+        },
+        sciences = {
+            "Nerd", "Etudiant", "Finissant en microbiologie", "Assistant en laboratoire", "Chercheur méconnu", "Scientifique sans bourse", "Scientifique peu connu", "Scientifique fou", "Professeur d'université", "Prix Nobel des sciences"
+        }
     }
     
     function interieur:init()
+        jeu:insert(self)
         -- local bgMusicChannel = audio.play( bgMusic, { channel=2, loops=-1, fadein=2000 } )
         -- local bg = display.newImage("bg.jpg",display.contentCenterX,display.contentCenterY)
+
         -- Abréviation
-        jeu:insert(self)
         local src = tSrc[destination]
 
         -- Fonctions locales des boutons
@@ -34,16 +44,17 @@ function Interieur:init(destination,jeu)
             jeu:sortirBatiment()
             self:kill()
         end
-
         local function ajouterFor(pt)
             if(infos:getHeure()~=24) then
-                infos:update(1)
                 if pt==1 then
                     _G.forNum = _G.forNum + pt
+                    infos:update(1)
                 elseif pt==2 and infos:getMoney()>0 then
                     infos:setMoney(-20)
                     _G.forNum = _G.forNum + pt
+                    infos:update(1)
                 elseif pt==3 then
+                    infos:update(1)
                     local rand = math.random(30)
                     print(rand, _G.chaNum)
                     if rand < _G.chaNum then
@@ -57,19 +68,20 @@ function Interieur:init(destination,jeu)
                         print(_G.forNum)
                     end
                 end
-                -- print("+"..pt.." For")
             end
         end
 
         local function ajouterInt(pt)
             if(infos:getHeure()~=24) then
-                infos:update(1)
                 if pt==1 then
                     _G.intNum = _G.intNum + pt
+                    infos:update(1)
                 elseif pt==2 and infos:getMoney()>0 then
                     infos:setMoney(-20)
                     _G.intNum = _G.intNum + pt
+                    infos:update(1)
                 elseif pt==3 then
+                    infos:update(1)
                     local rand = math.random(30)
                     print(rand, _G.chaNum)
                     if rand < _G.chaNum then
@@ -83,7 +95,6 @@ function Interieur:init(destination,jeu)
                         print(_G.intNum)
                     end
                 end
-                -- print("+"..pt.." For")
             end
         end
 
@@ -94,11 +105,11 @@ function Interieur:init(destination,jeu)
 
         -- enlève du temps et donne de l'argent en fonction du poste du joueur
         local function travailler()
-            if(infos:getHeure()~=24) then
-                infos:update(4)
+            if(infos:getHeure()<=19) then
+                infos:update(5)
+                print(infos:getHeure())
                 -- Détecter le niveau de carriere du perso
-                infos.setMoney()
-                print("+"..pt.." For")
+                infos:setMoney( 8 * 5 ) 
             end
         end
 

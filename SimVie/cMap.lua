@@ -37,18 +37,17 @@ function Map:init()
         self:insert(autos)
 
         -- Filtre qui obscurcit l'écran selon l'heure
-        filtreNocturne = display.newRect(self, display.screenOriginX, 0, display.contentWidth*3, display.contentHeight )
-        -- filtreNocturne.fill = 
+        filtreNocturne = display.newRect(self, 0, 0, 6800, 3400 )
+        filtreNocturne.fill = { 0, .1 ,.3, 0 }
 
     end
-
-    function map:darken(alpha)
-        if alpha >= 17 then
-            filtreNocturne.fill = { 0, .1 ,.3, alpha*2 }
-        end
+    
+    function map:assombrir(heure)
+        filtreNocturne.fill = { 0, .1 ,.25, (heure-17)*8/100 }
     end
 
     function map:sleep()
+        print("sleep")
         -- désactiver les voitures
     end
 

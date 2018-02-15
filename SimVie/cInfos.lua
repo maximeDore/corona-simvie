@@ -4,7 +4,7 @@
 --
 ----------------------------------------------------------------------------------------- 
 local Infos = {}
-function Infos:init( heureDepart, indexDepart)
+function Infos:init( heureDepart, indexDepart, map )
 
     local infos = display.newGroup()
     local hebdo = { "Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi" }
@@ -53,19 +53,20 @@ function Infos:init( heureDepart, indexDepart)
     function infos:getMoney()
         return money
     end
-    function infos:setMoney(value)
-        money = money+value
+    function infos:setMoney( valeur )
+        money = money + valeur
         moneyDisplay.text = money.." $"
     end
 
     function infos:update(nb)
         if nb ~= nil then
-            heure = heure+nb
+            heure = heure + nb
         end
         cadran.text = heure..":00"
         if heure==24 then
             cadran.text = "00:00"
         end
+        map:assombrir(heure)
     end
 
     function infos:reset()

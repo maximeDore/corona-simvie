@@ -28,17 +28,16 @@ function Jeu:init(spawnX, spawnY)
             audio.stop( bgMusicChannel )
         end
         -- bgMusicChannel = audio.play( bgMusic, { channel=1, loops=-1, fadein=2000 } )
-
-        -- Instanciation de l'heure et de l'horaire en variable globale
-        _G.infos = cInfos:init(7,2)
-        print(infos:getJour())
-
+        
         -- Instanciation des éléments de jeu
         monJoystick = cJoystick:init(50,125)
         local monPerso = cPerso:init(spawnX,spawnY,0,monJoystick,self)
         maMap = cMap:init()
         local maCamera = cCamera:init(monPerso,maMap)
 
+        -- Instanciation de l'heure et de l'horaire en variable globale
+        _G.infos = cInfos:init(7,2,maMap)
+        
         monJoystick:activate()
         maMap:insert(monPerso)
 
@@ -51,7 +50,7 @@ function Jeu:init(spawnX, spawnY)
         -- self:kill()
         maMap:sleep()
         monJoystick:kill()
-        interieur = cInterieur:init(destination,self,infos)
+        interieur = cInterieur:init(destination,self,maMap)
     end
 
     -- Réactiver le monde/joystick et décharger l'interface d'intérieur
