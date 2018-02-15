@@ -3,7 +3,6 @@
 -- cMenu.lua
 --
 -----------------------------------------------------------------------------------------
-local physics = require("physics")
  
 local Menu = {}
 function Menu:init()
@@ -28,14 +27,20 @@ function Menu:init()
     end
 
     function listener2()
-        cInstructions:init(forNum,intNum,chaNum)
+        local carriere
+        if forNum>intNum then
+            carriere = "sports"
+        else
+            carriere = "sciences"            
+        end
+        cInstructions:init(forNum,intNum,chaNum,carriere)
         menu:removeSelf()
     end
 
     function menu:init()
         -- Affiche la barre de notificationsw
         display.setStatusBar( display.LightTransparentStatusBar )
-        -- Applique un filtre qui rend l'image moins floue
+        -- Applique un filtre qui rend l'image moins floue (pour mieux voir les pixels)
         display.setDefault( "magTextureFilter", "nearest" )
         
         local function commencer()
@@ -50,7 +55,7 @@ function Menu:init()
         end
 
         -- Charge la musique de fond dans le channel 1
-        -- local bgMusicChannel = audio.play( bgMusic, { channel=1, loops=-1, fadein=2000 } )
+        -- _G.bgMusicChannel = audio.play( bgMusic, { channel=1, loops=-1, fadein=2000 } )
         
         -- Fondu d'entrée
         fade = display.newRect(display.contentCenterX,display.contentCenterY,display.contentWidth*2,display.contentHeight)

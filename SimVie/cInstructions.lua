@@ -5,13 +5,14 @@
 -----------------------------------------------------------------------------------------
 local Instructions = {}
 
-function Instructions:init(force,intelligence,chance)
+function Instructions:init()
 
     local instructions = display.newGroup()
     local cJeu = require("cJeu")
 
     function instructions:init()
-        cJeu:init(-3007.5,-295,force,intelligence,chance)
+        audio.fadeOut( { _G.bgMusicChannel, 1000 } )
+        cJeu:init(-3007.5,-295)
     end
 
     instructions:init()

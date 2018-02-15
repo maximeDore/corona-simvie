@@ -19,7 +19,7 @@ function Interieur:init(destination,jeu,horaire)
         depanneur =   { bg = "bg.jpg", bt1 = "btFleche.png", bt2 = "btFleche.png", bt3 = "btFleche.png" },
         banque =      { bg = "bg.jpg", bt1 = ".png", bt2 = ".png", bt3 = ".png" },
         appartement = { bg = "bg.jpg", bt1 = "btContinuer.png" },
-        centreSport = { bg = "bg.jpg", bt1 = ".png", bt2 = ".png" },
+        centresportif = { bg = "bg.jpg", bt1 = "btFleche.png" },
         faculte =     { bg = "bg.jpg", bt1 = ".png", bt2 = ".png" }
     }
     
@@ -96,7 +96,7 @@ function Interieur:init(destination,jeu,horaire)
             depanneur =      { bt1 = acheter, bt1param = 1, bt2 = acheter, bt2param = 2, bt3= acheter, bt3param = 3 },
             banque =         { bt1 = retirer, bt1param = 1, bt2 = deposer, bt2param = 2, bt3= nil, bt3param = nil },
             appartement =    { bt1 = dormir, bt1param = 1 },
-            centreSport =    { bt1 = travailler, bt1param = 1, bt2 = promotion, bt2param = 2 },
+            centresportif =    { bt1 = travailler, bt1param = 1, bt2 = promotion, bt2param = 2 },
             faculte =        { bt1 = travailler, bt1param = 1, bt2 = promotion, bt2param = 2 }
         }
 
