@@ -13,9 +13,6 @@ function Menu:init()
     local autoMenu = require("cAutoMenu")
     local cMenuCommencer = require("cMenuCommencer")
     local cInstructions = require("cInstructions")
-    local forNum
-    local intNum
-    local chaNum
     local bg
     local menuCommencer
     local btCommencer
@@ -27,13 +24,12 @@ function Menu:init()
     end
 
     function listener2()
-        local carriere
         if forNum>intNum then
             carriere = "sports"
         else
             carriere = "sciences"            
         end
-        cInstructions:init(forNum,intNum,chaNum,carriere)
+        cInstructions:init()
         menu:removeSelf()
     end
 
@@ -74,12 +70,6 @@ function Menu:init()
         self:insert(btCommencer)
         self:insert(btContinuer)
 
-    end
-
-    function menu:setPoints(f,i,c)
-        forNum = f
-        intNum = i
-        chaNum = c
     end
         
     function menu:retour()

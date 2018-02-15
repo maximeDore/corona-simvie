@@ -5,22 +5,21 @@
 -----------------------------------------------------------------------------------------
 local Interieur = {}
 
-function Interieur:init(destination,jeu,horaire)
+function Interieur:init(destination,jeu)
 
     local interieur = display.newGroup()
     local cJeu = require("cJeu")
     local cBouton = require("cBouton")
-    local cHoraire = require("cHoraire")
     local bgMusic = audio.loadStream( "Miami Viceroy.mp3" )
     -- Tableau contenant des tableaux, contenant les noms de fichier pour les images des boutons et du fond selon la destination
     local tSrc = { 
-        gym =         { bg = "bg.jpg", bt1 = "btCourir.png", bt2 = "btEntrainer.png", bt3 = "btSteroides.png" },
-        universite =  { bg = "bg.jpg", bt1 = "btEtudier.png", bt2 = "btClasse.png", bt3 = "btTricher.png" },
-        depanneur =   { bg = "bg.jpg", bt1 = "btFleche.png", bt2 = "btFleche.png", bt3 = "btFleche.png" },
-        banque =      { bg = "bg.jpg", bt1 = ".png", bt2 = ".png", bt3 = ".png" },
-        appartement = { bg = "bg.jpg", bt1 = "btContinuer.png" },
-        centresportif = { bg = "bg.jpg", bt1 = "btFleche.png" },
-        faculte =     { bg = "bg.jpg", bt1 = ".png", bt2 = ".png" }
+        gym =           { titre = "Gym", bg = "bg.jpg", bt1 = "btCourir.png", bt2 = "btEntrainer.png", bt3 = "btSteroides.png" },
+        universite =    { titre = "Universite", bg = "bg.jpg", bt1 = "btEtudier.png", bt2 = "btClasse.png", bt3 = "btTricher.png" },
+        depanneur =     { titre = "Depanneur", bg = "bg.jpg", bt1 = "btFleche.png", bt2 = "btFleche.png", bt3 = "btFleche.png" },
+        banque =        { titre = "Banque", bg = "bg.jpg", bt1 = "btFleche.png", bt2 = "btFleche.png", bt3 = "btFleche.png" },
+        appartement =   { titre = "Appartement", bg = "bg.jpg", bt1 = "btContinuer.png" },
+        centresportif = { titre = "Centre Sportif", bg = "bg.jpg", bt1 = "btFleche.png", bt2 = "btFleche.png" },
+        faculte =       { titre = "Faculte des sciences", bg = "bg.jpg", bt1 = "btFleche.png", bt2 = "btFleche.png" }
     }
     
     function interieur:init()
@@ -37,28 +36,54 @@ function Interieur:init(destination,jeu,horaire)
         end
 
         local function ajouterFor(pt)
-            if(horaire:getHeure()~=24) then
+            if(infos:getHeure()~=24) then
+                infos:update(1)
                 if pt==1 then
-                    horaire:update(1)                    
-                elseif pt==2 and jeu:getMoney()>0 then
-                    jeu:setMoney(jeu:getMoney() - 20)
-                    print(jeu:getMoney())
-                    horaire:update(1)
+                    _G.forNum = _G.forNum + pt
+                elseif pt==2 and infos:getMoney()>0 then
+                    infos:setMoney(-20)
+                    _G.forNum = _G.forNum + pt
+                elseif pt==3 then
+                    local rand = math.random(30)
+                    print(rand, _G.chaNum)
+                    if rand < _G.chaNum then
+                        _G.forNum = _G.forNum + math.random(3,6)
+                        print(_G.forNum)
+                    else
+                        _G.forNum = _G.forNum - math.random(3)
+                        if _G.forNum < 0 then
+                            _G.forNum = 0
+                        end
+                        print(_G.forNum)
+                    end
                 end
-                print("+"..pt.." For")
+                -- print("+"..pt.." For")
             end
         end
 
         local function ajouterInt(pt)
-            if(horaire:getHeure()~=24) then
+            if(infos:getHeure()~=24) then
+                infos:update(1)
                 if pt==1 then
-                    horaire:update(1)                    
-                elseif pt==2 and jeu:getMoney()>0 then
-                    jeu:setMoney(jeu:getMoney() - 20)
-                    print(jeu:getMoney())
-                    horaire:update(1)
+                    _G.intNum = _G.intNum + pt
+                elseif pt==2 and infos:getMoney()>0 then
+                    infos:setMoney(-20)
+                    _G.intNum = _G.intNum + pt
+                elseif pt==3 then
+                    local rand = math.random(30)
+                    print(rand, _G.chaNum)
+                    if rand < _G.chaNum then
+                        _G.intNum = _G.intNum + math.random(3,6)
+                        print(_G.intNum)
+                    else
+                        _G.intNum = _G.intNum - math.random(3)
+                        if _G.intNum < 0 then
+                            _G.intNum = 0
+                        end
+                        print(_G.intNum)
+                    end
                 end
-                print("+"..pt.." Int")
+                -- print("+"..pt.." For")
             end
         end
 
@@ -69,16 +94,17 @@ function Interieur:init(destination,jeu,horaire)
 
         -- enlève du temps et donne de l'argent en fonction du poste du joueur
         local function travailler()
-            if(horaire:getHeure()~=24) then
-                horaire:update(4)
+            if(infos:getHeure()~=24) then
+                infos:update(4)
                 -- Détecter le niveau de carriere du perso
+                infos.setMoney()
                 print("+"..pt.." For")
             end
         end
 
         -- change de journée, reset le temps et sauvegarde
         local function dormir()
-            horaire:reset()
+            infos:reset()
         end
 
         -- à repenser, fonction pour retirer une somme définie par des boutons-flèches?
@@ -96,7 +122,7 @@ function Interieur:init(destination,jeu,horaire)
             depanneur =      { bt1 = acheter, bt1param = 1, bt2 = acheter, bt2param = 2, bt3= acheter, bt3param = 3 },
             banque =         { bt1 = retirer, bt1param = 1, bt2 = deposer, bt2param = 2, bt3= nil, bt3param = nil },
             appartement =    { bt1 = dormir, bt1param = 1 },
-            centresportif =    { bt1 = travailler, bt1param = 1, bt2 = promotion, bt2param = 2 },
+            centresportif =  { bt1 = travailler, bt1param = 1, bt2 = promotion, bt2param = 2 },
             faculte =        { bt1 = travailler, bt1param = 1, bt2 = promotion, bt2param = 2 }
         }
 
@@ -107,7 +133,7 @@ function Interieur:init(destination,jeu,horaire)
         -- local bg = display.newImage(self,src.bg,display.contentCenterX,display.contentCenterY)
 
         local optionsTitre = {
-            text = destination,
+            text = src.titre,
             x = display.contentCenterX,
             y = display.contentCenterY/2.75,
             font = "Diskun.ttf",
@@ -119,15 +145,20 @@ function Interieur:init(destination,jeu,horaire)
         
         local btRetour = cBouton:init("btRetour.png",display.contentCenterX*1.4,display.contentCenterY*1.5,retour)
         local bt1 = cBouton:init(src.bt1,display.contentCenterX/1.65,display.contentCenterY,func.bt1,func.bt1param)
-        if src.bt2~=nil then
-            local bt2 = cBouton:init(src.bt2,display.contentCenterX*1.4,display.contentCenterY,func.bt2,func.bt2param)
-            self:insert(bt2)
-        else
-            btRetour.y = display.contentCenterY
-        end
         if src.bt3~=nil then
             local bt3 = cBouton:init(src.bt3,display.contentCenterX/1.65,display.contentCenterY*1.5,func.bt3,func.bt3param)
             self:insert(bt3)
+        else
+            if src.bt2==nil then
+                print("nil")
+                btRetour.y = bt1.y
+            else
+                btRetour.x = bt1.x
+            end
+        end
+        if src.bt2~=nil then
+            local bt2 = cBouton:init(src.bt2,display.contentCenterX*1.4,display.contentCenterY,func.bt2,func.bt2param)
+            self:insert(bt2)
         end
 
         -- Insertion du visuel

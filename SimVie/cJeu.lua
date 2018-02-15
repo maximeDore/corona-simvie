@@ -14,33 +14,31 @@ function Jeu:init(spawnX, spawnY)
     local cJoystick = require("cJoystick")
     local cInterieur = require("cInterieur")
     local cMenu = require("cMenu")
-    local cHoraire = require("cHoraire")
+    local cInfos = require("cInfos")
     local bgMusic = audio.loadStream( "Miami Viceroy.mp3" )
-    local force = force
-    local intelligence = intelligence
-    local chance = chance
-    local carriere = carriere
     local maMap
-    local monHoraire
     local interieur
     local monJoystick
-    local money = 100
     local inventaire = {}
 
     function jeu:init()
-
+        print(carriere)
         display.setStatusBar( display.HiddenStatusBar )
         if audio.seek( 1000, bgMusicChannel ) then
             audio.stop( bgMusicChannel )
         end
         -- bgMusicChannel = audio.play( bgMusic, { channel=1, loops=-1, fadein=2000 } )
+
+        -- Instanciation de l'heure et de l'horaire en variable globale
+        _G.infos = cInfos:init(7,2)
+        print(infos:getJour())
+
+        -- Instanciation des éléments de jeu
         monJoystick = cJoystick:init(50,125)
         local monPerso = cPerso:init(spawnX,spawnY,0,monJoystick,self)
         maMap = cMap:init()
         local maCamera = cCamera:init(monPerso,maMap)
-        monHoraire = cHoraire:init(7)
 
-        monJoystick:toFront()
         monJoystick:activate()
         maMap:insert(monPerso)
 
@@ -53,7 +51,7 @@ function Jeu:init(spawnX, spawnY)
         -- self:kill()
         maMap:sleep()
         monJoystick:kill()
-        interieur = cInterieur:init(destination,self,monHoraire)
+        interieur = cInterieur:init(destination,self,infos)
     end
 
     -- Réactiver le monde/joystick et décharger l'interface d'intérieur
@@ -80,16 +78,9 @@ function Jeu:init(spawnX, spawnY)
             end
         end
         recursiveKill(self)
-        monHoraire:removeSelf()
+        infos:removeSelf()
         self:removeSelf()
         cMenu:init()
-    end
-
-    function jeu:getMoney()
-        return money
-    end
-    function jeu:setMoney(value)
-        money = value
     end
 
     jeu:init()

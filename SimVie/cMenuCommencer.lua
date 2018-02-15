@@ -12,6 +12,8 @@ function MenuCommencer:init()
     local aptitudesNum
     local erreurMsg
     local pointsRestants = 10
+    _G.carriere = "sports"
+    _G.emploi = "Joueur de garage"
     _G.forNum = 5
     _G.intNum = 5
     _G.chaNum = 5
@@ -57,7 +59,6 @@ function MenuCommencer:init()
             elseif pointsRestants ~= 0 then
                 erreurMsg.text = "Vous devez assigner tous vos points"
             else
-                self.parent.setPoints(1,forNum,intNum,chaNum)
                 self.parent:kill()
             end
         end

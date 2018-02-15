@@ -20,7 +20,7 @@ for row in db:nrows("SELECT * FROM classeTable") do
     -- It uses dot notation, so if you want to get a column's data, say class,strength,desterity or hitpoints
     -- OK, I'm still getting used to the special characters, but FYI the '/t'
     -- prints a tab, so that way our data lines up nicely in the output to the console
-    print("classe: "..row.classe.." tForce: "..row.force.." tCharisme: "..row.charisme.." tIntelligence: "..row.intelligence)
+    print("classe: "..row.classe.." tForce: "..row.force.." tchance: "..row.chance.." tIntelligence: "..row.intelligence)
 end
 
 perso = {}
@@ -31,9 +31,11 @@ print("")
 for row in db:nrows("SELECT * FROM classeTable WHERE classe='culturiste'") do
 	perso.classe = row.classe
 	perso.force = row.force
-	perso.charisme = row.charisme
+	perso.chance = row.chance
 	perso.intelligence = row.intelligence
-	print("Classe du joueur: "..perso.classe.." tForce: "..perso.force.." tCharisme: "..perso.charisme.." tIntelligence: "..perso.intelligence)
+	perso.carriere = row.carriere
+	perso.emploi = row.emploi
+	print("Classe du joueur: "..perso.classe.." tForce: "..perso.force.." tchance: "..perso.chance.." tIntelligence: "..perso.intelligence)
 end
 
 
@@ -52,5 +54,5 @@ player2 = {}
 player2 = createCharacterClass("scientifique")
  
 if player2.classe~=nil then
-	print("Nouveau "..player2.classe..": Force: "..player2.force.." Charisme : "..player2.charisme.." Intelligence : "..player2.intelligence)
+	print("Nouveau "..player2.classe..": Force: "..player2.force.." chance : "..player2.chance.." Intelligence : "..player2.intelligence)
 end
