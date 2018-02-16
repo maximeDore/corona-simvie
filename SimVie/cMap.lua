@@ -43,7 +43,15 @@ function Map:init()
     end
     
     function map:assombrir(heure)
-        filtreNocturne.fill = { 0, .1 ,.25, (heure-17)*8/100 }
+        if heure > 12 then
+            filtreNocturne.fill = { 0, .1 ,.25, (heure-17)*8/100 }
+        else
+            if heure < 4 then
+                filtreNocturne.fill = { 0, .1 ,.25, (7)*8/100 }
+            else
+                filtreNocturne.fill = { 0, .1 ,.25, (13-heure*2)*8/100 }
+            end
+        end
     end
 
     function map:sleep()

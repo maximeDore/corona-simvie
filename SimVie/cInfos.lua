@@ -80,20 +80,20 @@ function Infos:init( heureDepart, indexDepart, map )
         end
         cadran.text = heure..":00"
         if heure==24 then
+            heure = 0
             cadran.text = "00:00"
         end
         map:assombrir(heure)
     end
 
-    function infos:prochainJour()
-        heure = heureDepart
+    function infos:prochainJour(h)
         if jourIndex == 7 then
             jourIndex = 1
         else
             jourIndex = jourIndex + 1
         end
         jourDisplay.text = hebdo[jourIndex]
-        self:updateHeure()
+        self:updateHeure(h)
     end
 
     function infos:promotion()

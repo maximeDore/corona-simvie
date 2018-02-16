@@ -17,7 +17,8 @@ function Interieur:init(destination,jeu,map)
         gym =           { titre = "Gym", bg = "bg.jpg", bt1 = "btCourir.png", bt2 = "btEntrainer.png", bt3 = "btSteroides.png" },
         universite =    { titre = "Universite", bg = "bg.jpg", bt1 = "btEtudier.png", bt2 = "btClasse.png", bt3 = "btTricher.png" },
         depanneur =     { titre = "Depanneur", bg = "bg.jpg", bt1 = "btFleche.png", bt2 = "btFleche.png", bt3 = "btFleche.png" },
-        banque =        { titre = "Banque", bg = "bg.jpg", bt1 = "btFleche.png", bt2 = "btFleche.png", bt3 = "btFleche.png" },
+        magasin =       { titre = "Magasin", bg = "bg.jpg", bt1 = "btFleche.png", bt2 = "btFleche.png", bt3 = "btFleche.png" },
+        banque =        { titre = "Banque", bg = "bg.jpg", bt1 = "btFleche.png", bt2 = "btFleche.png" },
         appartement =   { titre = "Appartement", bg = "bg.jpg", bt1 = "btContinuer.png" },
         centresportif = { titre = "Centre Sportif", bg = "bg.jpg", bt1 = "btTravailler.png", bt2 = "btPromotion.png" },
         faculte =       { titre = "Faculte des sciences", bg = "bg.jpg", bt1 = "btTravailler.png", bt2 = "btPromotion.png" }
@@ -38,14 +39,17 @@ function Interieur:init(destination,jeu,map)
         end
         local function ajouterFor(pt)
             if infos:getHeure() ~= 24 then
-                retroaction.text = "Vous devenez plus fort : +"..pt.." Force"
                 if pt==1 then
                     _G.forNum = _G.forNum + pt
+                    retroaction.text = "Vous devenez plus fort : +"..pt.." Force"
                     infos:updateHeure(1)
                 elseif pt==2 and infos:getMoney()-20>=0 then
                     infos:setMoney(-20)
                     _G.forNum = _G.forNum + pt
+                    retroaction.text = "Vous devenez plus fort : +"..pt.." Force"
                     infos:updateHeure(1)
+                elseif pt==2 then
+                    retroaction.text = "Vous n'avez pas assez d'argent pour vous entrainer."
                 elseif pt==3 then
                     infos:updateHeure(1)
                     local rand = math.random(30)
@@ -65,19 +69,24 @@ function Interieur:init(destination,jeu,map)
                         print(_G.forNum)
                     end
                 end
+            else
+                retroaction.text = "Il est trop tard pour s'entrainer."
             end
         end
 
         local function ajouterInt(pt)
             if infos:getHeure() ~= 24 then
-                retroaction.text = "Vous devenez plus intelligent : +"..pt.." Int"
                 if pt==1 then
-                    _G.intNum = _G.intNum + pt
+                    _G.intNum = _G.intNum 
+                    retroaction.text = "Vous devenez plus intelligent : +"..pt.." Int"+ pt
                     infos:updateHeure(1)
                 elseif pt==2 and infos:getMoney()-20>=0 then
                     infos:setMoney(-20)
                     _G.intNum = _G.intNum + pt
+                    retroaction.text = "Vous devenez plus intelligent : +"..pt.." Int"
                     infos:updateHeure(1)
+                elseif pt==2 then
+                    retroaction.text = "Vous n'avez pas assez d'argent pour assister au cours."
                 elseif pt==3 then
                     infos:updateHeure(1)
                     local rand = math.random(30)
@@ -97,6 +106,8 @@ function Interieur:init(destination,jeu,map)
                         print(_G.intNum)
                     end
                 end
+            else
+                retroaction.text = "Il est trop tard pour etudier."
             end
         end
 
@@ -147,7 +158,8 @@ function Interieur:init(destination,jeu,map)
 
         -- change de journée, reset le temps et sauvegarde
         local function dormir()
-            infos:prochainJour()
+            retroaction.text = "Vous dormez pendant 8 heures."
+            infos:prochainJour(8)
         end
 
         -- à repenser, fonction pour retirer une somme définie par des boutons-flèches?
@@ -163,7 +175,8 @@ function Interieur:init(destination,jeu,map)
             gym =            { bt1 = ajouterFor, bt1param = 1, bt2 = ajouterFor, bt2param = 2, bt3= ajouterFor, bt3param = 3 },
             universite =     { bt1 = ajouterInt, bt1param = 1, bt2 = ajouterInt, bt2param = 2, bt3= ajouterInt, bt3param = 3 },
             depanneur =      { bt1 = acheter, bt1param = 1, bt2 = acheter, bt2param = 2, bt3= acheter, bt3param = 3 },
-            banque =         { bt1 = retirer, bt1param = 1, bt2 = deposer, bt2param = 2, bt3= nil, bt3param = nil },
+            magasin =        { bt1 = acheter, bt1param = 4, bt2 = acheter, bt2param = 5, bt3= acheter, bt3param = 6 },
+            banque =         { bt1 = retirer, bt1param = 1, bt2 = deposer, bt2param = 2 },
             appartement =    { bt1 = dormir, bt1param = 1 },
             centresportif =  { bt1 = travailler, bt1param = 1, bt2 = promotion, bt2param = 2 },
             faculte =        { bt1 = travailler, bt1param = 1, bt2 = promotion, bt2param = 2 }
