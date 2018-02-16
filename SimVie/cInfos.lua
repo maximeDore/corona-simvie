@@ -7,6 +7,7 @@ local Infos = {}
 function Infos:init( heureDepart, indexDepart, map, perso )
 
     local infos = display.newGroup()
+    local cTelephone = require("cTelephone")
     local hebdo = { "Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi" }
     local rightMarg = display.contentWidth - display.screenOriginX
     local heure = heureDepart
@@ -16,7 +17,8 @@ function Infos:init( heureDepart, indexDepart, map, perso )
     local emploi
     local cadran
     local jourDisplay
-    local money = 100
+    local moneyDisplay
+    local telephone
 
     local tEmplois = {
         sports = {
@@ -28,9 +30,11 @@ function Infos:init( heureDepart, indexDepart, map, perso )
     }
 
     function infos:init()
-
-        emploi = tEmplois[_G.carriere][emploiIndex]
+        -- Accéder au nom de l'emploi actuel et au prochain objectif d'aptitude pour la promotion
+        emploi = tEmplois[perso.carriere][emploiIndex]
         print(emploi.titre)
+
+        telephone = cTelephone:init( self )
 
         -- Affichage de la barre du haut
         local barre = display.newRect( self, display.screenOriginX, 0, display.contentWidth*3, 100 )
@@ -51,7 +55,7 @@ function Infos:init( heureDepart, indexDepart, map, perso )
         cadran = display.newText(optionsCadran)
 
         -- Affichage de l'argent
-        local optionsMoneyDisplay = {text = money .. " $", width = 256, x = rightMarg-150, y = 25, font = "8-Bit Madness.ttf", fontSize = 50, align = "right"}
+        local optionsMoneyDisplay = {text = perso.money .. " $", width = 256, x = rightMarg-150, y = 25, font = "8-Bit Madness.ttf", fontSize = 50, align = "right"}
         moneyDisplay = display.newText(optionsMoneyDisplay)
 
         self:updateHeure()
@@ -64,14 +68,6 @@ function Infos:init( heureDepart, indexDepart, map, perso )
     function infos:getJour()
         jour = hebdo[jourIndex]
         return jour
-    end
-
-    function infos:getMoney()
-        return money
-    end
-    function infos:setMoney( valeur )
-        money = money + valeur
-        moneyDisplay.text = money.." $"
     end
 
     function infos:updateHeure(nb)
@@ -89,6 +85,10 @@ function Infos:init( heureDepart, indexDepart, map, perso )
         end
         map:assombrir(heure)
     end
+    
+    function infos:updateMoney()
+        moneyDisplay.text = perso.money.." $"
+    end
 
     function infos:prochainJour(h)
         if jourIndex == 7 then
@@ -102,7 +102,7 @@ function Infos:init( heureDepart, indexDepart, map, perso )
 
     function infos:promotion()
         emploiIndex = emploiIndex + 1
-        emploi = tEmplois[_G.carriere][emploiIndex]
+        emploi = tEmplois[perso.carriere][emploiIndex]
         print(emploi.titre)
     end
 

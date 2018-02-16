@@ -13,7 +13,6 @@ function MenuCommencer:init()
     local erreurMsg
     local pointsRestants = 10
     _G.carriere = "sports"
-    _G.emploi = "Joueur de garage"
     _G.forNum = 5
     _G.intNum = 5
     _G.chaNum = 5
@@ -21,20 +20,29 @@ function MenuCommencer:init()
     function menuCommencer:init()
 
         local function ajouterPoint(apt)
+            erreurMsg.text = ""
             if pointsRestants > 0 then
                 if apt=="for" then
                     forNum = forNum + 1
                 elseif apt=="int" then
                     intNum = intNum + 1
                 else
-                    chaNum = chaNum + 1
+                    if chaNum < 15 then
+                        chaNum = chaNum + 1
+                    else
+                        erreurMsg.text = "Valeur de chance maximale."
+                        pointsRestants = pointsRestants + 1
+                    end
                 end
                 pointsRestants = pointsRestants - 1
                 aptitudesNum.text = pointsRestants.." "..forNum.." "..intNum.." "..chaNum
+            else
+                erreurMsg.text = "Aucun point d'aptitudes restant."
             end
         end
 
         local function enleverPoint(apt)
+            erreurMsg.text = ""
             if apt=="for" and forNum>0 then
                 forNum = forNum - 1
                 pointsRestants = pointsRestants + 1
@@ -44,6 +52,8 @@ function MenuCommencer:init()
             elseif apt=="cha" and chaNum>0 then
                 chaNum = chaNum - 1
                 pointsRestants = pointsRestants + 1
+            else
+                erreurMsg.text = "Valeur minimale atteinte."
             end
             aptitudesNum.text = pointsRestants.." "..forNum.." "..intNum.." "..chaNum
         end
@@ -53,11 +63,10 @@ function MenuCommencer:init()
         end
 
         local function jouer()
-            erreurMsg.isVisible = true
             if forNum == intNum and pointsRestants == 0 then
-                erreurMsg.text = "Votre INTELLIGENCE et votre FORCE ne peuvent etre egaux"
+                erreurMsg.text = "Votre INTELLIGENCE et votre FORCE ne peuvent etre egaux."
             elseif pointsRestants ~= 0 then
-                erreurMsg.text = "Vous devez assigner tous vos points"
+                erreurMsg.text = "Vous devez assigner tous vos points."
             else
                 self.parent:kill()
             end
@@ -105,7 +114,6 @@ function MenuCommencer:init()
             align = "center"  -- Alignment parameter
         }
         erreurMsg = display.newText( optionsErreur )
-        erreurMsg.isVisible = false
         titre:setFillColor(1,0,0)
         aptitudes:setFillColor(1,0,0)
         aptitudesNum:setFillColor(1,0,0)

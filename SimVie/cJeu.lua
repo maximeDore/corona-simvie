@@ -36,7 +36,7 @@ function Jeu:init(spawnX, spawnY)
         local maCamera = cCamera:init(monPerso,maMap)
 
         -- Instanciation de l'heure et de l'horaire en variable globale
-        _G.infos = cInfos:init(7,2,maMap,monPerso)
+        _G.infos = cInfos:init(7, 2, maMap, monPerso)
         
         monJoystick:activate()
         maMap:insert(monPerso)
@@ -46,17 +46,16 @@ function Jeu:init(spawnX, spawnY)
     end
 
     -- Désactiver le monde/joystick et charger l'interface d'intérieur d'un batiment
-    function jeu:entrerBatiment(destination)
-        -- self:kill()
-        maMap:sleep()
+    function jeu:entrerBatiment(destination) 
+        -- maMap:sleep()
         monJoystick:kill()
         interieur = cInterieur:init(destination,self,maMap,monPerso)
     end
 
     -- Réactiver le monde/joystick et décharger l'interface d'intérieur
     function jeu:sortirBatiment()
+        -- maMap:wake()
         interieur:removeSelf()
-        maMap:wake()
         monJoystick:activate()
     end
 

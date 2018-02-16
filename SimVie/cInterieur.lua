@@ -31,7 +31,6 @@ function Interieur:init( destination, jeu, map, perso )
 
         -- Abréviation
         local src = tSrc[destination]
-
         -- Fonctions locales des boutons
         local function retour()
             jeu:sortirBatiment()
@@ -44,10 +43,9 @@ function Interieur:init( destination, jeu, map, perso )
                 if pt==1 then
                     perso.forNum = perso.forNum + pt
                     retroaction.text = "Vous devenez plus fort : +"..pt.." Force"
-                    print(perso.forNum)
                     infos:updateHeure(1)
-                elseif pt==2 and infos:getMoney()-20>=0 then
-                    infos:setMoney(-20)
+                elseif pt==2 and perso:getMoney()-20>=0 then
+                    perso:setMoney(-20)
                     perso.forNum = perso.forNum + pt
                     retroaction.text = "Vous devenez plus fort : +"..pt.." Force"
                     infos:updateHeure(1)
@@ -72,6 +70,7 @@ function Interieur:init( destination, jeu, map, perso )
                         print(perso.forNum)
                     end
                 end
+                print(perso.forNum)
             else
                 retroaction.text = "Il est trop tard pour s'entrainer."
             end
@@ -85,8 +84,8 @@ function Interieur:init( destination, jeu, map, perso )
                     perso.intNum = perso.intNum 
                     retroaction.text = "Vous devenez plus intelligent : +"..pt.." Int"+ pt
                     infos:updateHeure(1)
-                elseif pt==2 and infos:getMoney()-20>=0 then
-                    infos:setMoney(-20)
+                elseif pt==2 and perso:getMoney()-20>=0 then
+                    perso:setMoney(-20)
                     perso.intNum = perso.intNum + pt
                     retroaction.text = "Vous devenez plus intelligent : +"..pt.." Int"
                     infos:updateHeure(1)
@@ -111,6 +110,7 @@ function Interieur:init( destination, jeu, map, perso )
                         print(perso.intNum)
                     end
                 end
+                print(perso.intNum)
             else
                 retroaction.text = "Il est trop tard pour etudier."
             end
@@ -123,14 +123,14 @@ function Interieur:init( destination, jeu, map, perso )
 
         -- enlève du temps (5h) et donne de l'argent en fonction du poste du joueur
         local function travailler()
-            print(infos:getJour())
             if infos:getJour() ~= "Dimanche" then
-                if(infos:getHeure()<=16) then
+                if infos:getHeure() < 8 then
+                    retroaction.text = "Il est trop tot pour travailler."
+                elseif infos:getHeure() <= 16 then
                     infos:updateHeure(5)
                     -- Détecter le niveau de carriere du perso
                     emploiIndex = infos:getEmploiIndex()
-                    print(emploiIndex)
-                    infos:setMoney( 4 * emploiIndex/2 * 6 )
+                    perso:setMoney( 4 * emploiIndex/2 * 6 )
                 else 
                     retroaction.text = "Il est trop tard pour travailler."
                 end

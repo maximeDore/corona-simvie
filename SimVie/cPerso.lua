@@ -25,13 +25,17 @@ function Perso:init(xorig, yorig, map, joystick, jeu)
         self.angRad = 0
         self.avatar:play()
         self.isFixedRotation = true
+        self.money = 100
         self.forNum = _G.forNum
         self.intNum = _G.intNum
         self.chaNum = _G.chaNum
         self.carriere = _G.carriere
+
+        -- Destruction des valeurs globales
         _G.forNum = nil
         _G.intNum = nil
         _G.chaNum = nil
+        _G.carriere = nil
     end
     
     -- Appelée à chaque frame, utilisée pour déplacer le personnage et définir son orientation
@@ -92,6 +96,14 @@ function Perso:init(xorig, yorig, map, joystick, jeu)
             self.avatar:pause()
         end
 
+    end
+
+    function perso:getMoney()
+        return self.money
+    end
+    function perso:setMoney( valeur )
+        self.money = self.money + valeur
+        _G.infos:updateMoney()
     end
 
     function perso:collision(e)
