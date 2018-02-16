@@ -5,7 +5,7 @@
 -----------------------------------------------------------------------------------------
 local Interieur = {}
 
-function Interieur:init(destination,jeu,map)
+function Interieur:init( destination, jeu, map, perso )
 
     local interieur = display.newGroup()
     local cJeu = require("cJeu")
@@ -19,7 +19,7 @@ function Interieur:init(destination,jeu,map)
         depanneur =     { titre = "Depanneur", bg = "bg.jpg", bt1 = "btFleche.png", bt2 = "btFleche.png", bt3 = "btFleche.png" },
         magasin =       { titre = "Magasin", bg = "bg.jpg", bt1 = "btFleche.png", bt2 = "btFleche.png", bt3 = "btFleche.png" },
         banque =        { titre = "Banque", bg = "bg.jpg", bt1 = "btFleche.png", bt2 = "btFleche.png" },
-        appartement =   { titre = "Appartement", bg = "bg.jpg", bt1 = "btContinuer.png" },
+        appartement =   { titre = "Appartement", bg = "bg.jpg", bt1 = "btDormir.png", bt2 = "btAttendre.png" },
         centresportif = { titre = "Centre Sportif", bg = "bg.jpg", bt1 = "btTravailler.png", bt2 = "btPromotion.png" },
         faculte =       { titre = "Faculte des sciences", bg = "bg.jpg", bt1 = "btTravailler.png", bt2 = "btPromotion.png" }
     }
@@ -37,15 +37,18 @@ function Interieur:init(destination,jeu,map)
             jeu:sortirBatiment()
             self:kill()
         end
-        local function ajouterFor(pt)
-            if infos:getHeure() ~= 24 then
+        local function ajouterFor( pt )
+            if infos:getHeure() < 6 then
+                retroaction.text = "Il est trop tot pour s'entrainer."
+            elseif infos:getHeure() < 22 then
                 if pt==1 then
-                    _G.forNum = _G.forNum + pt
+                    perso.forNum = perso.forNum + pt
                     retroaction.text = "Vous devenez plus fort : +"..pt.." Force"
+                    print(perso.forNum)
                     infos:updateHeure(1)
                 elseif pt==2 and infos:getMoney()-20>=0 then
                     infos:setMoney(-20)
-                    _G.forNum = _G.forNum + pt
+                    perso.forNum = perso.forNum + pt
                     retroaction.text = "Vous devenez plus fort : +"..pt.." Force"
                     infos:updateHeure(1)
                 elseif pt==2 then
@@ -53,20 +56,20 @@ function Interieur:init(destination,jeu,map)
                 elseif pt==3 then
                     infos:updateHeure(1)
                     local rand = math.random(30)
-                    print(rand, _G.chaNum)
-                    if rand < _G.chaNum then
+                    print(rand, perso.chaNum)
+                    if rand < perso.chaNum then
                         random = math.random(3,6)
-                        _G.forNum = _G.forNum + random
+                        perso.forNum = perso.forNum + random
                         retroaction.text = "Vous devenez plus fort : +"..random.." Force"
-                        print(_G.forNum)
+                        print(perso.forNum)
                     else
                         random = math.random(3)
-                        _G.forNum = _G.forNum - random
-                        if _G.forNum < 0 then
-                            _G.forNum = 0
+                        perso.forNum = perso.forNum - random
+                        if perso.forNum < 0 then
+                            perso.forNum = 0
                         end
                         retroaction.text = "Vous perdez votre masculinite : -"..random.." Force"
-                        print(_G.forNum)
+                        print(perso.forNum)
                     end
                 end
             else
@@ -74,15 +77,17 @@ function Interieur:init(destination,jeu,map)
             end
         end
 
-        local function ajouterInt(pt)
-            if infos:getHeure() ~= 24 then
+        local function ajouterInt( pt )
+            if infos:getHeure() < 6 then
+                retroaction.text = "Il est trop tot pour etudier"
+            elseif infos:getHeure() < 22 then
                 if pt==1 then
-                    _G.intNum = _G.intNum 
+                    perso.intNum = perso.intNum 
                     retroaction.text = "Vous devenez plus intelligent : +"..pt.." Int"+ pt
                     infos:updateHeure(1)
                 elseif pt==2 and infos:getMoney()-20>=0 then
                     infos:setMoney(-20)
-                    _G.intNum = _G.intNum + pt
+                    perso.intNum = perso.intNum + pt
                     retroaction.text = "Vous devenez plus intelligent : +"..pt.." Int"
                     infos:updateHeure(1)
                 elseif pt==2 then
@@ -90,20 +95,20 @@ function Interieur:init(destination,jeu,map)
                 elseif pt==3 then
                     infos:updateHeure(1)
                     local rand = math.random(30)
-                    print(rand, _G.chaNum)
-                    if rand < _G.chaNum then
+                    print(rand, perso.chaNum)
+                    if rand < perso.chaNum then
                         random = math.random(3,6)
-                        _G.intNum = _G.intNum + random
+                        perso.intNum = perso.intNum + random
                         retroaction.text = "Vous trichez avec succes : +"..random.." int"
-                        print(_G.intNum)
+                        print(perso.intNum)
                     else
                         random = math.random(3)
-                        _G.intNum = _G.intNum - random
-                        if _G.intNum < 0 then
-                            _G.intNum = 0
+                        perso.intNum = perso.intNum - random
+                        if perso.intNum < 0 then
+                            perso.intNum = 0
                         end
                         retroaction.text = "Vous vous faites prendre : -"..random.." int"
-                        print(_G.intNum)
+                        print(perso.intNum)
                     end
                 end
             else
@@ -112,7 +117,7 @@ function Interieur:init(destination,jeu,map)
         end
 
         --acheter un objet selon l'index de l'objet
-        local function acheter(i)
+        local function acheter( i )
             print("achat object #"..i)
         end
 
@@ -120,12 +125,12 @@ function Interieur:init(destination,jeu,map)
         local function travailler()
             print(infos:getJour())
             if infos:getJour() ~= "Dimanche" then
-                if(infos:getHeure()<=19) then
+                if(infos:getHeure()<=16) then
                     infos:updateHeure(5)
                     -- Détecter le niveau de carriere du perso
                     emploiIndex = infos:getEmploiIndex()
                     print(emploiIndex)
-                    infos:setMoney( 4 * emploiIndex/2 * 5 )
+                    infos:setMoney( 4 * emploiIndex/2 * 6 )
                 else 
                     retroaction.text = "Il est trop tard pour travailler."
                 end
@@ -137,37 +142,41 @@ function Interieur:init(destination,jeu,map)
         -- Augmente l'indice de carrière du personnage s'il a assez de points d'aptitudes
         local function promotion()
             local emploi = infos:getEmploi()
-            if _G.carriere == "sciences" then
-                print("actuel : ".._G.intNum, "requis : "..emploi.apt)
-                if _G.intNum >= emploi.apt then
+            if perso.carriere == "sciences" then
+                print("actuel : "..perso.intNum, "requis : "..emploi.apt)
+                if perso.intNum >= emploi.apt then
                     infos:promotion()
                     retroaction.text = "Promotion : "..infos:getEmploi().titre
                 else
-                    retroaction.text = "Il vous manque "..infos:getEmploi().apt-_G.intNum.." d'Int pour etre promu."
+                    retroaction.text = "Il vous manque "..infos:getEmploi().apt-perso.intNum.." d'Int pour etre promu."
                 end
             else
-                print("actuel : ".._G.forNum, "requis : "..emploi.apt)
-                if _G.forNum >= emploi.apt then
+                print("actuel : "..perso.forNum, "requis : "..emploi.apt)
+                if perso.forNum >= emploi.apt then
                     infos:promotion()
                     retroaction.text = "Promotion : "..infos:getEmploi().titre
                 else
-                    retroaction.text = "Il vous manque "..infos:getEmploi().apt-_G.forNum.." de Force pour etre promu."
+                    retroaction.text = "Il vous manque "..infos:getEmploi().apt-perso.forNum.." de Force pour etre promu."
                 end
             end
         end
 
         -- change de journée, reset le temps et sauvegarde
         local function dormir()
-            retroaction.text = "Vous dormez pendant 8 heures."
-            infos:prochainJour(8)
+            retroaction.text = "Vous dormez pendant 9 heures."
+            infos:prochainJour(9)
+        end
+
+        local function attendre( h )
+            infos:updateHeure(h)
         end
 
         -- à repenser, fonction pour retirer une somme définie par des boutons-flèches?
-        local function retirer(somme)
+        local function retirer( somme )
         end
 
         -- à repenser, fonction pour déposer une somme définie par des boutons-flèches?
-        local function deposer(somme)
+        local function deposer( somme )
         end
 
         -- tableau des fonctions des boutons selon la destination
@@ -177,7 +186,7 @@ function Interieur:init(destination,jeu,map)
             depanneur =      { bt1 = acheter, bt1param = 1, bt2 = acheter, bt2param = 2, bt3= acheter, bt3param = 3 },
             magasin =        { bt1 = acheter, bt1param = 4, bt2 = acheter, bt2param = 5, bt3= acheter, bt3param = 6 },
             banque =         { bt1 = retirer, bt1param = 1, bt2 = deposer, bt2param = 2 },
-            appartement =    { bt1 = dormir, bt1param = 1 },
+            appartement =    { bt1 = dormir, bt1param = 1, bt2 = attendre, bt2param = 1 },
             centresportif =  { bt1 = travailler, bt1param = 1, bt2 = promotion, bt2param = 2 },
             faculte =        { bt1 = travailler, bt1param = 1, bt2 = promotion, bt2param = 2 }
         }
@@ -188,6 +197,7 @@ function Interieur:init(destination,jeu,map)
         local bg = display.newRect(self,display.contentCenterX,display.contentCenterY,display.contentWidth,display.contentHeight)
         -- local bg = display.newImage(self,src.bg,display.contentCenterX,display.contentCenterY)
 
+        -- Titre de l'endroit actuel
         local optionsTitre = {
             text = src.titre,
             x = display.contentCenterX,

@@ -4,7 +4,7 @@
 --
 ----------------------------------------------------------------------------------------- 
 local Infos = {}
-function Infos:init( heureDepart, indexDepart, map )
+function Infos:init( heureDepart, indexDepart, map, perso )
 
     local infos = display.newGroup()
     local hebdo = { "Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi" }
@@ -20,7 +20,7 @@ function Infos:init( heureDepart, indexDepart, map )
 
     local tEmplois = {
         sports = {
-            { titre="Porteur d'eau", apt=20 }, { titre="Rechauffe-banc", apt=50 }, { titre="Joueur remplaçant", apt=90 }, { titre="Squatteur de gym", apt=150 }, { titre="Athlete", apt=225 }, {"Maigre culturiste", apt=315 }, {"Culturiste", apt=400 }, {"Athlete professionnel", apt=500 }, { titre="Athlete sur steroides", apt=650 }, { titre="Champion du monde", apt=800 }
+            { titre="Porteur d'eau", apt=20 }, { titre="Rechauffe-banc", apt=50 }, { titre="Joueur remplacant", apt=90 }, { titre="Squatteur de gym", apt=150 }, { titre="Athlete", apt=225 }, { titre="Maigre culturiste", apt=315 }, { titre="Culturiste", apt=400 }, { titre="Athlete professionnel", apt=500 }, { titre="Athlete sur steroides", apt=650 }, { titre="Champion du monde", apt=800 }
         },
         sciences = {
             { titre="Nerd", apt=20 }, { titre="Etudiant", apt=50 }, { titre="Finissant en microbiologie", apt=90 }, { titre="Assistant en laboratoire", apt=150 }, { titre="Chercheur meconnu", apt=225 }, { titre="Scientifique sans bourse", apt=315 }, { titre="Scientifique peu connu", apt=400 }, { titre="Scientifique fou", apt=500 }, { titre="Professeur d'universite", apt=650 }, { titre="Recipiendaire de prix Nobel", apt=800 }
@@ -76,7 +76,11 @@ function Infos:init( heureDepart, indexDepart, map )
 
     function infos:updateHeure(nb)
         if nb ~= nil then
-            heure = heure + nb
+            if heure+nb >= 24 then
+                heure = nb+heure-24
+            else
+                heure = heure + nb
+            end
         end
         cadran.text = heure..":00"
         if heure==24 then

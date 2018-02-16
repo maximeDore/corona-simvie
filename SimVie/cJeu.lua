@@ -17,12 +17,12 @@ function Jeu:init(spawnX, spawnY)
     local cInfos = require("cInfos")
     local bgMusic = audio.loadStream( "Miami Viceroy.mp3" )
     local maMap
+    local monPerso
     local interieur
     local monJoystick
     local inventaire = {}
 
     function jeu:init()
-        print(carriere)
         display.setStatusBar( display.HiddenStatusBar )
         if audio.seek( 1000, bgMusicChannel ) then
             audio.stop( bgMusicChannel )
@@ -31,12 +31,12 @@ function Jeu:init(spawnX, spawnY)
         
         -- Instanciation des éléments de jeu
         monJoystick = cJoystick:init(50,125)
-        local monPerso = cPerso:init(spawnX,spawnY,0,monJoystick,self)
+        monPerso = cPerso:init(spawnX,spawnY,0,monJoystick,self)
         maMap = cMap:init()
         local maCamera = cCamera:init(monPerso,maMap)
 
         -- Instanciation de l'heure et de l'horaire en variable globale
-        _G.infos = cInfos:init(7,2,maMap)
+        _G.infos = cInfos:init(7,2,maMap,monPerso)
         
         monJoystick:activate()
         maMap:insert(monPerso)
@@ -50,7 +50,7 @@ function Jeu:init(spawnX, spawnY)
         -- self:kill()
         maMap:sleep()
         monJoystick:kill()
-        interieur = cInterieur:init(destination,self,maMap)
+        interieur = cInterieur:init(destination,self,maMap,monPerso)
     end
 
     -- Réactiver le monde/joystick et décharger l'interface d'intérieur
