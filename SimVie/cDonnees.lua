@@ -42,11 +42,13 @@ function donnees:prepForSave( perso, infos )
 	persoParams.intelligence = perso.intNum
 	persoParams.chance = perso.chaNum
 	persoParams.carriere = perso.carriere
+	persoParams.cptJours = infos:getCptJours()
 	persoParams.emploiIndex = infos:getEmploiIndex()
 	persoParams.jourIndex = infos:getJourIndex()
 	persoParams.heure = infos:getHeure()
 	persoParams.money = perso.money
 	persoParams.banque = perso.banque
+	persoParams.inventaire = perso.inventaire
 	self:saveTable(persoParams, "sauvegarde.json")
 	-- persoParams = {}
 	-- persoParams.force = 15

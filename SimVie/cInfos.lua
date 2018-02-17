@@ -81,6 +81,9 @@ function Infos:init( heureDepart, indexDepart, map, perso )
         jour = hebdo[jourIndex]
         return jour
     end
+    function infos:getCptJours()
+        return cptJours
+    end
 
     function infos:updateHeure(nb)
         if nb ~= nil then
@@ -88,6 +91,12 @@ function Infos:init( heureDepart, indexDepart, map, perso )
                 heure = nb+heure-24
                 cptJours = cptJours + 1
                 print("Jour "..cptJours)
+                if jourIndex == 7 then
+                    jourIndex = 1
+                else
+                    jourIndex = jourIndex + 1
+                end
+                jourDisplay.text = hebdo[jourIndex]
             else
                 heure = heure + nb
             end
@@ -102,16 +111,6 @@ function Infos:init( heureDepart, indexDepart, map, perso )
     
     function infos:updateMoney()
         moneyDisplay.text = perso.money.." $"
-    end
-
-    function infos:prochainJour(h)
-        if jourIndex == 7 then
-            jourIndex = 1
-        else
-            jourIndex = jourIndex + 1
-        end
-        jourDisplay.text = hebdo[jourIndex]
-        self:updateHeure(h)
     end
 
     function infos:promotion()

@@ -174,7 +174,7 @@ function Interieur:init( destination, jeu, map, perso )
         -- change de journée, reset le temps et sauvegarde
         local function dormir()
             retroaction.text = "Vous dormez pendant 9 heures."
-            infos:prochainJour(9)
+            infos:updateHeure(9)
         end
 
         local function attendre( h )
