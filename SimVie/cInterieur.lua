@@ -71,6 +71,7 @@ function Interieur:init( destination, jeu, map, perso )
                     end
                 end
                 print(perso.forNum)
+                infos:updateStats( perso )
             else
                 retroaction.text = "Il est trop tard pour s'entrainer."
             end

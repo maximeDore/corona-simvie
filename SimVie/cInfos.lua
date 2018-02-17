@@ -34,7 +34,7 @@ function Infos:init( heureDepart, indexDepart, map, perso )
         emploi = tEmplois[perso.carriere][emploiIndex]
         print(emploi.titre)
 
-        telephone = cTelephone:init( self )
+        telephone = cTelephone:init( self, perso )
 
         -- Affichage de la barre du haut
         local barre = display.newRect( self, display.screenOriginX, 0, display.contentWidth*3, 100 )
@@ -104,6 +104,10 @@ function Infos:init( heureDepart, indexDepart, map, perso )
         emploiIndex = emploiIndex + 1
         emploi = tEmplois[perso.carriere][emploiIndex]
         print(emploi.titre)
+    end
+
+    function infos:updateStats()
+        telephone:updateStats()
     end
 
     function infos:getEmploi()
