@@ -3,56 +3,74 @@
 -- cDonnees.lua
 --
 -----------------------------------------------------------------------------------------
--- Base de données
-require "sqlite3"
-local path = system.pathForFile("classeTable.db", system.ResourceDirectory)
-db = sqlite3.open( path )
- 
---Handle the applicationExit event to close the db
-function onSystemEvent( event )
-  if( event.type == "applicationExit" ) then
-      db:close()
-  end
-end
- 
-for row in db:nrows("SELECT * FROM classeTable") do
-    -- Iterate through each of our rows of data
-    -- It uses dot notation, so if you want to get a column's data, say class,strength,desterity or hitpoints
-    -- OK, I'm still getting used to the special characters, but FYI the '/t'
-    -- prints a tab, so that way our data lines up nicely in the output to the console
-    print("classe: "..row.classe.." tForce: "..row.force.." tchance: "..row.chance.." tIntelligence: "..row.intelligence)
-end
+local json = require("json")
 
-perso = {}
- 
--- séparateur
-print("")
- 
-for row in db:nrows("SELECT * FROM classeTable WHERE classe='culturiste'") do
-	perso.classe = row.classe
-	perso.force = row.force
-	perso.chance = row.chance
-	perso.intelligence = row.intelligence
-	perso.carriere = row.carriere
-	perso.emploi = row.emploi
-	print("Classe du joueur: "..perso.classe.." tForce: "..perso.force.." tchance: "..perso.chance.." tIntelligence: "..perso.intelligence)
-end
+donnees = {}
+local persoParams
 
-
--- Fonction pour créer un personnage selon une classe passée en paramètre
-function createCharacterClass(passedClass)
-	local SQL = "SELECT * FROM classeTable WHERE classe='"..passedClass.."'"
-	local tempTable = {}
-	for row in db:nrows(SQL) do
-		tempTable = row
+function donnees:saveTable( t, filename )
+	local path = system.pathForFile( filename, system.DocumentsDirectory )
+	local fichier = io.open(path, "w+")
+	if fichier then
+		local contenu = json.encode(t)
+		fichier:write( contenu )
+		io.close( fichier )
+		return true
+	else
+		return false
 	end
-	return tempTable
 end
- 
-player2 = {}
--- Créer un personnage de classe scientifique
-player2 = createCharacterClass("scientifique")
- 
-if player2.classe~=nil then
-	print("Nouveau "..player2.classe..": Force: "..player2.force.." chance : "..player2.chance.." Intelligence : "..player2.intelligence)
+
+function donnees:loadTable( filename )
+	local path = system.pathForFile( filename, system.DocumentsDirectory )
+	local contenu = ""
+	local monTableau = {}
+	local fichier = io.open( path, "r" )
+	if fichier then
+		-- Transforme le contenu du fichier en string
+		local contenu = fichier:read( "*a" )
+		monTableau = json.decode(contenu);
+		io.close( fichier )
+		return monTableau
+	end
+	return nil
 end
+
+function donnees:prepForSave( perso, infos )
+	persoParams = {}
+	persoParams.force = perso.forNum
+	persoParams.intelligence = perso.intNum
+	persoParams.chance = perso.chaNum
+	persoParams.carriere = perso.carriere
+	persoParams.emploiIndex = infos:getEmploiIndex()
+	persoParams.jourIndex = infos:getJourIndex()
+	persoParams.heure = infos:getHeure()
+	persoParams.money = perso.money
+	persoParams.banque = perso.banque
+	self:saveTable(persoParams, "sauvegarde.json")
+	-- persoParams = {}
+	-- persoParams.force = 15
+	-- persoParams.intelligence = 5
+	-- persoParams.chance = 5
+	-- persoParams.carriere = "sports"
+	-- persoParams.emploiIndex = 1
+	-- persoParams.cptJours = 1
+	-- persoParams.jourIndex = 1
+	-- persoParams.heure = 7
+	-- persoParams.money = 101
+	-- persoParams.banque = 0
+	-- persoParams.inventaire = {}
+	-- self:saveTable(persoParams, "sauvegarde.json")
+end
+
+function donnees:isGameSaved()
+	if persoParams == nil then
+		return false
+	else
+		return true
+	end
+end
+
+
+
+return donnees

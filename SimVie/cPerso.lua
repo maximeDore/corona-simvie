@@ -25,12 +25,21 @@ function Perso:init(xorig, yorig, map, joystick, jeu)
         self.angRad = 0
         self.avatar:play()
         self.isFixedRotation = true
-        self.money = 100
-        self.banque = 0
-        self.forNum = _G.forNum
-        self.intNum = _G.intNum
-        self.chaNum = _G.chaNum
-        self.carriere = _G.carriere
+        if _G.data == nil then
+            self.money = 100
+            self.banque = 0
+            self.forNum = _G.forNum
+            self.intNum = _G.intNum
+            self.chaNum = _G.chaNum
+            self.carriere = _G.carriere
+        else 
+            self.money = _G.data.money
+            self.banque = _G.data.banque
+            self.forNum = _G.data.force
+            self.intNum = _G.data.intelligence
+            self.chaNum = _G.data.chance
+            self.carriere = _G.data.carriere
+        end
 
         -- Destruction des valeurs globales
         _G.forNum = nil

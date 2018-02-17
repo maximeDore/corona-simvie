@@ -8,11 +8,13 @@ local Menu = {}
 function Menu:init()
 
     local menu = display.newGroup()
-    local bgMusic = audio.loadStream( "Chill Wave.mp3" )
     local bouton = require("cBouton")
     local autoMenu = require("cAutoMenu")
     local cMenuCommencer = require("cMenuCommencer")
     local cInstructions = require("cInstructions")
+    local cDonnees = require("cDonnees")
+    local cJeu = require("cJeu")
+    local bgMusic = audio.loadStream( "Chill Wave.mp3" )
     local bg
     local menuCommencer
     local btCommencer
@@ -24,17 +26,22 @@ function Menu:init()
     end
 
     function listener2()
-        if forNum>intNum then
-            carriere = "sports"
-        else
-            carriere = "sciences"            
+        if _G.data == nil then
+            if forNum>intNum then
+                carriere = "sports"
+            else
+                carriere = "sciences"            
+            end
+            cInstructions:init()
+        else 
+            audio.fadeOut( { 1, 1000 } )
+            cJeu:init(-3007.5,-295)
         end
-        cInstructions:init()
         menu:removeSelf()
     end
 
     function menu:init()
-        -- Affiche la barre de notificationsw
+        -- Affiche la barre de notifications
         display.setStatusBar( display.LightTransparentStatusBar )
         -- Applique un filtre qui rend l'image moins floue (pour mieux voir les pixels)
         display.setDefault( "magTextureFilter", "nearest" )
@@ -44,6 +51,15 @@ function Menu:init()
             self:insert(menuCommencer)
             btCommencer:removeSelf()
             btContinuer:removeSelf()
+        end
+
+        local function continuer()
+            if donnees:isGameSaved() then
+                btCommencer:removeSelf()
+                btContinuer:removeSelf()
+                _G.data = donnees:loadTable( "sauvegarde.json" )
+                listener()
+            end
         end
 
         local function fadeListener()
@@ -66,7 +82,7 @@ function Menu:init()
 
         -- Boutons
         btCommencer = bouton:init("btCommencer.png",display.contentCenterX/2,display.contentHeight/1.37,commencer)
-        btContinuer = bouton:init("btContinuer.png",display.contentCenterX/.67,display.contentHeight/1.37,commencer)
+        btContinuer = bouton:init("btContinuer.png",display.contentCenterX/.67,display.contentHeight/1.37,continuer)
         self:insert(btCommencer)
         self:insert(btContinuer)
 

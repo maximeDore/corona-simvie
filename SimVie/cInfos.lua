@@ -12,10 +12,10 @@ function Infos:init( heureDepart, indexDepart, map, perso )
     local rightMarg = display.contentWidth - display.screenOriginX
     local heure = heureDepart
     local jourIndex = indexDepart
-    local jour = hebdo[jourIndex]
+    local cptJours = 1
     local emploiIndex = 1
     local emploi
-    local cadran
+    local heureDisplay
     local jourDisplay
     local moneyDisplay
     local telephone
@@ -30,6 +30,16 @@ function Infos:init( heureDepart, indexDepart, map, perso )
     }
 
     function infos:init()
+        -- Chargement des données si partie chargée
+        if _G.data then
+            print("_G.data")
+            heure = _G.data.heure
+            emploiIndex = _G.data.emploiIndex
+            jourIndex = _G.data.jourIndex
+            cptJours = _G.data.cptJours
+            _G.data = nil
+        end
+
         -- Accéder au nom de l'emploi actuel et au prochain objectif d'aptitude pour la promotion
         emploi = tEmplois[perso.carriere][emploiIndex]
         print(emploi.titre)
@@ -51,8 +61,8 @@ function Infos:init( heureDepart, indexDepart, map, perso )
         jourDisplay = display.newText(optionsJourDisplay)
 
         -- Affichage de l'heure
-        local optionsCadran = {text = "", width = 256, x = display.contentCenterX, y = 25, font = "8-Bit Madness.ttf", fontSize = 50, align = "center"}
-        cadran = display.newText(optionsCadran)
+        local optionsheureDisplay = {text = "", width = 256, x = display.contentCenterX, y = 25, font = "8-Bit Madness.ttf", fontSize = 50, align = "center"}
+        heureDisplay = display.newText(optionsheureDisplay)
 
         -- Affichage de l'argent
         local optionsMoneyDisplay = {text = perso.money .. " $", width = 256, x = rightMarg-150, y = 25, font = "8-Bit Madness.ttf", fontSize = 50, align = "right"}
@@ -64,7 +74,9 @@ function Infos:init( heureDepart, indexDepart, map, perso )
     function infos:getHeure()
         return heure
     end
-
+    function infos:getJourIndex()
+        return jourIndex
+    end
     function infos:getJour()
         jour = hebdo[jourIndex]
         return jour
@@ -74,14 +86,16 @@ function Infos:init( heureDepart, indexDepart, map, perso )
         if nb ~= nil then
             if heure+nb >= 24 then
                 heure = nb+heure-24
+                cptJours = cptJours + 1
+                print("Jour "..cptJours)
             else
                 heure = heure + nb
             end
         end
-        cadran.text = heure..":00"
+        heureDisplay.text = heure..":00"
         if heure==24 then
             heure = 0
-            cadran.text = "00:00"
+            heureDisplay.text = "00:00"
         end
         map:assombrir(heure)
     end

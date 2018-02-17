@@ -8,6 +8,7 @@ local Jeu = {}
 function Jeu:init(spawnX, spawnY)
 
     local jeu = display.newGroup()
+    local cDonnees = require("cDonnees")
     local cMap = require("cMap")
     local cCamera = require("cCamera")
     local cPerso = require("cPerso")
@@ -23,6 +24,12 @@ function Jeu:init(spawnX, spawnY)
     local inventaire = {}
 
     function jeu:init()
+        -- Chargement des données si partie chargée
+        if _G.data~=nil then
+            inventaire = data.inventaire
+        end
+
+
         display.setStatusBar( display.HiddenStatusBar )
         if audio.seek( 1000, bgMusicChannel ) then
             audio.stop( bgMusicChannel )
@@ -61,6 +68,7 @@ function Jeu:init(spawnX, spawnY)
 
     -- Quand le personnage meurt ou perd la partie
     function jeu:mourir()
+        donnees:prepForSave( monPerso, _G.infos )
         self:kill()
     end
 
