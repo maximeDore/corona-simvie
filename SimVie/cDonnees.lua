@@ -63,14 +63,6 @@ function donnees:prepForSave( perso, infos )
 	-- self:saveTable(persoParams, "sauvegarde.json")
 end
 
-function donnees:isGameSaved()
-	if persoParams == nil then
-		return false
-	else
-		return true
-	end
-end
-
 
 
 return donnees

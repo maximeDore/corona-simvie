@@ -54,7 +54,7 @@ function Menu:init()
         end
 
         local function continuer()
-            if donnees:isGameSaved() then
+            if donnees:loadTable( "sauvegarde.json" ) ~= nil then
                 btCommencer:removeSelf()
                 btContinuer:removeSelf()
                 _G.data = donnees:loadTable( "sauvegarde.json" )
