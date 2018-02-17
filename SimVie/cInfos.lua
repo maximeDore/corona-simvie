@@ -25,7 +25,7 @@ function Infos:init( heureDepart, indexDepart, map, perso )
             { titre="Porteur d'eau", apt=20 }, { titre="Rechauffe-banc", apt=50 }, { titre="Joueur remplacant", apt=90 }, { titre="Squatteur de gym", apt=150 }, { titre="Athlete", apt=225 }, { titre="Maigre culturiste", apt=315 }, { titre="Culturiste", apt=400 }, { titre="Athlete professionnel", apt=500 }, { titre="Athlete sur steroides", apt=650 }, { titre="Champion du monde", apt=800 }
         },
         sciences = {
-            { titre="Nerd", apt=20 }, { titre="Etudiant", apt=50 }, { titre="Finissant en microbiologie", apt=90 }, { titre="Assistant en laboratoire", apt=150 }, { titre="Chercheur meconnu", apt=225 }, { titre="Scientifique sans bourse", apt=315 }, { titre="Scientifique peu connu", apt=400 }, { titre="Scientifique fou", apt=500 }, { titre="Professeur d'universite", apt=650 }, { titre="Recipiendaire de prix Nobel", apt=800 }
+            { titre="Nerd", apt=20 }, { titre="Etudiant", apt=50 }, { titre="Finissant en chimie", apt=90 }, { titre="Assistant en laboratoire", apt=150 }, { titre="Chercheur meconnu", apt=225 }, { titre="Scientifique sans budget", apt=315 }, { titre="Chimiste douteux", apt=400 }, { titre="Professeur d'universite", apt=500 }, { titre="Scientifique fou", apt=650 }, { titre="Recipiendaire de prix Nobel", apt=800 }
         }
     }
 
@@ -102,7 +102,10 @@ function Infos:init( heureDepart, indexDepart, map, perso )
 
     function infos:promotion()
         emploiIndex = emploiIndex + 1
-        emploi = tEmplois[perso.carriere][emploiIndex]
+        if tEmplois[perso.carriere][emploiIndex] ~= nil then 
+            emploi = tEmplois[perso.carriere][emploiIndex]
+        end
+        self.updateStats()
         print(emploi.titre)
     end
 

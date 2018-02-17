@@ -12,6 +12,7 @@ function Interieur:init( destination, jeu, map, perso )
     local cBouton = require("cBouton")
     local bgMusic = audio.loadStream( "Miami Viceroy.mp3" )
     local retroaction
+    local inputBanque
     -- Tableau contenant des tableaux, contenant les noms de fichier pour les images des boutons et du fond selon la destination
     local tSrc = { 
         gym =           { titre = "Gym", bg = "bg.jpg", bt1 = "btCourir.png", bt2 = "btEntrainer.png", bt3 = "btSteroides.png" },
@@ -53,10 +54,10 @@ function Interieur:init( destination, jeu, map, perso )
                     retroaction.text = "Vous n'avez pas assez d'argent pour vous entrainer."
                 elseif pt==3 then
                     infos:updateHeure(1)
-                    local rand = math.random(30)
+                    local rand = math.random(25)
                     print(rand, perso.chaNum)
                     if rand < perso.chaNum then
-                        random = math.random(3,6)
+                        random = math.random(5)
                         perso.forNum = perso.forNum + random
                         retroaction.text = "Vous devenez plus fort : +"..random.." Force"
                         print(perso.forNum)
@@ -67,7 +68,6 @@ function Interieur:init( destination, jeu, map, perso )
                             perso.forNum = 0
                         end
                         retroaction.text = "Vous perdez votre masculinite : -"..random.." Force"
-                        print(perso.forNum)
                     end
                 end
                 print(perso.forNum)
@@ -82,8 +82,8 @@ function Interieur:init( destination, jeu, map, perso )
                 retroaction.text = "Il est trop tot pour etudier"
             elseif infos:getHeure() < 22 then
                 if pt==1 then
-                    perso.intNum = perso.intNum 
-                    retroaction.text = "Vous devenez plus intelligent : +"..pt.." Int"+ pt
+                    perso.intNum = perso.intNum + pt
+                    retroaction.text = "Vous devenez plus intelligent : +"..pt.." Int".. pt
                     infos:updateHeure(1)
                 elseif pt==2 and perso:getMoney()-20>=0 then
                     perso:setMoney(-20)
@@ -94,10 +94,10 @@ function Interieur:init( destination, jeu, map, perso )
                     retroaction.text = "Vous n'avez pas assez d'argent pour assister au cours."
                 elseif pt==3 then
                     infos:updateHeure(1)
-                    local rand = math.random(30)
+                    local rand = math.random(25)
                     print(rand, perso.chaNum)
                     if rand < perso.chaNum then
-                        random = math.random(3,6)
+                        random = math.random(5)
                         perso.intNum = perso.intNum + random
                         retroaction.text = "Vous trichez avec succes : +"..random.." int"
                         print(perso.intNum)
@@ -108,10 +108,10 @@ function Interieur:init( destination, jeu, map, perso )
                             perso.intNum = 0
                         end
                         retroaction.text = "Vous vous faites prendre : -"..random.." int"
-                        print(perso.intNum)
                     end
                 end
                 print(perso.intNum)
+                infos:updateStats( perso )
             else
                 retroaction.text = "Il est trop tard pour etudier."
             end
@@ -132,6 +132,7 @@ function Interieur:init( destination, jeu, map, perso )
                     -- Détecter le niveau de carriere du perso
                     emploiIndex = infos:getEmploiIndex()
                     perso:setMoney( 4 * emploiIndex/2 * 6 )
+                    retroaction.text = "Vous travailler pendant 5 heures."
                 else 
                     retroaction.text = "Il est trop tard pour travailler."
                 end
@@ -147,7 +148,11 @@ function Interieur:init( destination, jeu, map, perso )
                 print("actuel : "..perso.intNum, "requis : "..emploi.apt)
                 if perso.intNum >= emploi.apt then
                     infos:promotion()
-                    retroaction.text = "Promotion : "..infos:getEmploi().titre
+                    if emploi.apt ~= infos:getEmploi().apt then
+                        retroaction.text = "Promotion : "..infos:getEmploi().titre
+                    else 
+                        retroaction.text = "Vous occupez le poste le plus important imaginable."
+                    end
                 else
                     retroaction.text = "Il vous manque "..infos:getEmploi().apt-perso.intNum.." d'Int pour etre promu."
                 end
@@ -155,7 +160,11 @@ function Interieur:init( destination, jeu, map, perso )
                 print("actuel : "..perso.forNum, "requis : "..emploi.apt)
                 if perso.forNum >= emploi.apt then
                     infos:promotion()
-                    retroaction.text = "Promotion : "..infos:getEmploi().titre
+                    if emploi.apt ~= infos:getEmploi().apt then
+                        retroaction.text = "Promotion : "..infos:getEmploi().titre
+                    else 
+                        retroaction.text = "Vous occupez le poste le plus important imaginable."
+                    end
                 else
                     retroaction.text = "Il vous manque "..infos:getEmploi().apt-perso.forNum.." de Force pour etre promu."
                 end
@@ -173,11 +182,27 @@ function Interieur:init( destination, jeu, map, perso )
         end
 
         -- à repenser, fonction pour retirer une somme définie par des boutons-flèches?
-        local function retirer( somme )
+        local function retirer()
+            local montant = tonumber( inputBanque.text )
+            if perso.banque >= montant then
+                perso:setMoney(montant)
+                perso:setBanque(-montant)
+            else
+                retroaction.text = "Fonds insuffisants. Vous avez "..perso.banque.." $ en banque."
+            end
+            print(perso.banque)
         end
 
         -- à repenser, fonction pour déposer une somme définie par des boutons-flèches?
-        local function deposer( somme )
+        local function deposer()
+            local montant = tonumber( inputBanque.text )
+            if perso.money >= montant then
+                perso:setMoney(-montant)
+                perso:setBanque(montant)
+            else
+                retroaction.text = "Fonds insuffisants. Vous avez "..perso.money.." $ sur vous."
+            end
+            print(perso.banque)
         end
 
         -- tableau des fonctions des boutons selon la destination
@@ -186,7 +211,7 @@ function Interieur:init( destination, jeu, map, perso )
             universite =     { bt1 = ajouterInt, bt1param = 1, bt2 = ajouterInt, bt2param = 2, bt3= ajouterInt, bt3param = 3 },
             depanneur =      { bt1 = acheter, bt1param = 1, bt2 = acheter, bt2param = 2, bt3= acheter, bt3param = 3 },
             magasin =        { bt1 = acheter, bt1param = 4, bt2 = acheter, bt2param = 5, bt3= acheter, bt3param = 6 },
-            banque =         { bt1 = retirer, bt1param = 1, bt2 = deposer, bt2param = 2 },
+            banque =         { bt1 = deposer, bt1param = 1, bt2 = retirer, bt2param = 2 },
             appartement =    { bt1 = dormir, bt1param = 1, bt2 = attendre, bt2param = 1 },
             centresportif =  { bt1 = travailler, bt1param = 1, bt2 = promotion, bt2param = 2 },
             faculte =        { bt1 = travailler, bt1param = 1, bt2 = promotion, bt2param = 2 }
@@ -227,7 +252,7 @@ function Interieur:init( destination, jeu, map, perso )
         if src.bt3~=nil then
             local bt3 = cBouton:init(src.bt3,display.contentCenterX/1.65,display.contentCenterY*1.5,func.bt3,func.bt3param)
             self:insert(bt3)
-        else
+        elseif destination ~= "banque" then
             if src.bt2==nil then
                 btRetour.y = bt1.y
             else
@@ -237,6 +262,17 @@ function Interieur:init( destination, jeu, map, perso )
         if src.bt2~=nil then
             local bt2 = cBouton:init(src.bt2,display.contentCenterX*1.4,display.contentCenterY,func.bt2,func.bt2param)
             self:insert(bt2)
+        end
+
+        -- Champ de texte pour la banque
+        if destination == "banque" then
+            inputBanque = native.newTextField( display.contentCenterX/1.65, display.contentCenterY*1.5, btRetour.width, btRetour.height/2 )
+            inputBanque.inputType = "number"
+            inputBanque.placeholder = "-Montant-"
+            inputBanque.isFontSizeScaled = false
+            inputBanque.font = native.newFont( "8-Bit Madness.ttf", 75 )
+            inputBanque.align = "center"
+            self:insert(inputBanque)
         end
 
         -- Insertion du visuel
@@ -251,6 +287,11 @@ function Interieur:init( destination, jeu, map, perso )
     end
 
     interieur:init()
+
+    if inputBanque ~= nil then
+        -- inputBanque:addEventListener( "userInput", testListener )
+    end
+
     return interieur
 end
 

@@ -20,12 +20,13 @@ function Perso:init(xorig, yorig, map, joystick, jeu)
         self.avatar = avatar
         self.x = xorig
         self.y = yorig
-        self.vitModif = 15
+        self.vitModif = 30
         self.vit = 0
         self.angRad = 0
         self.avatar:play()
         self.isFixedRotation = true
         self.money = 100
+        self.banque = 0
         self.forNum = _G.forNum
         self.intNum = _G.intNum
         self.chaNum = _G.chaNum
@@ -103,6 +104,10 @@ function Perso:init(xorig, yorig, map, joystick, jeu)
     end
     function perso:setMoney( valeur )
         self.money = self.money + valeur
+        _G.infos:updateMoney()
+    end
+    function perso:setBanque( valeur )
+        self.banque = self.banque + valeur
         _G.infos:updateMoney()
     end
 
