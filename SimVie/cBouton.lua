@@ -5,9 +5,15 @@
 -----------------------------------------------------------------------------------------
 local Bouton = {}
 
-function Bouton:init (imageName,x,y,callbackFunction,callbackParam)
+function Bouton:init ( imageName, x, y, callbackFunction, callbackParam, width, height )
     
-    local bouton = display.newImage(imageName,x,y)
+    local bouton
+    if width==nil then
+        bouton = display.newImage(imageName,x,y)
+    else
+        bouton = display.newRect( x, y, width, height )
+        bouton.alpha = 0.01
+    end
 
     function bouton:init()
     end

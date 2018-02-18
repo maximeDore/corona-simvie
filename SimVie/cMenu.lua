@@ -95,9 +95,18 @@ function Menu:init()
             btCommencer:removeSelf()
             btContinuer:removeSelf()
         end
+
+        local function continuer()
+            if donnees:loadTable( "sauvegarde.json" ) ~= nil then
+                btCommencer:removeSelf()
+                btContinuer:removeSelf()
+                _G.data = donnees:loadTable( "sauvegarde.json" )
+                listener()
+            end
+        end
         menuCommencer:removeSelf()
         btCommencer = bouton:init("btCommencer.png",display.contentCenterX/2,display.contentHeight/1.37,commencer)
-        btContinuer = bouton:init("btContinuer.png",display.contentCenterX/.67,display.contentHeight/1.37,commencer)
+        btContinuer = bouton:init("btContinuer.png",display.contentCenterX/.67,display.contentHeight/1.37,continuer)
 
     end
 

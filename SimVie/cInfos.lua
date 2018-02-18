@@ -68,6 +68,11 @@ function Infos:init( heureDepart, indexDepart, map, perso )
         local optionsMoneyDisplay = {text = perso.money .. " $", width = 256, x = rightMarg-150, y = 25, font = "8-Bit Madness.ttf", fontSize = 50, align = "right"}
         moneyDisplay = display.newText(optionsMoneyDisplay)
 
+        self:insert(barre)
+        self:insert(jourDisplay)
+        self:insert(heureDisplay)
+        self:insert(moneyDisplay)
+
         self:updateHeure()
     end 
 

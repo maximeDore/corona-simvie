@@ -11,19 +11,67 @@ function Telephone:init( parent, perso )
     local posUp = display.contentHeight-display.screenOriginY-250
     local posDown = display.contentHeight-display.screenOriginY+210
 
+    local cDonnees = require("cDonnees")
+
     local telephone = display.newGroup()
     local phone
     local tapZone
+    local btHome
     local bgStats
+    local screenHome = display.newGroup()
     local screenStats = display.newGroup()
     local screenContacts = display.newGroup()
+    local screenBanque = display.newGroup()
+    local screenGps = display.newGroup()
+    local screenAlertes = display.newGroup()
+    local screenMenu = display.newGroup()
     local aptitudesNum
     
     function telephone:init()
 
-        local function afficherStats()
+        local function afficherHome()
+            screenHome.isVisible = true
             screenContacts.isVisible = false
+            screenStats.isVisible = false
+            screenGps.isVisible = false
+            screenBanque.isVisible = false
+            screenMenu.isVisible = false
+            screenAlertes.isVisible = false
+            screenMenu.isVisible = false
+        end
+
+        local function afficherStats()
+            screenHome.isVisible = false
             screenStats.isVisible = true
+        end
+
+        local function afficherContacts()
+            screenHome.isVisible = false
+            screenContacts.isVisible = true
+        end
+
+        local function afficherAlertes()
+            screenHome.isVisible = false
+            screenAlertes.isVisible = true
+        end
+
+        local function afficherGps()
+            screenHome.isVisible = false
+            screenGps.isVisible = true
+        end
+
+        local function afficherBanque()
+            screenHome.isVisible = false
+            screenBanque.isVisible = true
+        end
+
+        local function afficherMenu()
+            screenHome.isVisible = false
+            screenMenu.isVisible = true
+        end
+
+        local function save()
+            donnees:prepForSave( perso, _G.infos )
         end
 
         local function mute()
@@ -34,23 +82,36 @@ function Telephone:init( parent, perso )
             end
         end
 
-        local function afficherContacts()
-            screenContacts.isVisible = true
-            screenStats.isVisible = false
-        end
-
         phone = display.newImage( self, "telephone.png" )
         -- Zone de contact dans le haut du téléphone où il faut tapper pour le monter/descendre
         tapZone = display.newRect( self, 0, -phone.height/2.5, phone.width, phone.height/5 )
         tapZone.alpha = 0.01
+
         -- Fonds des différents écrans
         bgContacts = display.newImage( screenContacts, "contactsScreen.png", 0, -10.5 )
         bgStats = display.newImage( screenStats, "statsScreen.png", 0, -10.5 )
-        -- Boutons dans le bas de l'écran
-        btStats = cBouton:init( "btStats.png", -bgStats.width/3, bgStats.height/2.65, afficherStats )
-        btMute = cBouton:init( "btMute.png", 0, bgStats.height/2.65, mute )
-        btContacts = cBouton:init( "btContacts.png", bgStats.width/3, bgStats.height/2.65, afficherContacts )
 
+        -- Bouton physique du téléphone (home button)
+        btHome = cBouton:init( "", 0, bgStats.height/1.8, afficherHome, nil, 75, 50 )
+        -- Boutons de l'écran d'accueil
+        btStats = cBouton:init( "btStats.png", -bgStats.width/3.25, -bgStats.height*.35, afficherStats )
+        btContacts = cBouton:init( "btContacts.png", 0, -bgStats.height*.35, afficherContacts )
+        btAlertes = cBouton:init( "btMute.png", bgStats.width/3.25, -bgStats.height*.35, afficherAlertes )
+        btGps = cBouton:init( "btMute.png", -bgStats.width/3.25, -bgStats.height*.15, afficherGps )
+        btBanque = cBouton:init( "btContacts.png", 0, -bgStats.height*.15, afficherBanque )
+        btMute = cBouton:init( "btMute.png", bgStats.width/3.25, -bgStats.height*.15, mute )
+        btSave = cBouton:init( "btMute.png", -bgStats.width/3.25, bgStats.height*.05, save )
+        btMenu = cBouton:init( "btContacts.png", 0, bgStats.height*.05, afficherMenu )
+        screenHome:insert(btStats)
+        screenHome:insert(btContacts)
+        screenHome:insert(btAlertes)
+        screenHome:insert(btGps)
+        screenHome:insert(btBanque)
+        screenHome:insert(btMute)
+        screenHome:insert(btSave)
+        screenHome:insert(btMenu)
+
+        -- Écran Statistiques
         -- Affichage des points d'aptitudes
         local optionsAptitudesNum = {
             text = "",
@@ -80,12 +141,14 @@ function Telephone:init( parent, perso )
         carriereDisplay:setFillColor(1,0,0)
         screenStats:insert(carriereDisplay)
 
+        screenContacts.isVisible = false
+        screenStats.isVisible = false
 
+
+        self:insert(screenHome)
         self:insert(screenContacts)
         self:insert(screenStats)
-        self:insert(btStats)
-        self:insert(btMute)
-        self:insert(btContacts)
+        self:insert(btHome)
 
         self.x = display.contentWidth*.85-display.screenOriginX
         self.y = posDown

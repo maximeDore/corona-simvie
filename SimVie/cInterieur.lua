@@ -183,26 +183,30 @@ function Interieur:init( destination, jeu, map, perso )
 
         -- à repenser, fonction pour retirer une somme définie par des boutons-flèches?
         local function retirer()
-            local montant = tonumber( inputBanque.text )
-            if perso.banque >= montant then
-                perso:setMoney(montant)
-                perso:setBanque(-montant)
-            else
-                retroaction.text = "Fonds insuffisants. Vous avez "..perso.banque.." $ en banque."
+            if inputBanque.text ~= "" then
+                local montant = tonumber( inputBanque.text )
+                if perso.banque >= montant then
+                    perso:setMoney(montant)
+                    perso:setBanque(-montant)
+                else
+                    retroaction.text = "Fonds insuffisants. Vous avez "..perso.banque.." $ en banque."
+                end
+                print(perso.banque)
             end
-            print(perso.banque)
         end
 
         -- à repenser, fonction pour déposer une somme définie par des boutons-flèches?
         local function deposer()
-            local montant = tonumber( inputBanque.text )
-            if perso.money >= montant then
-                perso:setMoney(-montant)
-                perso:setBanque(montant)
-            else
-                retroaction.text = "Fonds insuffisants. Vous avez "..perso.money.." $ sur vous."
+            if inputBanque.text ~= "" then
+                local montant = tonumber( inputBanque.text )
+                if perso.money >= montant then
+                    perso:setMoney(-montant)
+                    perso:setBanque(montant)
+                else
+                    retroaction.text = "Fonds insuffisants. Vous avez "..perso.money.." $ sur vous."
+                end
+                print(perso.banque)
             end
-            print(perso.banque)
         end
 
         -- tableau des fonctions des boutons selon la destination
