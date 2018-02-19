@@ -39,41 +39,34 @@ function Telephone:init( parent, perso )
             screenAlertes.isVisible = false
             screenMenu.isVisible = false
         end
-
         local function afficherStats()
             screenHome.isVisible = false
             screenStats.isVisible = true
         end
-
         local function afficherContacts()
             screenHome.isVisible = false
             screenContacts.isVisible = true
         end
-
         local function afficherAlertes()
             screenHome.isVisible = false
             screenAlertes.isVisible = true
         end
-
         local function afficherGps()
             screenHome.isVisible = false
             screenGps.isVisible = true
         end
-
         local function afficherBanque()
             screenHome.isVisible = false
             screenBanque.isVisible = true
         end
-
         local function afficherMenu()
             screenHome.isVisible = false
             screenMenu.isVisible = true
         end
-
         local function save()
+            print("Partie sauvegardée")
             donnees:prepForSave( perso, _G.infos )
         end
-
         local function mute()
             if audio.pause() > 0 then
                 audio.pause( 1 )
@@ -102,6 +95,7 @@ function Telephone:init( parent, perso )
         btMute = cBouton:init( "btMute.png", bgStats.width/3.25, -bgStats.height*.15, mute )
         btSave = cBouton:init( "btMute.png", -bgStats.width/3.25, bgStats.height*.05, save )
         btMenu = cBouton:init( "btContacts.png", 0, bgStats.height*.05, afficherMenu )
+        
         screenHome:insert(btStats)
         screenHome:insert(btContacts)
         screenHome:insert(btAlertes)

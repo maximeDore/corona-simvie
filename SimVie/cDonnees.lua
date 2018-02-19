@@ -50,19 +50,6 @@ function donnees:prepForSave( perso, infos )
 	persoParams.banque = perso.banque
 	persoParams.inventaire = perso.inventaire
 	self:saveTable(persoParams, "sauvegarde.json")
-	-- persoParams = {}
-	-- persoParams.force = 15
-	-- persoParams.intelligence = 5
-	-- persoParams.chance = 5
-	-- persoParams.carriere = "sports"
-	-- persoParams.emploiIndex = 1
-	-- persoParams.cptJours = 1
-	-- persoParams.jourIndex = 1
-	-- persoParams.heure = 7
-	-- persoParams.money = 101
-	-- persoParams.banque = 0
-	-- persoParams.inventaire = {}
-	-- self:saveTable(persoParams, "sauvegarde.json")
 end
 
 

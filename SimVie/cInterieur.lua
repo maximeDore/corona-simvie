@@ -188,6 +188,7 @@ function Interieur:init( destination, jeu, map, perso )
                 if perso.banque >= montant then
                     perso:setMoney(montant)
                     perso:setBanque(-montant)
+                    retroaction.text = "Vous retirez "..montant.." $. Balance : "..perso.banque.." $."
                 else
                     retroaction.text = "Fonds insuffisants. Vous avez "..perso.banque.." $ en banque."
                 end
@@ -202,6 +203,7 @@ function Interieur:init( destination, jeu, map, perso )
                 if perso.money >= montant then
                     perso:setMoney(-montant)
                     perso:setBanque(montant)
+                    retroaction.text = "Vous deposez "..montant.." $. Balance : "..perso.banque.." $."
                 else
                     retroaction.text = "Fonds insuffisants. Vous avez "..perso.money.." $ sur vous."
                 end
@@ -273,7 +275,7 @@ function Interieur:init( destination, jeu, map, perso )
             inputBanque = native.newTextField( display.contentCenterX/1.65, display.contentCenterY*1.5, btRetour.width, btRetour.height/2 )
             inputBanque.inputType = "number"
             inputBanque.placeholder = "-Montant-"
-            inputBanque.isFontSizeScaled = false
+            inputBanque.isFontSizeScaled = true
             inputBanque.font = native.newFont( "8-Bit Madness.ttf", 75 )
             inputBanque.align = "center"
             self:insert(inputBanque)
@@ -287,6 +289,17 @@ function Interieur:init( destination, jeu, map, perso )
     end
 
     function interieur:kill()
+        local function recursiveKill(group) -- fonction locale récursive appelant la fonction kill de chaque enfant (removeEventListeners)
+            for i=group.numChildren,1,-1 do
+                if group[i].numChildren~=nil then
+                    recursiveKill(group[i])
+                end
+                if group[i].kill ~= nil then
+                    group[i]:kill()
+                end
+            end
+        end
+        recursiveKill(self)
         bgMusicChannel = audio.stop(2)
     end
 

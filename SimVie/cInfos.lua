@@ -19,6 +19,7 @@ function Infos:init( heureDepart, indexDepart, map, perso )
     local jourDisplay
     local moneyDisplay
     local telephone
+    local interet = 1.10
 
     local tEmplois = {
         sports = {
@@ -41,7 +42,11 @@ function Infos:init( heureDepart, indexDepart, map, perso )
         end
 
         -- Accéder au nom de l'emploi actuel et au prochain objectif d'aptitude pour la promotion
-        emploi = tEmplois[perso.carriere][emploiIndex]
+        if emploiIndex<=10 then
+            emploi = tEmplois[perso.carriere][emploiIndex]
+        else
+            emploi = tEmplois[perso.carriere][10]
+        end
         print(emploi.titre)
 
         telephone = cTelephone:init( self, perso )
@@ -100,6 +105,7 @@ function Infos:init( heureDepart, indexDepart, map, perso )
                     jourIndex = 1
                 else
                     jourIndex = jourIndex + 1
+                    self:updateBanque()
                 end
                 jourDisplay.text = hebdo[jourIndex]
             else
@@ -116,6 +122,10 @@ function Infos:init( heureDepart, indexDepart, map, perso )
     
     function infos:updateMoney()
         moneyDisplay.text = perso.money.." $"
+    end
+
+    function infos:updateBanque()
+        perso.banque = perso.banque*interet
     end
 
     function infos:promotion()
