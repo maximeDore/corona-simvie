@@ -19,7 +19,7 @@ function Interieur:init( destination, jeu, map, perso )
         universite =    { titre = "Universite", bg = "bg.jpg", bt1 = "btEtudier.png", bt2 = "btClasse.png", bt3 = "btTricher.png" },
         depanneur =     { titre = "Depanneur", bg = "bg.jpg", bt1 = "btFleche.png", bt2 = "btFleche.png", bt3 = "btFleche.png" },
         magasin =       { titre = "Magasin", bg = "bg.jpg", bt1 = "btFleche.png", bt2 = "btFleche.png", bt3 = "btFleche.png" },
-        banque =        { titre = "Banque", bg = "bg.jpg", bt1 = "btFleche.png", bt2 = "btFleche.png" },
+        banque =        { titre = "Banque", bg = "bg.jpg", bt1 = "btDeposer.png", bt2 = "btRetirer.png" },
         appartement =   { titre = "Appartement", bg = "bg.jpg", bt1 = "btDormir.png", bt2 = "btAttendre.png" },
         centresportif = { titre = "Centre Sportif", bg = "bg.jpg", bt1 = "btTravailler.png", bt2 = "btPromotion.png" },
         faculte =       { titre = "Faculte des sciences", bg = "bg.jpg", bt1 = "btTravailler.png", bt2 = "btPromotion.png" }
@@ -31,6 +31,7 @@ function Interieur:init( destination, jeu, map, perso )
         -- local bg = display.newImage("bg.jpg",display.contentCenterX,display.contentCenterY)
 
         -- Abréviation
+        print(destination)
         local src = tSrc[destination]
         -- Fonctions locales des boutons
         local function retour()

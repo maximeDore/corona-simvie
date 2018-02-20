@@ -5,7 +5,7 @@
 -----------------------------------------------------------------------------------------
 local Map = {}
 
-function Map:init()
+function Map:init( perso )
 
     local map = display.newGroup()
     local cCamera = require("cCamera")
@@ -25,18 +25,18 @@ function Map:init()
         local appartement = cBatiment:init(self,"depanneur.png",-130,854.4,"appartement",-64)
         local universite = cBatiment:init(self,"depanneur.png",161,-580,"universite",-64)
         local banque = cBatiment:init(self,"depanneur.png",1317,854.4,"banque",-64)
-        if _G.carriere == "sports" then
+        if perso.carriere == "sports" then
             travail = cBatiment:init(self,"depanneur.png",400,854.4,"centresportif",-64)
         else
             travail = cBatiment:init(self,"depanneur.png",400,854.4,"faculte",-64)
         end
 
         -- Autos
-        for i=1,8,2 do
-            local auto = cAuto:init(i)
-            autos:insert(auto)
-        end
-        self:insert(autos)
+        -- for i=1,8,2 do
+        --     local auto = cAuto:init(i)
+        --     autos:insert(auto)
+        -- end
+        -- self:insert(autos)
 
         -- Filtre qui obscurcit l'écran selon l'heure
         filtreNocturne = display.newRect(self, 0, 0, 6800, 3400 )

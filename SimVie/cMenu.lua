@@ -28,9 +28,9 @@ function Menu:init()
     function listener2()
         if _G.data == nil then
             if forNum>intNum then
-                carriere = "sports"
+                _G.carriere = "sports"
             else
-                carriere = "sciences"            
+                _G.carriere = "sciences"            
             end
             cInstructions:init()
         else 

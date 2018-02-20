@@ -26,7 +26,7 @@ function Jeu:init(spawnX, spawnY)
     function jeu:init()
         -- Chargement des données si partie chargée
         if _G.data~=nil then
-            inventaire = data.inventaire
+            inventaire = _G.data.inventaire
         end
 
 
@@ -39,11 +39,11 @@ function Jeu:init(spawnX, spawnY)
         -- Instanciation des éléments de jeu
         monJoystick = cJoystick:init(50,125)
         monPerso = cPerso:init(spawnX,spawnY,0,monJoystick,self)
-        maMap = cMap:init()
+        maMap = cMap:init(monPerso)
         local maCamera = cCamera:init(monPerso,maMap)
 
         -- Instanciation de l'heure et de l'horaire en variable globale
-        _G.infos = cInfos:init(7, 2, maMap, monPerso)
+        _G.infos = cInfos:init(7, 2, maMap, monPerso, self)
         
         monJoystick:activate()
         maMap:insert(monPerso)
@@ -53,7 +53,7 @@ function Jeu:init(spawnX, spawnY)
     end
 
     -- Désactiver le monde/joystick et charger l'interface d'intérieur d'un batiment
-    function jeu:entrerBatiment(destination) 
+    function jeu:entrerBatiment(destination)
         -- maMap:sleep()
         monJoystick:kill()
         interieur = cInterieur:init(destination,self,maMap,monPerso)
@@ -84,8 +84,8 @@ function Jeu:init(spawnX, spawnY)
             end
         end
         recursiveKill(self)
-        infos:removeSelf()
         self:removeSelf()
+        infos:removeSelf()
         cMenu:init()
     end
 

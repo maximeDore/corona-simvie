@@ -4,7 +4,7 @@
 --
 ----------------------------------------------------------------------------------------- 
 local Infos = {}
-function Infos:init( heureDepart, indexDepart, map, perso )
+function Infos:init( heureDepart, indexDepart, map, perso, jeu )
 
     local infos = display.newGroup()
     local cTelephone = require("cTelephone")
@@ -19,7 +19,7 @@ function Infos:init( heureDepart, indexDepart, map, perso )
     local jourDisplay
     local moneyDisplay
     local telephone
-    local interet = 1.10
+    local interet = math.random(4, 7)/100
 
     local tEmplois = {
         sports = {
@@ -49,7 +49,7 @@ function Infos:init( heureDepart, indexDepart, map, perso )
         end
         print(emploi.titre)
 
-        telephone = cTelephone:init( self, perso )
+        telephone = cTelephone:init( self, perso, jeu )
 
         -- Affichage de la barre du haut
         local barre = display.newRect( self, display.screenOriginX, 0, display.contentWidth*3, 100 )
@@ -94,6 +94,9 @@ function Infos:init( heureDepart, indexDepart, map, perso )
     function infos:getCptJours()
         return cptJours
     end
+    function infos:getInteret()
+        return interet*100
+    end
 
     function infos:updateHeure(nb)
         if nb ~= nil then
@@ -122,10 +125,13 @@ function Infos:init( heureDepart, indexDepart, map, perso )
     
     function infos:updateMoney()
         moneyDisplay.text = perso.money.." $"
+        telephone:updateBanque()
     end
 
     function infos:updateBanque()
-        perso.banque = perso.banque*interet
+        perso.banque = math.round( perso.banque + perso.banque*interet )
+        interet = math.random( 4, 7)/100
+        telephone:updateBanque()
     end
 
     function infos:promotion()
