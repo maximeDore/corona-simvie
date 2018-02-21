@@ -37,6 +37,7 @@ function donnees:loadTable( filename )
 end
 
 function donnees:prepForSave( perso, infos )
+	local interet = infos:getInteret()
 	persoParams = {}
 	persoParams.force = perso.forNum
 	persoParams.intelligence = perso.intNum
@@ -45,7 +46,7 @@ function donnees:prepForSave( perso, infos )
 	persoParams.cptJours = infos:getCptJours()
 	persoParams.emploiIndex = infos:getEmploiIndex()
 	persoParams.jourIndex = infos:getJourIndex()
-	persoParams.interet = infos:getInteret()
+	persoParams.interet = infos:getInteret()/100
 	persoParams.heure = infos:getHeure()
 	persoParams.energie = perso.energie
 	persoParams.money = perso.money
