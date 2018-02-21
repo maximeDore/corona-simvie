@@ -33,6 +33,7 @@ function Perso:init(xorig, yorig, map, joystick, jeu)
         self.isFixedRotation = true
         -- Données sauvegardées
         if _G.data == nil then
+            self.energie = 100
             self.money = 100
             self.banque = 0
             self.inventaire = {}
@@ -41,6 +42,7 @@ function Perso:init(xorig, yorig, map, joystick, jeu)
             self.chaNum = _G.chaNum
             self.carriere = _G.carriere
         else -- données par défaut
+            self.energie = _G.data.energie
             self.money = _G.data.money
             self.banque = _G.data.banque
             self.forNum = _G.data.force
@@ -52,6 +54,9 @@ function Perso:init(xorig, yorig, map, joystick, jeu)
         -- Mesures de prévention des bogues
         if self.inventaire == nil then
             self.inventaire = {}
+        end
+        if self.energie == nil then
+            self.energie = 100
         end
 
         -- Destruction des valeurs globales
@@ -120,15 +125,14 @@ function Perso:init(xorig, yorig, map, joystick, jeu)
         end
     end
 
+    -- Change la vitesse de déplacement du personnage et son visuel selon le véhicule passé en paramètre
     function perso:changerVehicule( vehicule )
         if table.indexOf( self.inventaire, vehicule ) ~= nil or vehicule == "marche"  then
             self.vitModif = vehicules[vehicule]
         end
     end
 
-    function perso:getMoney()
-        return self.money
-    end
+    -- Setters
     function perso:setMoney( valeur )
         self.money = self.money + valeur
         _G.infos:updateMoney()
@@ -136,6 +140,19 @@ function Perso:init(xorig, yorig, map, joystick, jeu)
     function perso:setBanque( valeur )
         self.banque = self.banque + valeur
         _G.infos:updateMoney()
+    end
+    function perso:setEnergie( valeur )
+        if self.energie+valeur <= 100 and self.energie+valeur >= 0 then
+            self.energie = self.energie + valeur
+            infos:updateEnergie()
+            return true
+        elseif self.energie+valeur >= 100 then
+            self.energie = 100
+            infos:updateEnergie()
+            return true
+        else
+            return false
+        end
     end
 
     function perso:collision(e)

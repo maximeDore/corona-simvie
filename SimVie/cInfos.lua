@@ -128,17 +128,23 @@ function Infos:init( heureDepart, indexDepart, map, perso, jeu )
         map:assombrir(heure)
     end
     
+    -- Mise à jour de l'affichage des informations dans le téléphone
     function infos:updateMoney()
         moneyDisplay.text = perso.money.." $"
         telephone:updateBanque()
     end
-
+    function infos:updateStats()
+        telephone:updateStats()
+    end
+    function infos:updateEnergie()
+        telephone:updateEnergie()
+    end
     function infos:updateBanque()
         perso.banque = math.round( perso.banque + perso.banque*interet )
         interet = math.random( 4, 7)/100
         telephone:updateBanque()
     end
-
+    
     function infos:promotion()
         emploiIndex = emploiIndex + 1
         if tEmplois[perso.carriere][emploiIndex] ~= nil then 
@@ -146,10 +152,6 @@ function Infos:init( heureDepart, indexDepart, map, perso, jeu )
         end
         self.updateStats()
         print(emploi.titre)
-    end
-
-    function infos:updateStats()
-        telephone:updateStats()
     end
 
     function infos:getEmploi()

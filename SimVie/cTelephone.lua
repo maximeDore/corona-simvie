@@ -27,6 +27,9 @@ function Telephone:init( parent, perso, jeu )
     local screenMenu = display.newGroup()
     local aptitudesNum
     local carriereDisplay
+    local fondEnergie
+    local energieDisplay
+    local barreEnergie
     local balanceDisplay
     local interetDisplay
     
@@ -88,7 +91,7 @@ function Telephone:init( parent, perso, jeu )
 
         phone = display.newImage( self, "telephone.png" )
         -- Zone de contact dans le haut du téléphone où il faut tapper pour le monter/descendre
-        tapZone = display.newRect( self, 0, -phone.height/2.5, phone.width, phone.height/5 )
+        tapZone = display.newRect( self, 0, -phone.height/2.25, phone.width, phone.height/6 )
         tapZone.alpha = 0.01
 
         -- Fonds des différents écrans
@@ -131,7 +134,7 @@ function Telephone:init( parent, perso, jeu )
         screenHome:insert(btScooter)
         screenHome:insert(btAuto)
 
-        -- Écran Statistiques
+        -- Écran Statistiques   --------------------------------------------------------------------------------------------------------
         -- Affichage des points d'aptitudes
         local optionsAptitudesNum = {
             text = "",
@@ -149,7 +152,7 @@ function Telephone:init( parent, perso, jeu )
 
         -- Affichage de la carrière
         local optionsCarriere = {
-            text = "",
+            text = perso.carriere,
             y = bgStats.y+bgStats.height/12,
             width = 235,
             height = 50,
@@ -161,15 +164,34 @@ function Telephone:init( parent, perso, jeu )
         carriereDisplay:setFillColor(1,0,0)
         screenStats:insert(carriereDisplay)
 
+        -- Affichage de la barre d'énergie
+        local optionsEnergie = {
+            text = perso.energie.." %",
+            y = bgStats.height/2.45,
+            width = 200,
+            height = 100,
+            font = "8-Bit Madness.ttf",
+            fontSize = 40,
+            align = "center"  -- Alignment parameter
+        }
+        energieDisplay = display.newText( optionsEnergie )
+        screenStats:insert(energieDisplay)
 
-        -- Écran Menu
+        -- Barre d'énergie
+        fondEnergie = display.newRect( screenStats, 0, bgStats.height/2.15-25, bgStats.width-20, 35 )
+        fondEnergie.fill = { .1, .1, .1 }
+        barreEnergie = display.newRect( screenStats, fondEnergie.x, fondEnergie.y, fondEnergie.width-10, fondEnergie.height-10 )
+        barreEnergie.fill = { 0, 1, 0 }
+
+
+        -- Écran Menu           --------------------------------------------------------------------------------------------------------
         btOui = cBouton:init( "btOui.png", -bgMenu.width/4.15, 0, quitter )
         btNon = cBouton:init( "btNon.png", bgMenu.width/4.25, 0, afficherHome )
         screenMenu:insert(btOui)
         screenMenu:insert(btNon)
 
 
-        -- Écran Banque
+        -- Écran Banque         --------------------------------------------------------------------------------------------------------
         local optionsBalance = {
             text = perso.banque.." $",
             x = bgMenu.width/2-110,
@@ -220,6 +242,7 @@ function Telephone:init( parent, perso, jeu )
         self.y = posDown
         parent:insert(self)
         self:updateStats()
+        self:updateEnergie()
     end
 
     function telephone:updateStats()
@@ -230,6 +253,22 @@ function Telephone:init( parent, perso, jeu )
     function telephone:updateBanque()
         balanceDisplay.text = perso.banque.." $"
         interetDisplay.text = parent:getInteret() .. " %"
+    end
+
+    function telephone:updateEnergie()
+        local maxWidth = fondEnergie.width-10
+        energieDisplay.text = perso.energie.." %"
+        barreEnergie.width = maxWidth*perso.energie/100
+        barreEnergie.x = (barreEnergie.width - maxWidth)/2
+        if perso.energie <= 10 then
+            barreEnergie.fill = { 1, 0, 0 }
+        elseif perso.energie <= 25 then
+            barreEnergie.fill = { 1, .4, 0 }
+        elseif perso.energie <= 50 then
+            barreEnergie.fill = { 1, .8, 0 }
+        elseif perso.energie > 50 then
+            barreEnergie.fill = { 0, 1, 0 }
+        end
     end
 
     function telephone:tap()
