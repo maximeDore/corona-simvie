@@ -19,13 +19,13 @@ function Interieur:init( destination, jeu, map, perso )
             titre = "Gym", bg = "bg.jpg", bt1 = "Courir", bt1desc = "+1 force", bt2 = "S'entrainer", bt2desc = "+2 Force, -20$", bt3 = "Steroides", bt3desc = "? For (chance)" 
         },
         universite =    {
-             titre = "Universite", bg = "bg.jpg", bt1 = "Etudier", bt1desc = "+1 intelligence", bt2 = "btClasse.png", bt2desc = "+2 int, -20$", bt3 = "Tricher", bt3desc = "?int (chance)"
+             titre = "Universite", bg = "bg.jpg", bt1 = "Etudier", bt1desc = "+1 intelligence", bt2 = "Classe", bt2desc = "+2 int, -20$", bt3 = "Tricher", bt3desc = "?int (chance)"
         },
         depanneur =     {
              titre = "Depanneur", bg = "bg.jpg", bt1 = "Cafe", bt1desc = "+5 nrg, -5$", bt2 = "Barre d'nrg", bt2desc = "+10 nrg, -10$", bt3 = "Boisson NRG", bt3desc = "+25 nrg, -25$" 
         },
         magasin =       {
-             titre = "Magasin", bg = "bg.jpg", bt1 = "bt.png", bt1desc = "", bt2 = "Mobilette", bt2desc = "+15 vit, -500$", bt3 = "Voiture", bt3desc = "+20 vit, -1000$" 
+             titre = "Magasin", bg = "bg.jpg", bt1 = "bt.png", bt1desc = "", bt2 = "Mobilette", bt2desc = "+15 vit, -500$", bt3 = "Voiture", bt3desc = "+20 vit, -1500$" 
         },
         banque =        {
              titre = "Banque", bg = "bg.jpg", bt1 = "Deposer", bt2 = "Retirer" 
@@ -46,8 +46,8 @@ function Interieur:init( destination, jeu, map, perso )
         { nom = "Barre d'energie", prix = 10, energie = 10 },
         { nom = "Boisson energisante", prix = 25, energie = 25 },
         { nom = "Tapis roulant", prix = 15 },
-        { nom = "scooter", prix = 1000 },
-        { nom = "voiture", prix = 5000 }
+        { nom = "scooter", prix = 500 },
+        { nom = "voiture", prix = 1500 }
     }
     
     function interieur:init()
@@ -259,7 +259,8 @@ function Interieur:init( destination, jeu, map, perso )
                 else
                     retroaction.text = "Fonds insuffisants. Vous avez "..perso.banque.." $ en banque."
                 end
-                print(perso.banque)
+            else 
+                retroaction.text = "Veuillez entrer une valeur dans le champ-texte."
             end
         end
 
@@ -274,7 +275,8 @@ function Interieur:init( destination, jeu, map, perso )
                 else
                     retroaction.text = "Fonds insuffisants. Vous avez "..perso.money.." $ sur vous."
                 end
-                print(perso.banque)
+            else 
+                retroaction.text = "Veuillez entrer une valeur dans le champ texte."
             end
         end
 
@@ -339,7 +341,7 @@ function Interieur:init( destination, jeu, map, perso )
 
         -- Champ de texte pour la banque
         if destination == "banque" then
-            inputBanque = native.newTextField( display.contentCenterX/1.65, display.contentCenterY*1.5, btRetour.width, btRetour.height/2 )
+            inputBanque = native.newTextField( display.contentCenterX/1.65, display.contentCenterY*1.5, btRetour.width-10, btRetour.height/2 )
             inputBanque.inputType = "number"
             inputBanque.placeholder = "-Montant-"
             inputBanque.isFontSizeScaled = true

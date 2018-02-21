@@ -34,7 +34,16 @@ function Telephone:init( parent, perso, jeu )
     local interetDisplay
     
     function telephone:init()
+        -- Monter/descendre le téléphone
+        local function toggleTelephone()
+            if self.y >= display.contentHeight-display.screenOriginY+125 then
+                transition.to( self, { time = 500, y = posUp, transition=easing.outQuart } )
+            elseif self.y <= display.contentHeight-display.screenOriginY-100 then
+                transition.to( self, { time = 500, y = posDown, transition=easing.outQuart } )
+            end
+        end
 
+        -- Affichage des écrans d'application
         local function afficherHome()
             screenHome.isVisible = true
             screenContacts.isVisible = false
@@ -91,8 +100,9 @@ function Telephone:init( parent, perso, jeu )
 
         phone = display.newImage( self, "telephone.png" )
         -- Zone de contact dans le haut du téléphone où il faut tapper pour le monter/descendre
-        tapZone = display.newRect( self, 0, -phone.height/2.25, phone.width, phone.height/6 )
-        tapZone.alpha = 0.01
+        -- tapZone = display.newRect( self, 0, -phone.height/2.25, phone.width, phone.height/6 )
+        tapZone = cBouton:init( nil, nil, 0, -phone.height/2.25, toggleTelephone, nil, phone.width, phone.height/6 )
+        self:insert(tapZone)
 
         -- Fonds des différents écrans
         bgContacts = display.newImage( screenContacts, "screenContacts.png", 0, -10.5 )
@@ -229,6 +239,7 @@ function Telephone:init( parent, perso, jeu )
         screenGps.isVisible = false
 
 
+        self:insert(tapZone)
         self:insert(screenHome)
         self:insert(screenContacts)
         self:insert(screenStats)
@@ -280,13 +291,9 @@ function Telephone:init( parent, perso, jeu )
     end
 
     function telephone:kill()
-        tapZone:removeEventListener( "tap", telephone )
     end
 
     telephone:init()
-
-    tapZone:addEventListener( "tap", telephone )
-
     return telephone
 end
 
