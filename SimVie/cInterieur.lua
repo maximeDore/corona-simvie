@@ -15,14 +15,30 @@ function Interieur:init( destination, jeu, map, perso )
     local inputBanque
     -- Tableau contenant des tableaux, contenant les noms de fichier pour les images des boutons et du fond selon la destination
     local tSrc = { 
-        gym =           { titre = "Gym", bg = "bg.jpg", bt1 = "btCourir.png", bt2 = "btEntrainer.png", bt3 = "btSteroides.png" },
-        universite =    { titre = "Universite", bg = "bg.jpg", bt1 = "btEtudier.png", bt2 = "btClasse.png", bt3 = "btTricher.png" },
-        depanneur =     { titre = "Depanneur", bg = "bg.jpg", bt1 = "btCafe.png", bt2 = "btBarreNrg.png", bt3 = "btBoissonNrg.png" },
-        magasin =       { titre = "Magasin", bg = "bg.jpg", bt1 = "btFleche.png", bt2 = "btFleche.png", bt3 = "btFleche.png" },
-        banque =        { titre = "Banque", bg = "bg.jpg", bt1 = "btDeposer.png", bt2 = "btRetirer.png" },
-        appartement =   { titre = "Appartement", bg = "bg.jpg", bt1 = "btDormir.png", bt2 = "btSieste.png" },
-        centresportif = { titre = "Centre Sportif", bg = "bg.jpg", bt1 = "btTravailler.png", bt2 = "btPromotion.png" },
-        faculte =       { titre = "Faculte des sciences", bg = "bg.jpg", bt1 = "btTravailler.png", bt2 = "btPromotion.png" }
+        gym =           { 
+            titre = "Gym", bg = "bg.jpg", bt1 = "Courir", bt1desc = "+1 force", bt2 = "S'entrainer", bt2desc = "+2 Force, -20$", bt3 = "Steroides", bt3desc = "? For (chance)" 
+        },
+        universite =    {
+             titre = "Universite", bg = "bg.jpg", bt1 = "Etudier", bt1desc = "+1 intelligence", bt2 = "btClasse.png", bt2desc = "+2 int, -20$", bt3 = "Tricher", bt3desc = "?int (chance)"
+        },
+        depanneur =     {
+             titre = "Depanneur", bg = "bg.jpg", bt1 = "Cafe", bt1desc = "+5 nrg, -5$", bt2 = "Barre d'nrg", bt2desc = "+10 nrg, -10$", bt3 = "Boisson NRG", bt3desc = "+25 nrg, -25$" 
+        },
+        magasin =       {
+             titre = "Magasin", bg = "bg.jpg", bt1 = "bt.png", bt1desc = "", bt2 = "Mobilette", bt2desc = "+15 vit, -500$", bt3 = "Voiture", bt3desc = "+20 vit, -1000$" 
+        },
+        banque =        {
+             titre = "Banque", bg = "bg.jpg", bt1 = "Deposer", bt2 = "Retirer" 
+        },
+        appartement =   {
+             titre = "Appartement", bg = "bg.jpg", bt1 = "Dormir", bt1desc = "+80 nrg, +9h", bt2 = "Sieste", bt2desc = "+5 nrg, +1h" 
+        },
+        centresportif = {
+             titre = "Centre Sportif", bg = "bg.jpg", bt1 = "Travailler", bt1desc = "$$$", bt2 = "Demander", bt2desc = "une promotion"
+        },
+        faculte =       {
+             titre = "Faculte des sciences", bg = "bg.jpg", bt1 = "Travailler", bt1desc = "$$$", bt2 = "Demander", bt2desc = "une promotion"
+        }
     }
     -- Tableau contenant les objets en vente et leur prix (1-3 = dépanneur, 4-6 = magasin)
     local objets = {
@@ -304,10 +320,10 @@ function Interieur:init( destination, jeu, map, perso )
         retroaction = display.newText( optionsRetroaction )
         retroaction:setFillColor(1,0,0)
         
-        local btRetour = cBouton:init("btRetour.png",display.contentCenterX*1.4,display.contentCenterY*1.5,retour)
-        local bt1 = cBouton:init(src.bt1,display.contentCenterX/1.65,display.contentCenterY,func.bt1,func.bt1param)
+        local btRetour = cBouton:init("Retour",nil,display.contentCenterX*1.4,display.contentCenterY*1.5,retour)
+        local bt1 = cBouton:init(src.bt1,src.bt1desc,display.contentCenterX/1.65,display.contentCenterY,func.bt1,func.bt1param)
         if src.bt3~=nil then
-            local bt3 = cBouton:init(src.bt3,display.contentCenterX/1.65,display.contentCenterY*1.5,func.bt3,func.bt3param)
+            local bt3 = cBouton:init(src.bt3,src.bt3desc,display.contentCenterX/1.65,display.contentCenterY*1.5,func.bt3,func.bt3param)
             self:insert(bt3)
         elseif destination ~= "banque" then
             if src.bt2==nil then
@@ -317,7 +333,7 @@ function Interieur:init( destination, jeu, map, perso )
             end
         end
         if src.bt2~=nil then
-            local bt2 = cBouton:init(src.bt2,display.contentCenterX*1.4,display.contentCenterY,func.bt2,func.bt2param)
+            local bt2 = cBouton:init(src.bt2,src.bt2desc,display.contentCenterX*1.4,display.contentCenterY,func.bt2,func.bt2param)
             self:insert(bt2)
         end
 

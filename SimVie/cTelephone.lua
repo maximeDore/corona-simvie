@@ -101,7 +101,7 @@ function Telephone:init( parent, perso, jeu )
         bgMenu = display.newImage( screenMenu, "screenMenu.png", 0, -10.5 )
 
         -- Bouton physique du téléphone (home button)
-        btHome = cBouton:init( "", 0, bgStats.height/1.8, afficherHome, nil, 75, 50 )
+        btHome = cBouton:init( "", nil, 0, bgStats.height/1.8, afficherHome, nil, 75, 50 )
 
         -- Boutons de l'écran d'accueil
         -- Disposition :
@@ -109,18 +109,18 @@ function Telephone:init( parent, perso, jeu )
         -- btGps    btBanque    btMute
         -- btSave   btMenu
         -- btMarche btScooter   btAuto
-        btStats = cBouton:init( "btStats.png", -bgStats.width/3.25, -bgStats.height*.35, afficherStats )
-        btContacts = cBouton:init( "btContacts.png", 0, -bgStats.height*.35, afficherContacts )
-        btAlertes = cBouton:init( "btAlertes.png", bgStats.width/3.25, -bgStats.height*.35, afficherAlertes )
-        btGps = cBouton:init( "btGps.png", -bgStats.width/3.25, -bgStats.height*.15, afficherGps )
-        btBanque = cBouton:init( "btBanque.png", 0, -bgStats.height*.15, afficherBanque )
-        btMute = cBouton:init( "btMute.png", bgStats.width/3.25, -bgStats.height*.15, mute )
-        btSave = cBouton:init( "btSave.png", -bgStats.width/3.25, bgStats.height*.05, save )
-        btMenu = cBouton:init( "btMenu.png", 0, bgStats.height*.05, afficherMenu )
+        btStats = cBouton:init( "btStats.png", nil, -bgStats.width/3.25, -bgStats.height*.35, afficherStats )
+        btContacts = cBouton:init( "btContacts.png", nil, 0, -bgStats.height*.35, afficherContacts )
+        btAlertes = cBouton:init( "btAlertes.png", nil, bgStats.width/3.25, -bgStats.height*.35, afficherAlertes )
+        btGps = cBouton:init( "btGps.png", nil, -bgStats.width/3.25, -bgStats.height*.15, afficherGps )
+        btBanque = cBouton:init( "btBanque.png", nil, 0, -bgStats.height*.15, afficherBanque )
+        btMute = cBouton:init( "btMute.png", nil, bgStats.width/3.25, -bgStats.height*.15, mute )
+        btSave = cBouton:init( "btSave.png", nil, -bgStats.width/3.25, bgStats.height*.05, save )
+        btMenu = cBouton:init( "btMenu.png", nil, 0, bgStats.height*.05, afficherMenu )
         -- Boutons
-        btMarche = cBouton:init( "btMarche.png", -bgStats.width/3.25, bgStats.height*.35, transport, "marche" )
-        btScooter = cBouton:init( "btScooter.png", 0, bgStats.height*.35, transport, "scooter" )
-        btAuto = cBouton:init( "btAuto.png", bgStats.width/3.25, bgStats.height*.35, transport, "voiture" )
+        btMarche = cBouton:init( "btMarche.png", nil, -bgStats.width/3.25, bgStats.height*.35, transport, "marche" )
+        btScooter = cBouton:init( "btScooter.png", nil, 0, bgStats.height*.35, transport, "scooter" )
+        btAuto = cBouton:init( "btAuto.png", nil, bgStats.width/3.25, bgStats.height*.35, transport, "voiture" )
         
         screenHome:insert(btStats)
         screenHome:insert(btContacts)
@@ -185,8 +185,8 @@ function Telephone:init( parent, perso, jeu )
 
 
         -- Écran Menu           --------------------------------------------------------------------------------------------------------
-        btOui = cBouton:init( "btOui.png", -bgMenu.width/4.15, 0, quitter )
-        btNon = cBouton:init( "btNon.png", bgMenu.width/4.25, 0, afficherHome )
+        btOui = cBouton:init( "btOui.png", nil, -bgMenu.width/4.15, 0, quitter )
+        btNon = cBouton:init( "btNon.png", nil, bgMenu.width/4.25, 0, afficherHome )
         screenMenu:insert(btOui)
         screenMenu:insert(btNon)
 

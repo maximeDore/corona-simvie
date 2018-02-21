@@ -81,8 +81,8 @@ function Menu:init()
         self:insert(autos)
 
         -- Boutons
-        btCommencer = bouton:init("btCommencer.png",display.contentCenterX/2,display.contentHeight/1.37,commencer)
-        btContinuer = bouton:init("btContinuer.png",display.contentCenterX/.67,display.contentHeight/1.37,continuer)
+        btCommencer = bouton:init("Commencer",nil,display.contentCenterX/2,display.contentHeight/1.37,commencer)
+        btContinuer = bouton:init("Continuer",nil,display.contentCenterX/.67,display.contentHeight/1.37,continuer)
         self:insert(btCommencer)
         self:insert(btContinuer)
 
@@ -105,8 +105,8 @@ function Menu:init()
             end
         end
         menuCommencer:removeSelf()
-        btCommencer = bouton:init("btCommencer.png",display.contentCenterX/2,display.contentHeight/1.37,commencer)
-        btContinuer = bouton:init("btContinuer.png",display.contentCenterX/.67,display.contentHeight/1.37,continuer)
+        btCommencer = bouton:init("Commencer",nil,display.contentCenterX/2,display.contentHeight/1.37,commencer)
+        btContinuer = bouton:init("Continuer",nil,display.contentCenterX/.67,display.contentHeight/1.37,continuer)
 
     end
 

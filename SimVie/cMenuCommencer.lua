@@ -125,27 +125,27 @@ function MenuCommencer:init()
         self:insert(erreurMsg)
 
         -- boutons aptitudes 
-        btForPlus = bouton:init("btFleche.png",display.contentWidth/1.35,display.contentCenterY*.86,ajouterPoint,"for")
-        btForMoins = bouton:init("btFleche.png",display.contentWidth/1.70,display.contentCenterY*.86,enleverPoint,"for")
+        btForPlus = bouton:init("btFleche.png",nil,display.contentWidth/1.35,display.contentCenterY*.86,ajouterPoint,"for")
+        btForMoins = bouton:init("btFleche.png",nil,display.contentWidth/1.70,display.contentCenterY*.86,enleverPoint,"for")
         btForMoins.xScale = -1
         self:insert(btForPlus)
         self:insert(btForMoins)
 
-        btIntPlus = bouton:init("btFleche.png",display.contentWidth/1.35,display.contentCenterY*.99,ajouterPoint,"int")
-        btIntMoins = bouton:init("btFleche.png",display.contentWidth/1.70,display.contentCenterY*.99,enleverPoint,"int")
+        btIntPlus = bouton:init("btFleche.png",nil,display.contentWidth/1.35,display.contentCenterY*.99,ajouterPoint,"int")
+        btIntMoins = bouton:init("btFleche.png",nil,display.contentWidth/1.70,display.contentCenterY*.99,enleverPoint,"int")
         btIntMoins.xScale = -1
         self:insert(btIntPlus)
         self:insert(btIntMoins)
 
-        btChaPlus = bouton:init("btFleche.png",display.contentWidth/1.35,display.contentCenterY/.895,ajouterPoint,"cha")
-        btChaMoins = bouton:init("btFleche.png",display.contentWidth/1.70,display.contentCenterY/.895,enleverPoint,"cha")
+        btChaPlus = bouton:init("btFleche.png",nil,display.contentWidth/1.35,display.contentCenterY/.895,ajouterPoint,"cha")
+        btChaMoins = bouton:init("btFleche.png",nil,display.contentWidth/1.70,display.contentCenterY/.895,enleverPoint,"cha")
         btChaMoins.xScale = -1
         self:insert(btChaPlus)
         self:insert(btChaMoins)
 
         -- Boutons navigation
-        btRetour = bouton:init("btRetour.png",display.contentCenterX/1.6,display.contentHeight/1.3,retour)
-        btCommencerPartie = bouton:init("btCommencer.png",display.contentCenterX/.725,display.contentHeight/1.3,jouer)
+        btRetour = bouton:init("Retour",nil,display.contentCenterX/1.6,display.contentHeight/1.3,retour)
+        btCommencerPartie = bouton:init("Commencer",nil,display.contentCenterX/.725,display.contentHeight/1.3,jouer)
         self:insert(btRetour)
         self:insert(btCommencerPartie)
 
