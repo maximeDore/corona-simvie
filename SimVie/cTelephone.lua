@@ -78,14 +78,8 @@ function Telephone:init( parent, perso, jeu )
             end
         end
 
-        local function marcher()
-
-        end
-        local function scooter()
-            
-        end
-        local function auto()
-
+        local function transport( vehicule )
+            perso:changerVehicule( vehicule )
         end
 
         local function quitter()
@@ -121,9 +115,9 @@ function Telephone:init( parent, perso, jeu )
         btSave = cBouton:init( "btSave.png", -bgStats.width/3.25, bgStats.height*.05, save )
         btMenu = cBouton:init( "btMenu.png", 0, bgStats.height*.05, afficherMenu )
         -- Boutons
-        btMarche = cBouton:init( "btMarche.png", -bgStats.width/3.25, bgStats.height*.35, marcher )
-        btScooter = cBouton:init( "btScooter.png", 0, bgStats.height*.35, scooter )
-        btAuto = cBouton:init( "btAuto.png", bgStats.width/3.25, bgStats.height*.35, auto )
+        btMarche = cBouton:init( "btMarche.png", -bgStats.width/3.25, bgStats.height*.35, transport, "marche" )
+        btScooter = cBouton:init( "btScooter.png", 0, bgStats.height*.35, transport, "scooter" )
+        btAuto = cBouton:init( "btAuto.png", bgStats.width/3.25, bgStats.height*.35, transport, "voiture" )
         
         screenHome:insert(btStats)
         screenHome:insert(btContacts)

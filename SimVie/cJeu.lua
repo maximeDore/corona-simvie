@@ -21,15 +21,8 @@ function Jeu:init(spawnX, spawnY)
     local monPerso
     local interieur
     local monJoystick
-    local inventaire = {}
 
     function jeu:init()
-        -- Chargement des données si partie chargée
-        if _G.data~=nil then
-            inventaire = _G.data.inventaire
-        end
-
-
         display.setStatusBar( display.HiddenStatusBar )
         if audio.seek( 1000, bgMusicChannel ) then
             audio.stop( bgMusicChannel )

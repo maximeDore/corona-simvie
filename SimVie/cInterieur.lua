@@ -24,6 +24,15 @@ function Interieur:init( destination, jeu, map, perso )
         centresportif = { titre = "Centre Sportif", bg = "bg.jpg", bt1 = "btTravailler.png", bt2 = "btPromotion.png" },
         faculte =       { titre = "Faculte des sciences", bg = "bg.jpg", bt1 = "btTravailler.png", bt2 = "btPromotion.png" }
     }
+    -- Tableau contenant les objets en vente et leur prix (1-3 = dépanneur, 4-6 = magasin)
+    local objets = {
+        { nom = "Cafe", prix = 10 },
+        { nom = "Barre d'energie", prix = 15 },
+        { nom = "Boisson energisante", prix = 25 },
+        { nom = "Tapis roulant", prix = 15 },
+        { nom = "scooter", prix = 15 },
+        { nom = "voiture", prix = 15 }
+    }
     
     function interieur:init()
         jeu:insert(self)
@@ -120,7 +129,11 @@ function Interieur:init( destination, jeu, map, perso )
 
         --acheter un objet selon l'index de l'objet
         local function acheter( i )
-            print("achat object #"..i)
+            if objets[i].prix <= perso.money then
+                table.insert( perso.inventaire, objets[i].nom )
+                perso:setMoney( -objets[i].prix )
+            else
+            end
         end
 
         -- enlève du temps (5h) et donne de l'argent en fonction du poste du joueur

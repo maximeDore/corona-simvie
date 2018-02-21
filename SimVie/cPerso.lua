@@ -13,6 +13,12 @@ local myImageSheet = graphics.newImageSheet("ogre_anim.png", spriteSheet:getShee
 -- Méthode init du perso
 function Perso:init(xorig, yorig, map, joystick, jeu)
     local perso = display.newGroup()
+    -- Modificateurs de vitesse de chaque véhicule
+    local vehicules = {
+        marche  = 7.5,
+        scooter = 12.5,
+        voiture = 20
+    }
     -- Constructeur de Perso
     function perso:init()
         local avatar = display.newSprite(self, myImageSheet, spriteSheet:getSpriteIndex())
@@ -25,20 +31,27 @@ function Perso:init(xorig, yorig, map, joystick, jeu)
         self.angRad = 0
         self.avatar:play()
         self.isFixedRotation = true
+        -- Données sauvegardées
         if _G.data == nil then
             self.money = 100
             self.banque = 0
+            self.inventaire = {}
             self.forNum = _G.forNum
             self.intNum = _G.intNum
             self.chaNum = _G.chaNum
             self.carriere = _G.carriere
-        else 
+        else -- données par défaut
             self.money = _G.data.money
             self.banque = _G.data.banque
             self.forNum = _G.data.force
             self.intNum = _G.data.intelligence
             self.chaNum = _G.data.chance
             self.carriere = _G.data.carriere
+            self.inventaire = _G.data.inventaire
+        end
+        -- Mesures de prévention des bogues
+        if self.inventaire == nil then
+            self.inventaire = {}
         end
 
         -- Destruction des valeurs globales
@@ -105,7 +118,12 @@ function Perso:init(xorig, yorig, map, joystick, jeu)
         else
             self.avatar:pause()
         end
+    end
 
+    function perso:changerVehicule( vehicule )
+        if table.indexOf( self.inventaire, vehicule ) ~= nil or vehicule == "marche"  then
+            self.vitModif = vehicules[vehicule]
+        end
     end
 
     function perso:getMoney()

@@ -19,7 +19,7 @@ function Infos:init( heureDepart, indexDepart, map, perso, jeu )
     local jourDisplay
     local moneyDisplay
     local telephone
-    local interet = math.random(4, 7)/100
+    local interet
 
     local tEmplois = {
         sports = {
@@ -38,7 +38,12 @@ function Infos:init( heureDepart, indexDepart, map, perso, jeu )
             emploiIndex = _G.data.emploiIndex
             jourIndex = _G.data.jourIndex
             cptJours = _G.data.cptJours
+            interet = _G.data.interet
             _G.data = nil
+        end
+        -- Mesures de prévention de bogue
+        if interet == nil then
+            interet = math.random(4, 7)/100
         end
 
         -- Accéder au nom de l'emploi actuel et au prochain objectif d'aptitude pour la promotion
