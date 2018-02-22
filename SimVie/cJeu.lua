@@ -79,6 +79,8 @@ function Jeu:init(spawnX, spawnY)
         recursiveKill(self)
         self:removeSelf()
         infos:removeSelf()
+        _G.infos = nil
+        print(_G.infos)
         cMenu:init()
     end
 
