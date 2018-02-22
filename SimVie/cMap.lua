@@ -20,11 +20,13 @@ function Map:init( perso )
 
         -- Bâtiments
         -- Batiment:init( parent, img, x, y, destination, porteX )
+        local gymTop = cBatiment:init(self,"gymTop.png",-1356.8,525)
         local gym = cBatiment:init(self,"gym.png",-1356.8,854.4,"gym",193.24)
         local depanneur = cBatiment:init(self,"depanneur.png",-2566.5,854.4,"depanneur",-64)
         local appartement = cBatiment:init(self,"depanneur.png",-130,854.4,"appartement",-64)
+        local loft = cBatiment:init(self,"loft.png",-1429 ,-750, "loft",-45)
         local universite = cBatiment:init(self,"universite.png",300,-735,"universite",0)
-        local banque = cBatiment:init(self,"depanneur.png",1317,854.4,"banque",-64)
+        local banque = cBatiment:init(self,"banque.png",1317,650,"banque",3)
         if perso.carriere == "sports" then
             travail = cBatiment:init(self,"depanneur.png",400,854.4,"centresportif",-64)
         else

@@ -13,41 +13,27 @@ function Interieur:init( destination, jeu, map, perso )
     local bgMusic = audio.loadStream( "Miami Viceroy.mp3" )
     local retroaction
     local inputBanque
-    -- Tableau contenant des tableaux, contenant les noms de fichier pour les images des boutons et du fond selon la destination
+    -- Tableau contenant des tableaux, contenant le nom de l'endroit et le texte affiché dans les boutons
     local tSrc = { 
-        gym =           { 
-            titre = "Gym", bg = "bg.jpg", bt1 = "Courir", bt1desc = "+1 force", bt2 = "S'entrainer", bt2desc = "+2 Force, -20$", bt3 = "Steroides", bt3desc = "? For (chance)" 
-        },
-        universite =    {
-             titre = "Universite", bg = "bg.jpg", bt1 = "Etudier", bt1desc = "+1 intelligence", bt2 = "Classe", bt2desc = "+2 int, -20$", bt3 = "Tricher", bt3desc = "?int (chance)"
-        },
-        depanneur =     {
-             titre = "Depanneur", bg = "bg.jpg", bt1 = "Cafe", bt1desc = "+5 nrg, -5$", bt2 = "Barre d'nrg", bt2desc = "+10 nrg, -10$", bt3 = "Boisson NRG", bt3desc = "+25 nrg, -25$" 
-        },
-        magasin =       {
-             titre = "Magasin", bg = "bg.jpg", bt1 = "bt.png", bt1desc = "", bt2 = "Mobilette", bt2desc = "+15 vit, -500$", bt3 = "Voiture", bt3desc = "+20 vit, -1500$" 
-        },
-        banque =        {
-             titre = "Banque", bg = "bg.jpg", bt1 = "Deposer", bt2 = "Retirer" 
-        },
-        appartement =   {
-             titre = "Appartement", bg = "bg.jpg", bt1 = "Dormir", bt1desc = "+80 nrg, +9h", bt2 = "Sieste", bt2desc = "+5 nrg, +1h" 
-        },
-        centresportif = {
-             titre = "Centre Sportif", bg = "bg.jpg", bt1 = "Travailler", bt1desc = "$$$", bt2 = "Demander", bt2desc = "une promotion"
-        },
-        faculte =       {
-             titre = "Faculte des sciences", bg = "bg.jpg", bt1 = "Travailler", bt1desc = "$$$", bt2 = "Demander", bt2desc = "une promotion"
-        }
+        gym =           { titre = "Gym", bg = "bg.jpg", bt1 = "Courir", bt1desc = "+1 force", bt2 = "S'entrainer", bt2desc = "+2 Force, -20$", bt3 = "Steroides", bt3desc = "? For (chance)" },
+        universite =    { titre = "Universite", bg = "bg.jpg", bt1 = "Etudier", bt1desc = "+1 intelligence", bt2 = "Classe", bt2desc = "+2 int, -20$", bt3 = "Tricher", bt3desc = "?int (chance)"},
+        depanneur =     { titre = "Depanneur", bg = "bg.jpg", bt1 = "Cafe", bt1desc = "+5 nrg, -5$", bt2 = "Barre d'nrg", bt2desc = "+10 nrg, -10$", bt3 = "Boisson NRG", bt3desc = "+25 nrg, -25$" },
+        magasin =       { titre = "Magasin", bg = "bg.jpg", bt1 = "bt.png", bt1desc = "", bt2 = "Mobilette", bt2desc = "+12.5 vit, -500$", bt3 = "Voiture", bt3desc = "+20 vit, -1500$" },
+        banque =        { titre = "Banque", bg = "bg.jpg", bt1 = "Deposer", bt2 = "Retirer" },
+        appartement =   { titre = "Appartement", bg = "bg.jpg", bt1 = "Dormir", bt1desc = "+80 nrg, +9h", bt2 = "Sieste", bt2desc = "+5 nrg, +1h" },
+        loft =          { titre = "Loft", bg = "bg.jpg", bt1 = "Dormir", bt1desc = "+80 nrg, +9h", bt2 = "Sieste", bt2desc = "+5 nrg, +1h", bt3 = "S'entrainer", bt3desc = "+1 For"},
+        centresportif = { titre = "Centre Sportif", bg = "bg.jpg", bt1 = "Travailler", bt1desc = "$$$", bt2 = "Demander", bt2desc = "une promotion"},
+        faculte =       { titre = "Faculte des sciences", bg = "bg.jpg", bt1 = "Travailler", bt1desc = "$$$", bt2 = "Demander", bt2desc = "une promotion"}
     }
-    -- Tableau contenant les objets en vente et leur prix (1-3 = dépanneur, 4-6 = magasin)
+    -- Tableau contenant les objets en vente et leur prix (index : 1-3 = dépanneur, 4-6 = magasin)
     local objets = {
         { nom = "Cafe", prix = 5, energie = 5 },
         { nom = "Barre d'energie", prix = 10, energie = 10 },
         { nom = "Boisson energisante", prix = 25, energie = 25 },
         { nom = "Tapis roulant", prix = 15 },
         { nom = "scooter", prix = 500 },
-        { nom = "voiture", prix = 1500 }
+        { nom = "voiture", prix = 1500 },
+        { nom = "loft", prix = 3500 }
     }
     
     function interieur:init()
@@ -178,6 +164,10 @@ function Interieur:init( destination, jeu, map, perso )
                 end
                 retroaction.text = "Vous achetez un(e) "..objet.nom.." pour "..objet.prix.." $."
                 perso:setMoney( -objet.prix )
+                if objet.nom == "loft" then
+                    retour()
+                    jeu:entrerBatiment(destination)
+                end
             else
                 retroaction.text = "Vous n'avez pas assez d'argent."
             end
@@ -212,9 +202,9 @@ function Interieur:init( destination, jeu, map, perso )
             if perso.carriere == "sciences" then
                 print("actuel : "..perso.intNum, "requis : "..emploi.apt)
                 if perso.intNum >= emploi.apt then
-                    infos:promotion()
                     if emploi.apt ~= infos:getEmploi().apt then
                         retroaction.text = "Promotion : "..infos:getEmploi().titre
+                        infos:promotion()
                     else 
                         retroaction.text = "Vous occupez le poste le plus important imaginable."
                     end
@@ -236,7 +226,7 @@ function Interieur:init( destination, jeu, map, perso )
             end
         end
 
-        -- change de journée, reset le temps et sauvegarde
+        -- Avance le temps de 9h et donne 80% d'énergie
         local function dormir()
             retroaction.text = "Vous dormez pendant 9 heures."
             infos:updateHeure(9)
@@ -248,7 +238,7 @@ function Interieur:init( destination, jeu, map, perso )
             perso:setEnergie(5)
         end
 
-        -- à repenser, fonction pour retirer une somme définie par des boutons-flèches?
+        -- retire une somme du compte en banque
         local function retirer()
             if inputBanque.text ~= "" then
                 local montant = tonumber( inputBanque.text )
@@ -260,11 +250,11 @@ function Interieur:init( destination, jeu, map, perso )
                     retroaction.text = "Fonds insuffisants. Vous avez "..perso.banque.." $ en banque."
                 end
             else 
-                retroaction.text = "Veuillez entrer une valeur dans le champ-texte."
+                retroaction.text = "Veuillez entrer une valeur dans le champ texte."
             end
         end
 
-        -- à repenser, fonction pour déposer une somme définie par des boutons-flèches?
+        -- dépose une somme dans le compte en banque
         local function deposer()
             if inputBanque.text ~= "" then
                 local montant = tonumber( inputBanque.text )
@@ -288,6 +278,7 @@ function Interieur:init( destination, jeu, map, perso )
             magasin =        { bt1 = acheter, bt1param = 4, bt2 = acheter, bt2param = 5, bt3= acheter, bt3param = 6 },
             banque =         { bt1 = deposer, bt1param = 1, bt2 = retirer, bt2param = 2 },
             appartement =    { bt1 = dormir, bt1param = 1, bt2 = attendre, bt2param = 1 },
+            loft =           { bt1 = dormir, bt1param = 1, bt2 = attendre, bt2param = 1, bt3 = ajouterFor, bt3param = 1 },
             centresportif =  { bt1 = travailler, bt1param = 1, bt2 = promotion, bt2param = 2 },
             faculte =        { bt1 = travailler, bt1param = 1, bt2 = promotion, bt2param = 2 }
         }
@@ -323,20 +314,28 @@ function Interieur:init( destination, jeu, map, perso )
         retroaction:setFillColor(1,0,0)
         
         local btRetour = cBouton:init("Retour",nil,display.contentCenterX*1.4,display.contentCenterY*1.5,retour)
-        local bt1 = cBouton:init(src.bt1,src.bt1desc,display.contentCenterX/1.65,display.contentCenterY,func.bt1,func.bt1param)
-        if src.bt3~=nil then
-            local bt3 = cBouton:init(src.bt3,src.bt3desc,display.contentCenterX/1.65,display.contentCenterY*1.5,func.bt3,func.bt3param)
-            self:insert(bt3)
-        elseif destination ~= "banque" then
-            if src.bt2==nil then
-                btRetour.y = bt1.y
-            else
-                btRetour.x = bt1.x
+        if destination ~= "loft" or table.indexOf( perso.inventaire, "loft" ) ~= nil then
+            local bt1 = cBouton:init(src.bt1,src.bt1desc,display.contentCenterX/1.65,display.contentCenterY,func.bt1,func.bt1param)
+            self:insert(bt1)
+            if src.bt3~=nil then
+                local bt3 = cBouton:init(src.bt3,src.bt3desc,display.contentCenterX/1.65,display.contentCenterY*1.5,func.bt3,func.bt3param)
+                self:insert(bt3)
+            elseif destination ~= "banque" then
+                if src.bt2==nil then
+                    btRetour.y = bt1.y
+                else
+                    btRetour.x = bt1.x
+                end
             end
-        end
-        if src.bt2~=nil then
-            local bt2 = cBouton:init(src.bt2,src.bt2desc,display.contentCenterX*1.4,display.contentCenterY,func.bt2,func.bt2param)
-            self:insert(bt2)
+            if src.bt2~=nil then
+                local bt2 = cBouton:init(src.bt2,src.bt2desc,display.contentCenterX*1.4,display.contentCenterY,func.bt2,func.bt2param)
+                self:insert(bt2)
+            end
+        -- Si le joueur n'a pas acheté le loft
+        elseif destination == "loft" and table.indexOf( perso.inventaire, "loft" ) == nil then 
+            local bt1 = cBouton:init("Acheter loft",objets[7].prix.."$",display.contentCenterX/1.65,display.contentCenterY,acheter,7)
+            btRetour.y = bt1.y
+            self:insert(bt1)
         end
 
         -- Champ de texte pour la banque
@@ -353,7 +352,6 @@ function Interieur:init( destination, jeu, map, perso )
         -- Insertion du visuel
         self:insert(titre)
         self:insert(retroaction)
-        self:insert(bt1)
         self:insert(btRetour)
     end
 
