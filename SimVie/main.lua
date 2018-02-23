@@ -9,8 +9,6 @@ physics.start()
 -- physics.setDrawMode("hybrid")
 physics.setGravity(0,0)
 
-system.activate( "multitouch" )
-
 --  local cSplash = require("cSplashscreen")
 --  cSplash:init()
 

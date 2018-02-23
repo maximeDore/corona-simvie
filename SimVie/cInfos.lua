@@ -114,6 +114,7 @@ function Infos:init( heureDepart, indexDepart, map, perso, jeu )
                 else
                     jourIndex = jourIndex + 1
                     self:updateBanque()
+                    self:updateLoyer( 5 )
                 end
                 jourDisplay.text = hebdo[jourIndex]
             else
@@ -141,8 +142,19 @@ function Infos:init( heureDepart, indexDepart, map, perso, jeu )
     end
     function infos:updateBanque()
         perso.banque = math.round( perso.banque + perso.banque*interet )
-        interet = math.random( 4, 7)/100
+        interet = math.random( 4, 7 )/100
         telephone:updateBanque()
+    end
+    function infos:updateLoyer( coutLoyer )
+        local loyer = coutLoyer
+        if perso.money-loyer < 0 then
+            loyer = coutLoyer - perso.money
+            perso:setMoney(-coutLoyer+loyer)
+            perso:setBanque(-loyer)
+        else
+            perso:setMoney(-loyer)
+        end
+        self:updateMoney()
     end
     
     function infos:promotion()

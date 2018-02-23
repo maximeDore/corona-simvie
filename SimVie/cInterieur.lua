@@ -13,18 +13,6 @@ function Interieur:init( destination, jeu, map, perso )
     local bgMusic = audio.loadStream( "Miami Viceroy.mp3" )
     local retroaction
     local inputBanque
-    -- Tableau contenant des tableaux, contenant le nom de l'endroit et le texte affiché dans les boutons
-    local tSrc = { 
-        gym =           { titre = "Gym", bg = "bg.jpg", bt1 = "Courir", bt1desc = "+1 force", bt2 = "S'entrainer", bt2desc = "+2 Force, -20$", bt3 = "Steroides", bt3desc = "? For (chance)" },
-        universite =    { titre = "Universite", bg = "bg.jpg", bt1 = "Etudier", bt1desc = "+1 intelligence", bt2 = "Classe", bt2desc = "+2 int, -20$", bt3 = "Tricher", bt3desc = "?int (chance)"},
-        depanneur =     { titre = "Depanneur", bg = "bg.jpg", bt1 = "Cafe", bt1desc = "+5 nrg, -5$", bt2 = "Barre d'nrg", bt2desc = "+10 nrg, -10$", bt3 = "Boisson NRG", bt3desc = "+25 nrg, -25$" },
-        magasin =       { titre = "Magasin", bg = "bg.jpg", bt1 = "bt.png", bt1desc = "", bt2 = "Mobilette", bt2desc = "+12.5 vit, -500$", bt3 = "Voiture", bt3desc = "+20 vit, -1500$" },
-        banque =        { titre = "Banque", bg = "bg.jpg", bt1 = "Deposer", bt2 = "Retirer" },
-        appartement =   { titre = "Appartement", bg = "bg.jpg", bt1 = "Dormir", bt1desc = "+80 nrg, +9h", bt2 = "Sieste", bt2desc = "+5 nrg, +1h" },
-        loft =          { titre = "Loft", bg = "bg.jpg", bt1 = "Dormir", bt1desc = "+80 nrg, +9h", bt2 = "Sieste", bt2desc = "+5 nrg, +1h", bt3 = "S'entrainer", bt3desc = "+1 For"},
-        centresportif = { titre = "Centre Sportif", bg = "bg.jpg", bt1 = "Travailler", bt1desc = "$$$", bt2 = "Demander", bt2desc = "une promotion"},
-        faculte =       { titre = "Faculte des sciences", bg = "bg.jpg", bt1 = "Travailler", bt1desc = "$$$", bt2 = "Demander", bt2desc = "une promotion"}
-    }
     -- Tableau contenant les objets en vente et leur prix (index : 1-3 = dépanneur, 4-6 = magasin)
     local objets = {
         { nom = "Cafe", prix = 5, energie = 5 },
@@ -35,6 +23,21 @@ function Interieur:init( destination, jeu, map, perso )
         { nom = "voiture", prix = 1500 },
         { nom = "loft", prix = 3500 }
     }
+    -- Tableau contenant des tableaux, contenant le nom de l'endroit et le texte affiché dans les boutons
+    local tSrc = { 
+        gym =           { titre = "Gym", bg = "bg.jpg", bt1 = "Courir", bt1desc = "+1 force", bt2 = "S'entrainer", bt2desc = "+2 Force, -20$", bt3 = "Steroides", bt3desc = "? For (chance)" },
+        universite =    { titre = "Universite", bg = "bg.jpg", bt1 = "Etudier", bt1desc = "+1 intelligence", bt2 = "Classe", bt2desc = "+2 int, -20$", bt3 = "Tricher", bt3desc = "?int (chance)"},
+        depanneur =     { titre = "Depanneur", bg = "bg.jpg", bt1 = "Cafe", bt1desc = "+5 nrg, -"..objets[1].prix.."$", bt2 = "Barre d'nrg", bt2desc = "+10 nrg, -"..objets[2].prix.."$", bt3 = "Boisson NRG", bt3desc = "+25 nrg, -"..objets[3].prix.."$" },
+        magasin =       { titre = "Magasin", bg = "bg.jpg", bt1 = "Tapis Roulant", bt1desc = objets[4].prix.."$", bt2 = "Mobilette", bt2desc = "+12.5 vit, -"..objets[5].prix.."$", bt3 = "Voiture", bt3desc = "+20 vit, -"..objets[6].prix.."$" },
+        banque =        { titre = "Banque", bg = "bg.jpg", bt1 = "Deposer", bt2 = "Retirer" },
+        appartement =   { titre = "Appartement", bg = "bg.jpg", bt1 = "Dormir", bt1desc = "+80 nrg, +9h", bt2 = "Sieste", bt2desc = "+5 nrg, +1h" },
+        loft =          { titre = "Loft", bg = "bg.jpg", bt1 = "Dormir", bt1desc = "+80 nrg, +9h", bt2 = "Sieste", bt2desc = "+5 nrg, +1h", bt3 = "S'entrainer", bt3desc = "+1 For"},
+        centresportif = { titre = "Centre Sportif", bg = "bg.jpg", bt1 = "Travailler", bt1desc = "$$$", bt2 = "Demander", bt2desc = "une promotion"},
+        faculte =       { titre = "Faculte des sciences", bg = "bg.jpg", bt1 = "Travailler", bt1desc = "$$$", bt2 = "Demander", bt2desc = "une promotion"}
+    }
+    if perso.carriere == "sciences" then
+        tSrc.magasin.bt1 = "Bibliotheque"
+    end
     
     function interieur:init()
         jeu:insert(self)
