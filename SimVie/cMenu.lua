@@ -35,7 +35,7 @@ function Menu:init()
             cInstructions:init()
         else 
             audio.fadeOut( { 1, 1000 } )
-            cJeu:init(-3007.5,-295)
+            cJeu:init(946,1150)
         end
         menu:removeSelf()
     end
