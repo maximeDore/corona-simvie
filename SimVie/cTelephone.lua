@@ -18,6 +18,7 @@ function Telephone:init( parent, perso, jeu )
     local tapZone
     local btHome
     local bgStats
+    local screenSave = display.newGroup()
     local screenHome = display.newGroup()
     local screenStats = display.newGroup()
     local screenContacts = display.newGroup()
@@ -53,6 +54,7 @@ function Telephone:init( parent, perso, jeu )
             screenMenu.isVisible = false
             screenAlertes.isVisible = false
             screenMenu.isVisible = false
+            screenSave.isVisible = false
         end
         local function afficherStats()
             screenHome.isVisible = false
@@ -81,6 +83,11 @@ function Telephone:init( parent, perso, jeu )
         local function save()
             print("Partie sauvegardée")
             donnees:prepForSave( perso, _G.infos )
+            afficherHome()
+        end
+        local function afficherSave()
+            screenHome.isVisible = false
+            screenSave.isVisible = true
         end
         local function mute()
             if audio.pause() > 0 then
@@ -109,6 +116,7 @@ function Telephone:init( parent, perso, jeu )
         bgStats = display.newImage( screenStats, "screenStats.png", 0, -10.5 )
         bgBanque = display.newImage( screenBanque, "screenBanque.png", 0, -10.5 )
         bgMenu = display.newImage( screenMenu, "screenMenu.png", 0, -10.5 )
+        bgSave = display.newImage( screenSave, "screenSave.png", 0, -10.5 )
 
         -- Bouton physique du téléphone (home button)
         btHome = cBouton:init( "", nil, 0, bgStats.height/1.8, afficherHome, nil, 75, 50 )
@@ -125,7 +133,7 @@ function Telephone:init( parent, perso, jeu )
         btGps = cBouton:init( "btGps.png", nil, -bgStats.width/3.25, -bgStats.height*.15, afficherGps )
         btBanque = cBouton:init( "btBanque.png", nil, 0, -bgStats.height*.15, afficherBanque )
         btMute = cBouton:init( "btMute.png", nil, bgStats.width/3.25, -bgStats.height*.15, mute )
-        btSave = cBouton:init( "btSave.png", nil, -bgStats.width/3.25, bgStats.height*.05, save )
+        btSave = cBouton:init( "btSave.png", nil, -bgStats.width/3.25, bgStats.height*.05, afficherSave )
         btMenu = cBouton:init( "btMenu.png", nil, 0, bgStats.height*.05, afficherMenu )
         -- Boutons
         btMarche = cBouton:init( "btMarche.png", nil, -bgStats.width/3.25, bgStats.height*.35, transport, "marche" )
@@ -201,6 +209,13 @@ function Telephone:init( parent, perso, jeu )
         screenMenu:insert(btNon)
 
 
+        -- Écran Save           --------------------------------------------------------------------------------------------------------
+        btOui = cBouton:init( "btOui.png", nil, -bgMenu.width/4.15, 0, save )
+        btNon = cBouton:init( "btNon.png", nil, bgMenu.width/4.25, 0, afficherHome )
+        screenSave:insert(btOui)
+        screenSave:insert(btNon)
+
+
         -- Écran Banque         --------------------------------------------------------------------------------------------------------
         local optionsBalance = {
             text = perso.banque.." $",
@@ -234,6 +249,7 @@ function Telephone:init( parent, perso, jeu )
         screenContacts.isVisible = false
         screenStats.isVisible = false
         screenMenu.isVisible = false
+        screenSave.isVisible = false
         screenAlertes.isVisible = false
         screenBanque.isVisible = false
         screenGps.isVisible = false
@@ -247,6 +263,7 @@ function Telephone:init( parent, perso, jeu )
         self:insert(screenBanque)
         self:insert(screenGps)
         self:insert(screenMenu)
+        self:insert(screenSave)
         self:insert(btHome)
 
         self.x = display.contentWidth*.85-display.screenOriginX
