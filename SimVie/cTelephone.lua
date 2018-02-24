@@ -19,13 +19,15 @@ function Telephone:init( parent, perso, jeu )
     local btHome
     local bgStats
     local screenSave = display.newGroup()
-    local screenHome = display.newGroup()
     local screenStats = display.newGroup()
     local screenContacts = display.newGroup()
     local screenBanque = display.newGroup()
     local screenGps = display.newGroup()
     local screenAlertes = display.newGroup()
     local screenMenu = display.newGroup()
+    local screenHome = display.newGroup()
+    local btScooter
+    local btVoiture
     local aptitudesNum
     local carriereDisplay
     local fondEnergie
@@ -98,6 +100,7 @@ function Telephone:init( parent, perso, jeu )
         end
 
         local function transport( vehicule )
+            print(vehicule)
             perso:changerVehicule( vehicule )
         end
 
@@ -119,26 +122,34 @@ function Telephone:init( parent, perso, jeu )
         bgSave = display.newImage( screenSave, "screenSave.png", 0, -10.5 )
 
         -- Bouton physique du téléphone (home button)
-        btHome = cBouton:init( "", nil, 0, bgStats.height/1.8, afficherHome, nil, 75, 50 )
+        local btHome = cBouton:init( "", nil, 0, bgStats.height/1.8, afficherHome, nil, 75, 50 )
 
         -- Boutons de l'écran d'accueil
         -- Disposition :
         -- BtStats  btContacts  btAlertes
         -- btGps    btBanque    btMute
         -- btSave   btMenu
-        -- btMarche btScooter   btAuto
-        btStats = cBouton:init( "btStats.png", nil, -bgStats.width/3.25, -bgStats.height*.35, afficherStats )
-        btContacts = cBouton:init( "btContacts.png", nil, 0, -bgStats.height*.35, afficherContacts )
-        btAlertes = cBouton:init( "btAlertes.png", nil, bgStats.width/3.25, -bgStats.height*.35, afficherAlertes )
-        btGps = cBouton:init( "btGps.png", nil, -bgStats.width/3.25, -bgStats.height*.15, afficherGps )
-        btBanque = cBouton:init( "btBanque.png", nil, 0, -bgStats.height*.15, afficherBanque )
-        btMute = cBouton:init( "btMute.png", nil, bgStats.width/3.25, -bgStats.height*.15, mute )
-        btSave = cBouton:init( "btSave.png", nil, -bgStats.width/3.25, bgStats.height*.05, afficherSave )
-        btMenu = cBouton:init( "btMenu.png", nil, 0, bgStats.height*.05, afficherMenu )
-        -- Boutons
+        -- btMarche btScooter   btVoiture
+        local btStats = cBouton:init( "btStats.png", nil, -bgStats.width/3.25, -bgStats.height*.35, afficherStats )
+        local btContacts = cBouton:init( "btContacts.png", nil, 0, -bgStats.height*.35, afficherContacts )
+        local btAlertes = cBouton:init( "btAlertes.png", nil, bgStats.width/3.25, -bgStats.height*.35, afficherAlertes )
+        local btGps = cBouton:init( "btGps.png", nil, -bgStats.width/3.25, -bgStats.height*.15, afficherGps )
+        local btBanque = cBouton:init( "btBanque.png", nil, 0, -bgStats.height*.15, afficherBanque )
+        local btMute = cBouton:init( "btMute.png", nil, bgStats.width/3.25, -bgStats.height*.15, mute )
+        local btSave = cBouton:init( "btSave.png", nil, -bgStats.width/3.25, bgStats.height*.05, afficherSave )
+        local btMenu = cBouton:init( "btMenu.png", nil, 0, bgStats.height*.05, afficherMenu )
+        -- Boutons de déplacement
         btMarche = cBouton:init( "btMarche.png", nil, -bgStats.width/3.25, bgStats.height*.35, transport, "marche" )
         btScooter = cBouton:init( "btScooter.png", nil, 0, bgStats.height*.35, transport, "scooter" )
-        btAuto = cBouton:init( "btAuto.png", nil, bgStats.width/3.25, bgStats.height*.35, transport, "voiture" )
+        btVoiture = cBouton:init( "btAuto.png", nil, bgStats.width/3.25, bgStats.height*.35, transport, "voiture" )
+        -- État des boutons de déplacement
+        if table.indexOf( perso.inventaire, "scooter" ) then else
+            btScooter:disable()
+        end
+        if table.indexOf( perso.inventaire, "voiture" ) then else
+            btVoiture:disable()
+        end
+        self:updateBoutons()
         
         screenHome:insert(btStats)
         screenHome:insert(btContacts)
@@ -150,7 +161,7 @@ function Telephone:init( parent, perso, jeu )
         screenHome:insert(btMenu)
         screenHome:insert(btMarche)
         screenHome:insert(btScooter)
-        screenHome:insert(btAuto)
+        screenHome:insert(btVoiture)
 
         -- Écran Statistiques   --------------------------------------------------------------------------------------------------------
         -- Affichage des points d'aptitudes
@@ -273,6 +284,16 @@ function Telephone:init( parent, perso, jeu )
         self:updateEnergie()
     end
 
+    function telephone:updateBoutons()
+        -- État des boutons de déplacement
+        if table.indexOf( perso.inventaire, "scooter" ) then
+            btScooter:enable()
+        end
+        if table.indexOf( perso.inventaire, "voiture" ) then
+            btVoiture:enable()
+        end
+    end
+
     function telephone:updateStats()
         aptitudesNum.text = perso.forNum.."\n"..perso.intNum.."\n"..perso.chaNum
         carriereDisplay.text = parent:getEmploi().titre
@@ -296,14 +317,6 @@ function Telephone:init( parent, perso, jeu )
             barreEnergie.fill = { 1, .8, 0 }
         elseif perso.energie > 50 then
             barreEnergie.fill = { 0, 1, 0 }
-        end
-    end
-
-    function telephone:tap()
-        if self.y >= display.contentHeight-display.screenOriginY+125 then
-            transition.to( self, { time = 500, y = posUp, transition=easing.outQuart } )
-        elseif self.y <= display.contentHeight-display.screenOriginY-100 then
-            transition.to( self, { time = 500, y = posDown, transition=easing.outQuart } )
         end
     end
 

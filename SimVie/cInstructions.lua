@@ -12,7 +12,7 @@ function Instructions:init()
 
     function instructions:init()
         audio.fadeOut( { 1, 1000 } )
-        cJeu:init(-3007.5,-295)
+        cJeu:init()
     end
 
     instructions:init()

@@ -19,14 +19,14 @@ function Map:init( perso )
         local ville = display.newImageRect(self, "map.png", 6800, 3400)
 
         -- Bâtiments
-        -- Batiment:init( parent, img, x, y, destination, porteX )
+        -- Batiment:init( parent, img, x, y, destination, porteX, outline )
         local gymTop = cBatiment:init(self,"gymTop.png",-1356.8,525)
         local depTop = cBatiment:init(self,"depanneurTop.png",-2275,435)
         local gym = cBatiment:init(self,"gym.png",-1356.8,854.4,"gym",193.24)
         local depanneur = cBatiment:init(self,"depanneur.png",-2566.5,854.4,"depanneur",-64)
-        local magasin = cBatiment:init(self,"magasin.png",1425,526,"magasin",0)
+        local magasin = cBatiment:init(self,"magasin.png",1425,526,"magasin",0,true)
         local appartement = cBatiment:init(self,"appartement.png",890,670,"appartement",46)
-        local loft = cBatiment:init(self,"loft.png",-1429 ,-750, "loft",-45)
+        local loft = cBatiment:init(self,"loft.png",-1429 ,-750, "loft",-45,true)
         local universite = cBatiment:init(self,"universite.png",300,-735,"universite",0)
         local banque = cBatiment:init(self,"banque.png",100,650,"banque",3)
         if perso.carriere == "sports" then

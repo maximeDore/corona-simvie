@@ -54,16 +54,30 @@ function Bouton:init ( texte1, texte2, x, y, callbackFunction, callbackParam, wi
         end
     end
 
-    function bouton:tap()
-        callbackFunction(callbackParam)  
+    function bouton:touch( e )
+        if e.phase == "began" then
+            callbackFunction(callbackParam)
+        end
+    end
+
+    function bouton:enable()
+        if self._tableListeners["touch"] then else
+            self:addEventListener("touch", self)
+        end
+        self.alpha = 1
+    end
+
+    function bouton:disable()
+        bouton:removeEventListener("touch", bouton)
+        bouton.alpha = .25
     end
 
     function bouton:kill()
-        self:removeEventListener("tap", bouton)
+        self:removeEventListener("touch", bouton)
     end
 
     bouton:init()
-    bouton:addEventListener("tap", bouton)
+    bouton:addEventListener("touch", bouton)
     return bouton
 end
 

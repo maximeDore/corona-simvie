@@ -15,10 +15,12 @@ function Interieur:init( destination, jeu, map, perso )
     local inputBanque
     -- Tableau contenant les objets en vente et leur prix (index : 1-3 = dépanneur, 4-6 = magasin)
     local objets = {
+        -- Objets d'énergie (dépanneur)
         { nom = "Cafe", prix = 5, energie = 5 },
         { nom = "Barre d'energie", prix = 10, energie = 10 },
         { nom = "Boisson energisante", prix = 25, energie = 25 },
-        { nom = "Tapis roulant", prix = 15 },
+        -- Objets de qualité de vie
+        { nom = "Tapis roulant", prix = 750 },
         { nom = "scooter", prix = 500 },
         { nom = "voiture", prix = 1500 },
         { nom = "loft", prix = 3500 }
@@ -57,7 +59,7 @@ function Interieur:init( destination, jeu, map, perso )
                 retroaction.text = "Il est trop tot pour s'entrainer."
             elseif infos:getHeure() < 22 then
                 if pt==1 then
-                    if perso:setEnergie( -5 ) then
+                    if perso:setEnergie( -10 ) then
                         perso.forNum = perso.forNum + pt
                         retroaction.text = "Vous devenez plus fort : +"..pt.." Force"
                         infos:updateHeure(1)
@@ -65,7 +67,7 @@ function Interieur:init( destination, jeu, map, perso )
                         retroaction.text = "Vous n'avez pas assez d'energie."
                     end
                 elseif pt==2 and perso.money-20>=0 then
-                    if perso:setEnergie( -5 ) then
+                    if perso:setEnergie( -10 ) then
                         perso:setMoney(-20)
                         perso.forNum = perso.forNum + pt
                         retroaction.text = "Vous devenez plus fort : +"..pt.." Force"
@@ -76,7 +78,7 @@ function Interieur:init( destination, jeu, map, perso )
                 elseif pt==2 then
                     retroaction.text = "Vous n'avez pas assez d'argent pour vous entrainer."
                 elseif pt==3 then
-                    if perso:setEnergie( -5 ) then
+                    if perso:setEnergie( -10 ) then
                         infos:updateHeure(1)
                         local rand = math.random(25)
                         print(rand, perso.chaNum)
@@ -109,7 +111,7 @@ function Interieur:init( destination, jeu, map, perso )
                 retroaction.text = "Il est trop tot pour etudier"
             elseif infos:getHeure() < 22 then
                 if pt==1 then
-                    if perso:setEnergie( -5 ) then
+                    if perso:setEnergie( -10 ) then
                         perso.intNum = perso.intNum + pt
                         retroaction.text = "Vous devenez plus intelligent : +"..pt.." Int"
                         infos:updateHeure(1)
@@ -117,7 +119,7 @@ function Interieur:init( destination, jeu, map, perso )
                         retroaction.text = "Vous n'avez pas assez d'energie."
                     end
                 elseif pt==2 and perso.money-20>=0 then
-                    if perso:setEnergie( -5 ) then
+                    if perso:setEnergie( -10 ) then
                         perso:setMoney(-20)
                         perso.intNum = perso.intNum + pt
                         retroaction.text = "Vous devenez plus intelligent : +"..pt.." Int"
@@ -128,7 +130,7 @@ function Interieur:init( destination, jeu, map, perso )
                 elseif pt==2 then
                     retroaction.text = "Vous n'avez pas assez d'argent pour assister au cours."
                 elseif pt==3 then
-                    if perso:setEnergie( -5 ) then
+                    if perso:setEnergie( -10 ) then
                         infos:updateHeure(1)
                         local rand = math.random(25)
                         print(rand, perso.chaNum)
@@ -161,12 +163,23 @@ function Interieur:init( destination, jeu, map, perso )
             local objet = objets[i]
             if objet.prix <= perso.money then
                 if objet.energie == nil then
-                    table.insert( perso.inventaire, objet.nom )
+                    if objets[i].nom == "voiture" and table.indexOf( perso.inventaire, "loft" ) ~= nil or objets[i].nom ~= "voiture" then
+                        if table.indexOf( perso.inventaire, objets[i].nom ) == nil then
+                            table.insert( perso.inventaire, objet.nom )
+                            perso:setMoney( -objet.prix )
+                            retroaction.text = "Vous achetez un(e) "..objet.nom.." pour "..objet.prix.." $."
+                            infos:updateBoutons()
+                        else
+                            retroaction.text = "Vous possedez deja ceci."
+                        end
+                    else 
+                        retroaction.text = "Vous devez posseder un loft pour acheter une voiture."
+                    end
                 else
+                    retroaction.text = "Vous achetez un(e) "..objet.nom.." pour "..objet.prix.." $."
+                    perso:setMoney( -objet.prix )
                     perso:setEnergie( objet.energie )
                 end
-                retroaction.text = "Vous achetez un(e) "..objet.nom.." pour "..objet.prix.." $."
-                perso:setMoney( -objet.prix )
                 if objet.nom == "loft" then
                     retour()
                     jeu:entrerBatiment(destination)
@@ -233,7 +246,11 @@ function Interieur:init( destination, jeu, map, perso )
         local function dormir()
             retroaction.text = "Vous dormez pendant 9 heures."
             infos:updateHeure(9)
-            perso:setEnergie(80)
+            if destination ~= "loft" then
+                perso:setEnergie(80)
+            else 
+                perso:setEnergie(100)
+            end
         end
 
         local function attendre( h )
@@ -318,21 +335,27 @@ function Interieur:init( destination, jeu, map, perso )
         
         local btRetour = cBouton:init("Retour",nil,display.contentCenterX*1.4,display.contentCenterY*1.5,retour)
         if destination ~= "loft" or table.indexOf( perso.inventaire, "loft" ) ~= nil then
-            local bt1 = cBouton:init(src.bt1,src.bt1desc,display.contentCenterX/1.65,display.contentCenterY,func.bt1,func.bt1param)
-            self:insert(bt1)
-            if src.bt3~=nil then
-                local bt3 = cBouton:init(src.bt3,src.bt3desc,display.contentCenterX/1.65,display.contentCenterY*1.5,func.bt3,func.bt3param)
-                self:insert(bt3)
-            elseif destination ~= "banque" then
-                if src.bt2==nil then
-                    btRetour.y = bt1.y
-                else
-                    btRetour.x = bt1.x
+            if destination == "appartement" and table.indexOf( perso.inventaire, "loft" ) ~= nil then
+                btRetour.x = display.contentCenterX
+                btRetour.y = display.contentCenterY
+                retroaction.text = "Vous n'habitez plus ici desormais."
+            else
+                local bt1 = cBouton:init(src.bt1,src.bt1desc,display.contentCenterX/1.65,display.contentCenterY,func.bt1,func.bt1param)
+                self:insert(bt1)
+                if src.bt3~=nil then
+                    local bt3 = cBouton:init(src.bt3,src.bt3desc,display.contentCenterX/1.65,display.contentCenterY*1.5,func.bt3,func.bt3param)
+                    self:insert(bt3)
+                elseif destination ~= "banque" then
+                    if src.bt2==nil then
+                        btRetour.y = bt1.y
+                    else
+                        btRetour.x = bt1.x
+                    end
                 end
-            end
-            if src.bt2~=nil then
-                local bt2 = cBouton:init(src.bt2,src.bt2desc,display.contentCenterX*1.4,display.contentCenterY,func.bt2,func.bt2param)
-                self:insert(bt2)
+                if src.bt2~=nil then
+                    local bt2 = cBouton:init(src.bt2,src.bt2desc,display.contentCenterX*1.4,display.contentCenterY,func.bt2,func.bt2param)
+                    self:insert(bt2)
+                end
             end
         -- Si le joueur n'a pas acheté le loft
         elseif destination == "loft" and table.indexOf( perso.inventaire, "loft" ) == nil then 

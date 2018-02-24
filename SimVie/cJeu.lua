@@ -5,7 +5,7 @@
 -----------------------------------------------------------------------------------------
 local Jeu = {}
 
-function Jeu:init(spawnX, spawnY)
+function Jeu:init()
 
     local jeu = display.newGroup()
     local cDonnees = require("cDonnees")
@@ -16,7 +16,14 @@ function Jeu:init(spawnX, spawnY)
     local cInterieur = require("cInterieur")
     local cMenu = require("cMenu")
     local cInfos = require("cInfos")
+
     local bgMusic = audio.loadStream( "Miami Viceroy.mp3" )
+
+    local spawns = { 
+        appartement = { x = 946, y= 1150 },
+        loft        = { x = -1470, y = -400 }
+    }
+
     local maMap
     local monPerso
     local interieur
@@ -29,9 +36,17 @@ function Jeu:init(spawnX, spawnY)
         end
         -- bgMusicChannel = audio.play( bgMusic, { channel=1, loops=-1, fadein=2000 } )
         
+        -- Point d'apparition du personnage (devant son domicile)
+        local spawn = {}
+        spawn.x = spawns.appartement.x
+        spawn.y = spawns.appartement.y
+        if _G.data ~= nil and table.indexOf( _G.data.inventaire, "loft" ) ~= nil then
+            spawn.x, spawn.y = spawns.loft.x, spawns.loft.y
+        end
+
         -- Instanciation des éléments de jeu
         monJoystick = cJoystick:init(50,125)
-        monPerso = cPerso:init(spawnX,spawnY,0,monJoystick,self)
+        monPerso = cPerso:init(spawn.x,spawn.y,0,monJoystick,self)
         maMap = cMap:init(monPerso)
         local maCamera = cCamera:init(monPerso,maMap)
 
@@ -57,6 +72,7 @@ function Jeu:init(spawnX, spawnY)
         -- maMap:wake()
         interieur:removeSelf()
         monJoystick:activate()
+        -- monPerso:changerVehicule( "marche" )
     end
 
     -- Quand le personnage meurt ou perd la partie

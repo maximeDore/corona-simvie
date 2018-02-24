@@ -114,7 +114,9 @@ function Infos:init( heureDepart, indexDepart, map, perso, jeu )
                 else
                     jourIndex = jourIndex + 1
                     self:updateBanque()
-                    self:updateLoyer( 5 )
+                    if table.indexOf( perso.inventaire, "loft" ) == nil then
+                        self:updateLoyer( 5 )
+                    end
                 end
                 jourDisplay.text = hebdo[jourIndex]
             else
@@ -155,6 +157,10 @@ function Infos:init( heureDepart, indexDepart, map, perso, jeu )
             perso:setMoney(-loyer)
         end
         self:updateMoney()
+    end
+
+    function infos:updateBoutons()
+        telephone:updateBoutons()
     end
     
     function infos:promotion()

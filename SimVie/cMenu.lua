@@ -21,24 +21,24 @@ function Menu:init()
     local btContinuer
     local fade
     
-    function listener()
+    local function listener()
+        local function listener2()
+            if _G.data == nil then
+                if forNum>intNum then
+                    _G.carriere = "sports"
+                else
+                    _G.carriere = "sciences"            
+                end
+                cInstructions:init()
+            else 
+                audio.fadeOut( { 1, 1000 } )
+                cJeu:init(946,1150)
+            end
+            menu:removeSelf()
+        end
         transition.fadeOut( menu, { time=500, onComplete=listener2 } )
     end
 
-    function listener2()
-        if _G.data == nil then
-            if forNum>intNum then
-                _G.carriere = "sports"
-            else
-                _G.carriere = "sciences"            
-            end
-            cInstructions:init()
-        else 
-            audio.fadeOut( { 1, 1000 } )
-            cJeu:init(946,1150)
-        end
-        menu:removeSelf()
-    end
 
     function menu:init()
         -- Affiche la barre de notifications
