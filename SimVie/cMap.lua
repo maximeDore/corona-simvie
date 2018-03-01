@@ -13,12 +13,11 @@ function Map:init( perso )
     local cAuto = require("cAuto")
     local autos = display.newGroup()
     local filtreNocturne
-    local travail
 
     function map:init()
         local ville = display.newImageRect(self, "map.png", 6800, 3400)
 
-        -- Bâtiments
+        -- Bâtiments avec physiques
         -- Batiment:init( parent, img, x, y, destination, porteX, outline )
         local gymTop = cBatiment:init(self,"gymTop.png",-1356.8,525)
         local depTop = cBatiment:init(self,"depanneurTop.png",-2275,435)
@@ -26,21 +25,19 @@ function Map:init( perso )
         local depanneur = cBatiment:init(self,"depanneur.png",-2566.5,854.4,"depanneur",-64)
         local magasin = cBatiment:init(self,"magasin.png",1425,526,"magasin",0,true)
         local appartement = cBatiment:init(self,"appartement.png",890,670,"appartement",46)
-        local loft = cBatiment:init(self,"loft.png",-1429 ,-750, "loft",-45,true)
+        local clotureLoft = cBatiment:init(self,"clotureLoft.png",-1429 ,-625, nil,nil,true)
+        local loft = cBatiment:init(self,"loft.png",-1429 ,-800, "loft",-45,true)
         local universite = cBatiment:init(self,"universite.png",300,-735,"universite",0)
         local banque = cBatiment:init(self,"banque.png",100,650,"banque",3)
-        if perso.carriere == "sports" then
-            travail = cBatiment:init(self,"depanneur.png",2000,854.4,"centresportif",-64)
-        else
-            travail = cBatiment:init(self,"depanneur.png",2000,854.4,"faculte",-64)
-        end
+        local centreSportif = cBatiment:init(self,"centreSportif.png",1500,-735,"centresportif",-177)
+        local faculte = cBatiment:init(self,"faculte.png",2330,675,"faculte",-40,true)
 
         -- Autos
-        -- for i=1,8,2 do
-        --     local auto = cAuto:init(i)
-        --     autos:insert(auto)
-        -- end
-        -- self:insert(autos)
+        for i=1,8,2 do
+            local auto = cAuto:init(i)
+            autos:insert(auto)
+        end
+        self:insert(autos)
 
         -- Filtre qui obscurcit l'écran selon l'heure
         filtreNocturne = display.newRect(self, 0, 0, 6800, 3400 )

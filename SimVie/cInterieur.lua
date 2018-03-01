@@ -191,24 +191,26 @@ function Interieur:init( destination, jeu, map, perso )
 
         -- enlève du temps (5h) et donne de l'argent en fonction du poste du joueur
         local function travailler()
-            if infos:getJour() ~= "Dimanche" then
-                if infos:getHeure() < 8 then
-                    retroaction.text = "Il est trop tot pour travailler."
-                elseif infos:getHeure() <= 16 then
-                    if perso:setEnergie( -30 ) then
-                        infos:updateHeure(5)
-                        -- Détecter le niveau de carriere du perso
-                        emploiIndex = infos:getEmploiIndex()
-                        perso:setMoney( 4 * emploiIndex/2 * 6 )
-                        retroaction.text = "Vous travailler pendant 5 heures."
+            if (perso.carriere == "sciences" and destination == "faculte") or (perso.carriere == "sports" and destination == "centresportif") then
+                if infos:getJour() ~= "Dimanche" then
+                    if infos:getHeure() < 8 then
+                        retroaction.text = "Il est trop tot pour travailler."
+                    elseif infos:getHeure() <= 16 then
+                        if perso:setEnergie( -30 ) then
+                            infos:updateHeure(5)
+                            -- Détecter le niveau de carriere du perso
+                            emploiIndex = infos:getEmploiIndex()
+                            perso:setMoney( 4 * emploiIndex/2 * 6 )
+                            retroaction.text = "Vous travailler pendant 5 heures."
+                        else 
+                            retroaction.text = "Vous n'avez pas assez d'energie."
+                        end
                     else 
-                        retroaction.text = "Vous n'avez pas assez d'energie."
+                        retroaction.text = "Il est trop tard pour travailler."
                     end
-                else 
-                    retroaction.text = "Il est trop tard pour travailler."
+                else
+                    retroaction.text = "Cet endroit n'ouvre pas les dimanches."
                 end
-            else
-                retroaction.text = "Cet endroit n'ouvre pas les dimanches."
             end
         end
 
@@ -242,7 +244,7 @@ function Interieur:init( destination, jeu, map, perso )
             end
         end
 
-        -- Avance le temps de 9h et donne 80% d'énergie
+        -- Avance le temps de 9h et donne 80% d'énergie ou 100% si loft est acheté
         local function dormir()
             retroaction.text = "Vous dormez pendant 9 heures."
             infos:updateHeure(9)
@@ -335,16 +337,24 @@ function Interieur:init( destination, jeu, map, perso )
         
         local btRetour = cBouton:init("Retour",nil,display.contentCenterX*1.4,display.contentCenterY*1.5,retour)
         if destination ~= "loft" or table.indexOf( perso.inventaire, "loft" ) ~= nil then
+            -- Si le perso entre dans l'appartement et qu'il a acheté le loft
             if destination == "appartement" and table.indexOf( perso.inventaire, "loft" ) ~= nil then
                 btRetour.x = display.contentCenterX
                 btRetour.y = display.contentCenterY
                 retroaction.text = "Vous n'habitez plus ici desormais."
+            -- Si le perso entre dans un bâtiment de travail 
+            elseif (perso.carriere == "sciences" and destination ~= "faculte") or (perso.carriere == "sports" and destination ~= "centresportif") then
+                btRetour.x = display.contentCenterX
+                btRetour.y = display.contentCenterY
+                retroaction.text = "Vous ne travaillez pas ici."
             else
                 local bt1 = cBouton:init(src.bt1,src.bt1desc,display.contentCenterX/1.65,display.contentCenterY,func.bt1,func.bt1param)
                 self:insert(bt1)
+                -- S'il y a un troisième bouton à générer
                 if src.bt3~=nil then
                     local bt3 = cBouton:init(src.bt3,src.bt3desc,display.contentCenterX/1.65,display.contentCenterY*1.5,func.bt3,func.bt3param)
                     self:insert(bt3)
+                -- Si le bâtiment n'est pas la banque
                 elseif destination ~= "banque" then
                     if src.bt2==nil then
                         btRetour.y = bt1.y
@@ -352,6 +362,7 @@ function Interieur:init( destination, jeu, map, perso )
                         btRetour.x = bt1.x
                     end
                 end
+                -- S'il y a un deuxième bouton à générer
                 if src.bt2~=nil then
                     local bt2 = cBouton:init(src.bt2,src.bt2desc,display.contentCenterX*1.4,display.contentCenterY,func.bt2,func.bt2param)
                     self:insert(bt2)

@@ -21,7 +21,7 @@ function Jeu:init()
 
     local spawns = { 
         appartement = { x = 946, y= 1150 },
-        loft        = { x = -1470, y = -400 }
+        loft        = { x = -1275, y = -400 }
     }
 
     local maMap
@@ -75,12 +75,7 @@ function Jeu:init()
         -- monPerso:changerVehicule( "marche" )
     end
 
-    -- Quand le personnage meurt ou perd la partie
-    function jeu:mourir()
-        donnees:prepForSave( monPerso, _G.infos )
-        self:kill()
-    end
-
+    -- Détruire le jeu et tous ses enfants
     function jeu:kill()
         local function recursiveKill(group) -- fonction locale récursive appelant la fonction kill de chaque enfant (removeEventListeners)
             for i=group.numChildren,1,-1 do
@@ -96,7 +91,6 @@ function Jeu:init()
         self:removeSelf()
         infos:removeSelf()
         _G.infos = nil
-        print(_G.infos)
         cMenu:init()
     end
 

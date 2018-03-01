@@ -160,7 +160,7 @@ function Perso:init(xorig, yorig, map, joystick, jeu)
             if e.other.type=="porte" then
                 jeu:entrerBatiment(e.other.destination)
             elseif e.other.type=="auto" then
-                jeu:mourir()
+                jeu:kill()
             end
         end
     end
