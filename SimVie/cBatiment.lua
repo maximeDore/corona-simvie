@@ -22,7 +22,7 @@ function Batiment:init(parent,img,x,y,destination,porteX,outline)
         if outline then
             physics.addBody( sprite, "static", { outline=imgOutline, friction=0, bounce=0} )
         else
-            physics.addBody( sprite, "static", { density=0, friction=0, bounce=0} )
+            physics.addBody( sprite, "static", { density=100, friction=0, bounce=0} )
         end
         parent:insert(self)
     end

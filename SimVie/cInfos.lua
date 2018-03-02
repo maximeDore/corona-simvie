@@ -41,10 +41,6 @@ function Infos:init( heureDepart, indexDepart, map, perso, jeu )
             interet = _G.data.interet
             _G.data = nil
         end
-        -- Mesures de prévention de bogue
-        if interet == nil then
-            interet = math.random(4, 7)/100
-        end
 
         -- Accéder au nom de l'emploi actuel et au prochain objectif d'aptitude pour la promotion
         if emploiIndex<=10 then

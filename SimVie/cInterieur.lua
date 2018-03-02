@@ -32,13 +32,17 @@ function Interieur:init( destination, jeu, map, perso )
         depanneur =     { titre = "Depanneur", bg = "bg.jpg", bt1 = "Cafe", bt1desc = "+5 nrg, -"..objets[1].prix.."$", bt2 = "Barre d'nrg", bt2desc = "+10 nrg, -"..objets[2].prix.."$", bt3 = "Boisson NRG", bt3desc = "+25 nrg, -"..objets[3].prix.."$" },
         magasin =       { titre = "Magasin", bg = "bg.jpg", bt1 = "Tapis Roulant", bt1desc = objets[4].prix.."$", bt2 = "Mobilette", bt2desc = "+12.5 vit, -"..objets[5].prix.."$", bt3 = "Voiture", bt3desc = "+20 vit, -"..objets[6].prix.."$" },
         banque =        { titre = "Banque", bg = "bg.jpg", bt1 = "Deposer", bt2 = "Retirer" },
-        appartement =   { titre = "Appartement", bg = "bg.jpg", bt1 = "Dormir", bt1desc = "+80 nrg, +9h", bt2 = "Sieste", bt2desc = "+5 nrg, +1h" },
-        loft =          { titre = "Loft", bg = "bg.jpg", bt1 = "Dormir", bt1desc = "+80 nrg, +9h", bt2 = "Sieste", bt2desc = "+5 nrg, +1h", bt3 = "S'entrainer", bt3desc = "+1 For"},
+        appartement =   { titre = "Appartement", bg = "bg.jpg", bt1 = "Dormir", bt1desc = "+80 nrg, +9h", bt2 = "Sieste", bt2desc = "+5 nrg, +1h", bt3 = "S'entrainer", bt3desc = "+1 For" },
+        loft =          { titre = "Loft", bg = "bg.jpg", bt1 = "Dormir", bt1desc = "+100 nrg, +9h", bt2 = "Sieste", bt2desc = "+5 nrg, +1h", bt3 = "S'entrainer", bt3desc = "+1 For"},
         centresportif = { titre = "Centre Sportif", bg = "bg.jpg", bt1 = "Travailler", bt1desc = "$$$", bt2 = "Demander", bt2desc = "une promotion"},
         faculte =       { titre = "Faculte des sciences", bg = "bg.jpg", bt1 = "Travailler", bt1desc = "$$$", bt2 = "Demander", bt2desc = "une promotion"}
     }
     if perso.carriere == "sciences" then
         tSrc.magasin.bt1 = "Bibliotheque"
+        tSrc.loft.bt3 = "Etudier"
+        tSrc.loft.bt3desc = "+1 Intelligence"
+        tSrc.appartement.bt3 = "Etudier"
+        tSrc.appartement.bt3desc = "+1 Intelligence"
     end
     
     function interieur:init()
@@ -336,14 +340,18 @@ function Interieur:init( destination, jeu, map, perso )
         retroaction:setFillColor(1,0,0)
         
         local btRetour = cBouton:init("Retour",nil,display.contentCenterX*1.4,display.contentCenterY*1.5,retour)
+        -- Si le perso entre dans un bâtiment qui n'est pas le loft ou qu'il a acheté le loft
         if destination ~= "loft" or table.indexOf( perso.inventaire, "loft" ) ~= nil then
+            if table.indexOf( perso.inventaire, "Tapis roulant") == nil then
+                src.bt3 = nil
+            end
             -- Si le perso entre dans l'appartement et qu'il a acheté le loft
             if destination == "appartement" and table.indexOf( perso.inventaire, "loft" ) ~= nil then
                 btRetour.x = display.contentCenterX
                 btRetour.y = display.contentCenterY
                 retroaction.text = "Vous n'habitez plus ici desormais."
-            -- Si le perso entre dans un bâtiment de travail 
-            elseif (perso.carriere == "sciences" and destination ~= "faculte") or (perso.carriere == "sports" and destination ~= "centresportif") then
+            -- Si le perso entre dans un bâtiment de travail et qu'il ne travaille pas là
+            elseif (perso.carriere == "sports" and destination == "faculte") or (perso.carriere == "sciences" and destination == "centresportif") then
                 btRetour.x = display.contentCenterX
                 btRetour.y = display.contentCenterY
                 retroaction.text = "Vous ne travaillez pas ici."

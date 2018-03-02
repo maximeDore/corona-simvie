@@ -13,8 +13,8 @@ function Joystick:init(innerRadius, outerRadius)
     local bgJoystick = display.newCircle( joyGroup, 0,0, outerRadius )
     bgJoystick:setFillColor( .2,.2,.2,.25 )
     
-    local radToDeg = 180/math.pi
-    local degToRad = math.pi/180
+    local rad2Deg = 180/math.pi
+    local deg2Rad = math.pi/180
     local radAngle = 0
     local joystick = display.newCircle( joyGroup, 0,0, innerRadius )
     joystick:setFillColor( .8,.8,.8,.25 )
@@ -48,7 +48,7 @@ function Joystick:init(innerRadius, outerRadius)
             end
             local parent = self.parent
             local posX, posY = parent:contentToLocal(event.x, event.y)
-            angle = (math.atan2( posX, posY )*radToDeg)-90
+            angle = (math.atan2( posX, posY )*rad2Deg)-90
             if( angle < 0 ) then
                 angle = 360 + angle
             end
@@ -64,7 +64,7 @@ function Joystick:init(innerRadius, outerRadius)
                 self.x = posX
                 self.y = posY
             end
-            radAngle = angle*degToRad
+            radAngle = angle*deg2Rad
             self.x = distance*math.cos(radAngle)
             self.y = -distance*math.sin(radAngle)
         else

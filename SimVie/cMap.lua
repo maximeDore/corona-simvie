@@ -17,6 +17,20 @@ function Map:init( perso )
     function map:init()
         local ville = display.newImageRect(self, "map.png", 6800, 3400)
 
+        -- Limites physiques de la map
+        local murNord = display.newRect( self, ville.x, -ville.height/2, ville.width, 50 )
+        physics.addBody( murNord, "static", { density=0, friction=0, bounce=0} )
+        murNord.isVisible = false
+        local murSud = display.newRect( self, ville.x, ville.height/2, ville.width, 20 )
+        physics.addBody( murSud, "static", { density=0, friction=0, bounce=0} )
+        murSud.isVisible = false
+        local murOuest = display.newRect( self, ville.width/2, ville.y, 20, ville.height )
+        physics.addBody( murOuest, "static", { density=0, friction=0, bounce=0} )
+        murOuest.isVisible = false
+        local murEst = display.newRect( self, -ville.width/2, ville.y, 20, ville.height )
+        physics.addBody( murEst, "static", { density=0, friction=0, bounce=0} )
+        murEst.isVisible = false
+
         -- Bâtiments avec physiques
         -- Batiment:init( parent, img, x, y, destination, porteX, outline )
         local gymTop = cBatiment:init(self,"gymTop.png",-1356.8,525)
@@ -24,20 +38,20 @@ function Map:init( perso )
         local gym = cBatiment:init(self,"gym.png",-1356.8,854.4,"gym",193.24)
         local depanneur = cBatiment:init(self,"depanneur.png",-2566.5,854.4,"depanneur",-64)
         local magasin = cBatiment:init(self,"magasin.png",1425,526,"magasin",0,true)
+        local banque = cBatiment:init(self,"banque.png",100,650,"banque",3)
         local appartement = cBatiment:init(self,"appartement.png",890,670,"appartement",46)
         local clotureLoft = cBatiment:init(self,"clotureLoft.png",-1429 ,-625, nil,nil,true)
         local loft = cBatiment:init(self,"loft.png",-1429 ,-800, "loft",-45,true)
-        local universite = cBatiment:init(self,"universite.png",300,-735,"universite",0)
-        local banque = cBatiment:init(self,"banque.png",100,650,"banque",3)
-        local centreSportif = cBatiment:init(self,"centreSportif.png",1500,-735,"centresportif",-177)
+        local universite = cBatiment:init(self,"universite.png",296,-735,"universite",0)
+        local centreSportif = cBatiment:init(self,"centreSportif.png",1519,-777,"centresportif",-177)
         local faculte = cBatiment:init(self,"faculte.png",2330,675,"faculte",-40,true)
 
         -- Autos
-        for i=1,8,2 do
-            local auto = cAuto:init(i)
-            autos:insert(auto)
-        end
-        self:insert(autos)
+        -- for i=1,8,2 do
+        --     local auto = cAuto:init(i)
+        --     autos:insert(auto)
+        -- end
+        -- self:insert(autos)
 
         -- Filtre qui obscurcit l'écran selon l'heure
         filtreNocturne = display.newRect(self, 0, 0, 6800, 3400 )

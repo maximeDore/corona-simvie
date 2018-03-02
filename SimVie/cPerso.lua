@@ -7,8 +7,8 @@
 local Perso = {}
 
 -- Mise en mémoire des infos du sprite de l'ogre (ogre en anim png et lua)
-local spriteSheet = require("ogre_anim")
-local myImageSheet = graphics.newImageSheet("ogre_anim.png", spriteSheet:getSheet() )
+local spriteSheet = require("sports_anim")
+local myImageSheet = graphics.newImageSheet("sports_anim.png", spriteSheet:getSheet() )
 
 -- Méthode init du perso
 function Perso:init(xorig, yorig, map, joystick, jeu)
@@ -22,6 +22,8 @@ function Perso:init(xorig, yorig, map, joystick, jeu)
     -- Constructeur de Perso
     function perso:init()
         local avatar = display.newSprite(self, myImageSheet, spriteSheet:getSpriteIndex())
+        -- local bodyDummy = display.newCircle( self, avatar.x, avatar.height, avatar.height/4 )
+        -- bodyDummy.isVisible = false
         self.type = "perso"
         self.avatar = avatar
         self.x = xorig
@@ -30,7 +32,6 @@ function Perso:init(xorig, yorig, map, joystick, jeu)
         self.vit = 0
         self.angRad = 0
         self.avatar:play()
-        self.isFixedRotation = true
         -- Données sauvegardées
         if _G.data == nil then
             self.energie = 100
@@ -51,13 +52,6 @@ function Perso:init(xorig, yorig, map, joystick, jeu)
             self.carriere = _G.data.carriere
             self.inventaire = _G.data.inventaire
         end
-        -- Mesures de prévention des bogues
-        if self.inventaire == nil then
-            self.inventaire = {}
-        end
-        if self.energie == nil then
-            self.energie = 100
-        end
 
         -- Destruction des valeurs globales
         _G.forNum = nil
@@ -70,45 +64,29 @@ function Perso:init(xorig, yorig, map, joystick, jeu)
     function perso:enterFrame(e)
         self.vit = joystick:getDistance()*self.vitModif
         self.angRad = joystick:getAngRad()
-        self.x = self.x + self.vit*math.cos(self.angRad)
-        self.y = self.y + self.vit*math.sin(self.angRad)
-        -- local angle = self.angRad*180/math.pi
+        -- self.x = self.x + self.vit*math.cos(self.angRad)
+        -- self.y = self.y + self.vit*math.sin(self.angRad)
+        self:setLinearVelocity( self.vit*math.cos(self.angRad)*50,self.vit*math.sin(self.angRad)*50 )
+        self.angularVelocity = 0
         local angle = joystick:getAngle()*-1
         if angle < -180 then
             angle = angle+360
         end
 
         local seq
-        local sca = 1
+        local sca = 1.75
+        self.yScale = sca/1.15
 
         -- Spectre des angles pour les séquence de sprite
-        if angle < 22.5 and angle >= -22.5 then
-            seq ="ogre_marche_p"
-            -- print("right")
-        elseif angle < 67.5 and angle >= 22.5 then
-            seq ="ogre_marche_45"
-            -- print("down Right")
-        elseif angle < 112.5 and angle >= 67.5 then
-            seq ="ogre_marche_f"
-            -- print("down")
-        elseif angle < 157.5 and angle >= 112.5 then
-            seq ="ogre_marche_45"
-            sca = -1
-            -- print("down Left")
-        elseif angle > 157.5 or angle < -157.5 then
-            seq ="ogre_marche_p"
-            sca = -1
-            -- print("left")
-        elseif angle >= -157.5 and angle < -112.5 then
-            seq ="ogre_marche_dos45"
-            sca = -1
-            -- print("up Left")
-        elseif angle >= -112.5 and angle <- 67.5 then
-            seq ="ogre_marche_dos"
-            -- print("up")
-        elseif angle >= -67.5 and angle < -22.5 then
-            seq ="ogre_marche_dos45"
-            -- print("up Right")
+        if angle >= 135 or angle <= -135 then
+            seq ="perso_profil"
+            sca = -sca
+        elseif angle < 45 and angle >= -45 then
+            seq ="perso_profil"
+        elseif angle < 135 and angle >= 45 then
+            seq ="perso_face"
+        elseif angle < -35 and angle >= -135 then
+            seq ="perso_dos"
         else print(angle)
         end
         -- Change l'orientation du personnage selon 1 et -1 de sca
@@ -121,6 +99,7 @@ function Perso:init(xorig, yorig, map, joystick, jeu)
         if self.vit>0.25 then
             self.avatar:play()
         else
+            self.avatar:setSequence(seq.."_idle")
             self.avatar:pause()
         end
     end
@@ -172,9 +151,14 @@ function Perso:init(xorig, yorig, map, joystick, jeu)
 
     -- Appel du constructeur de la fonction et ajouts d'écouteurs
     perso:init()
-    physics.addBody( perso, { density=0, friction=1, bounce=0, radius=perso.width/4 } )
+
+    -- Forme du corps de physique du personnage (octogone)
+    local w,h = perso.width/2,perso.height/2
+    local bodyShape = { w-10,h-10,  w,h,  w,h+h/2-10,  w-10,h+h/2,  -w+10,h+h/2,  -w,h+h/2-10,  -w,h,  -w+10,h-10 }
+    physics.addBody( perso, { density=1, friction=1, bounce=0, shape=bodyShape } )
+    perso.isFixedRotation = true
+
     perso:addEventListener( "collision" )
-    -- Runtime:addEventListener( "touch", perso )
     Runtime:addEventListener( "enterFrame", perso )
     return perso
 end
