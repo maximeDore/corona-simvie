@@ -22,8 +22,6 @@ function Perso:init(xorig, yorig, map, joystick, jeu)
     -- Constructeur de Perso
     function perso:init()
         local avatar = display.newSprite(self, myImageSheet, spriteSheet:getSpriteIndex())
-        -- local bodyDummy = display.newCircle( self, avatar.x, avatar.height, avatar.height/4 )
-        -- bodyDummy.isVisible = false
         self.type = "perso"
         self.avatar = avatar
         self.x = xorig
@@ -140,6 +138,18 @@ function Perso:init(xorig, yorig, map, joystick, jeu)
                 jeu:entrerBatiment(e.other.destination)
             elseif e.other.type=="auto" then
                 jeu:kill()
+            end
+        end
+    end
+
+    function perso:assombrir(heure)
+        if heure > 12 then
+            perso.avatar:setFillColor( (heure-17)*8/-100+1 )
+        else
+            if heure < 4 then
+                perso.avatar:setFillColor( (7)*8/-100+1 )
+            else
+                perso.avatar:setFillColor( (13-heure*2)*8/-100+1 )
             end
         end
     end

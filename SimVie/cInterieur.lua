@@ -342,7 +342,7 @@ function Interieur:init( destination, jeu, map, perso )
         local btRetour = cBouton:init("Retour",nil,display.contentCenterX*1.4,display.contentCenterY*1.5,retour)
         -- Si le perso entre dans un bâtiment qui n'est pas le loft ou qu'il a acheté le loft
         if destination ~= "loft" or table.indexOf( perso.inventaire, "loft" ) ~= nil then
-            if table.indexOf( perso.inventaire, "Tapis roulant") == nil then
+            if destination == "appartement" and table.indexOf( perso.inventaire, "Tapis roulant") == nil then
                 src.bt3 = nil
             end
             -- Si le perso entre dans l'appartement et qu'il a acheté le loft

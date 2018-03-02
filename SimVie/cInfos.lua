@@ -125,6 +125,7 @@ function Infos:init( heureDepart, indexDepart, map, perso, jeu )
             heureDisplay.text = "00:00"
         end
         map:assombrir(heure)
+        perso:assombrir(heure)
     end
     
     -- Mise à jour de l'affichage des informations dans le téléphone
