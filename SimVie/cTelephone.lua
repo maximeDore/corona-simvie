@@ -12,13 +12,14 @@ function Telephone:init( parent, perso, jeu )
     local posDown = display.contentHeight-display.screenOriginY+210
 
     local cDonnees = require("cDonnees")
+    local tEvents = require("events")
 
     local telephone = display.newGroup()
     local screenSave = display.newGroup()
     local screenStats = display.newGroup()
     local screenContacts = display.newGroup()
     local screenBanque = display.newGroup()
-    local screenGps = display.newGroup()
+    local screenInventaire = display.newGroup()
     local screenAlertes = display.newGroup()
     local screenMenu = display.newGroup()
     local screenHome = display.newGroup()
@@ -57,7 +58,7 @@ function Telephone:init( parent, perso, jeu )
             screenHome.isVisible = true
             screenContacts.isVisible = false
             screenStats.isVisible = false
-            screenGps.isVisible = false
+            screenInventaire.isVisible = false
             screenBanque.isVisible = false
             screenMenu.isVisible = false
             screenAlertes.isVisible = false
@@ -76,9 +77,9 @@ function Telephone:init( parent, perso, jeu )
             screenHome.isVisible = false
             screenAlertes.isVisible = true
         end
-        local function afficherGps()
+        local function afficherInventaire()
             screenHome.isVisible = false
-            screenGps.isVisible = true
+            screenInventaire.isVisible = true
         end
         local function afficherBanque()
             screenHome.isVisible = false
@@ -162,13 +163,13 @@ function Telephone:init( parent, perso, jeu )
         -- Boutons de l'écran d'accueil
         -- Disposition :
         -- BtStats  btContacts  btAlertes
-        -- btGps    btBanque    btMute
+        -- btInventaire    btBanque    btMute
         -- btSave   btMenu
         -- btMarche btScooter   btVoiture
         local btStats = cBouton:init( "btStats.png", nil, -bgStats.width/3.25, -bgStats.height*.35, afficherStats )
         local btContacts = cBouton:init( "btContacts.png", nil, 0, -bgStats.height*.35, afficherContacts )
         local btAlertes = cBouton:init( "btAlertes.png", nil, bgStats.width/3.25, -bgStats.height*.35, afficherAlertes )
-        local btGps = cBouton:init( "btGps.png", nil, -bgStats.width/3.25, -bgStats.height*.15, afficherGps )
+        local btInventaire = cBouton:init( "btGps.png", nil, -bgStats.width/3.25, -bgStats.height*.15, afficherInventaire )
         local btBanque = cBouton:init( "btBanque.png", nil, 0, -bgStats.height*.15, afficherBanque )
         local btMute = cBouton:init( "btMute.png", nil, bgStats.width/3.25, -bgStats.height*.15, mute )
         local btSave = cBouton:init( "btSave.png", nil, -bgStats.width/3.25, bgStats.height*.05, afficherSave )
@@ -190,7 +191,7 @@ function Telephone:init( parent, perso, jeu )
         screenHome:insert(btStats)
         screenHome:insert(btContacts)
         screenHome:insert(btAlertes)
-        screenHome:insert(btGps)
+        screenHome:insert(btInventaire)
         screenHome:insert(btBanque)
         screenHome:insert(btMute)
         screenHome:insert(btSave)
@@ -312,7 +313,7 @@ function Telephone:init( parent, perso, jeu )
 
         local optionsAlerte1 = {
             parent = alertContent,
-            text = "Message d'interet public : \n\nLa banque sera fermee aujourd'hui suite au cambriolage de la veille.",
+            text = tEvents.events.cambriolage,
             x = bgMenu.width,
             y = -bgMenu.height/2+245,
             width = bgMenu.width-40,
@@ -332,7 +333,7 @@ function Telephone:init( parent, perso, jeu )
         screenSave.isVisible = false
         screenAlertes.isVisible = false
         screenBanque.isVisible = false
-        screenGps.isVisible = false
+        screenInventaire.isVisible = false
 
 
         self:insert(tapZone)
@@ -341,7 +342,7 @@ function Telephone:init( parent, perso, jeu )
         self:insert(screenStats)
         self:insert(screenAlertes)
         self:insert(screenBanque)
-        self:insert(screenGps)
+        self:insert(screenInventaire)
         self:insert(screenMenu)
         self:insert(screenSave)
         self:insert(btHome)

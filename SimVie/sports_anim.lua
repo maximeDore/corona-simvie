@@ -6,25 +6,25 @@ frames = {
 {
 
    --Occurrence sports_dos 10003
-   x=128,
+   x=125,
    y=5,
-   width=36,
+   width=35,
    height=69,
    sourceX=0,
    sourceY=0,
-   sourceWidth=36,
+   sourceWidth=35,
    sourceHeight=69
 },
 {
 
    --Occurrence sports_dos 10002
-   x=87,
+   x=85,
    y=5,
-   width=36,
+   width=35,
    height=69,
    sourceX=0,
    sourceY=0,
-   sourceWidth=36,
+   sourceWidth=35,
    sourceHeight=69
 },
 {
@@ -54,7 +54,7 @@ frames = {
 {
 
    --Occurrence sports_face 10001
-   x=166,
+   x=164,
    y=79,
    width=35,
    height=70,
@@ -114,25 +114,25 @@ frames = {
 {
 
    --Occurrence sports_dos 10005
-   x=210,
+   x=205,
    y=5,
-   width=36,
+   width=35,
    height=69,
    sourceX=0,
    sourceY=0,
-   sourceWidth=36,
+   sourceWidth=35,
    sourceHeight=69
 },
 {
 
    --Occurrence sports_dos 10007
-   x=46,
+   x=45,
    y=79,
-   width=36,
+   width=35,
    height=69,
    sourceX=0,
    sourceY=0,
-   sourceWidth=36,
+   sourceWidth=35,
    sourceHeight=69
 },
 {
@@ -176,11 +176,11 @@ frames = {
    --Occurrence sports_dos 10000
    x=5,
    y=5,
-   width=36,
+   width=35,
    height=69,
    sourceX=0,
    sourceY=0,
-   sourceWidth=36,
+   sourceWidth=35,
    sourceHeight=69
 },
 {
@@ -210,7 +210,7 @@ frames = {
 {
 
    --Occurrence sports_face 10000
-   x=126,
+   x=124,
    y=79,
    width=35,
    height=70,
@@ -234,7 +234,7 @@ frames = {
 {
 
    --Occurrence sports_face 10002
-   x=206,
+   x=204,
    y=79,
    width=35,
    height=70,
@@ -260,29 +260,29 @@ frames = {
    --Occurrence sports_dos 10006
    x=5,
    y=79,
-   width=36,
+   width=35,
    height=69,
    sourceX=0,
    sourceY=0,
-   sourceWidth=36,
+   sourceWidth=35,
    sourceHeight=69
 },
 {
 
    --Occurrence sports_dos 10004
-   x=169,
+   x=165,
    y=5,
-   width=36,
+   width=35,
    height=69,
    sourceX=0,
    sourceY=0,
-   sourceWidth=36,
+   sourceWidth=35,
    sourceHeight=69
 },
 {
 
    --Occurrence sports_dos_idle 10000
-   x=87,
+   x=85,
    y=79,
    width=34,
    height=68,
@@ -318,13 +318,13 @@ frames = {
 {
 
    --Occurrence sports_dos 10001
-   x=46,
+   x=45,
    y=5,
-   width=36,
+   width=35,
    height=69,
    sourceX=0,
    sourceY=0,
-   sourceWidth=36,
+   sourceWidth=35,
    sourceHeight=69
 },
  
@@ -335,12 +335,8 @@ sheetContentHeight =400
 
 SheetInfo.frameIndex =
 {
-["perso_face"]={18,5,20,16,3,14,4,21},
-["perso_dos"]={15,27,2,1,23,10,22,11},
-["perso_profil"]={26,12,9,6,13,19,8,25},
-["perso_face_idle"]={7},
-["perso_profil_idle"]={17},
-["perso_dos_idle"]={24},
+
+["perso_dos"]={15,27,2,1,23,10,22,11},["perso_face"]={18,5,20,16,3,14,4,21},["perso_profil"]={26,12,9,6,13,19,8,25},["perso_face_idle"]={7},["perso_profil_idle"]={17},["perso_dos_idle"]={24},
 }
 
 SheetInfo.spriteIndex =
@@ -348,12 +344,12 @@ SheetInfo.spriteIndex =
 -- time=100,        -- Optional. In ms.  If not supplied, then sprite is frame-based.
 -- loopCount = 0    -- Optional. Default is 0 (loop indefinitely)
 -- loopDirection = "bounce"    -- Optional. Values include: "forward","bounce"
-{name="perso_face",frames={18,5,20,16,3,14,4,21},time="500"},
 {name="perso_dos",frames={15,27,2,1,23,10,22,11},time="500"},
+{name="perso_face",frames={18,5,20,16,3,14,4,21},time="500"},
 {name="perso_profil",frames={26,12,9,6,13,19,8,25},time="500"},
-{name="perso_face_idle",frames={7},},
-{name="perso_profil_idle",frames={17},},
-{name="perso_dos_idle",frames={24},},
+{name="perso_face_idle",frames={7},time="500"},
+{name="perso_profil_idle",frames={17},time="500"},
+{name="perso_dos_idle",frames={24},time="500"},
 
 }
 

@@ -2,71 +2,71 @@
 
 "Occurrence sports_dos 10000":
 {
-	"frame": {"x":5,"y":5,"w":36,"h":69},
+	"frame": {"x":5,"y":5,"w":35,"h":69},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":36,"h":69},
-	"sourceSize": {"w":36,"h":69}
+	"spriteSourceSize": {"x":0,"y":0,"w":35,"h":69},
+	"sourceSize": {"w":35,"h":69}
 },
 "Occurrence sports_dos 10001":
 {
-	"frame": {"x":46,"y":5,"w":36,"h":69},
+	"frame": {"x":45,"y":5,"w":35,"h":69},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":36,"h":69},
-	"sourceSize": {"w":36,"h":69}
+	"spriteSourceSize": {"x":0,"y":0,"w":35,"h":69},
+	"sourceSize": {"w":35,"h":69}
 },
 "Occurrence sports_dos 10002":
 {
-	"frame": {"x":87,"y":5,"w":36,"h":69},
+	"frame": {"x":85,"y":5,"w":35,"h":69},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":36,"h":69},
-	"sourceSize": {"w":36,"h":69}
+	"spriteSourceSize": {"x":0,"y":0,"w":35,"h":69},
+	"sourceSize": {"w":35,"h":69}
 },
 "Occurrence sports_dos 10003":
 {
-	"frame": {"x":128,"y":5,"w":36,"h":69},
+	"frame": {"x":125,"y":5,"w":35,"h":69},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":36,"h":69},
-	"sourceSize": {"w":36,"h":69}
+	"spriteSourceSize": {"x":0,"y":0,"w":35,"h":69},
+	"sourceSize": {"w":35,"h":69}
 },
 "Occurrence sports_dos 10004":
 {
-	"frame": {"x":169,"y":5,"w":36,"h":69},
+	"frame": {"x":165,"y":5,"w":35,"h":69},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":36,"h":69},
-	"sourceSize": {"w":36,"h":69}
+	"spriteSourceSize": {"x":0,"y":0,"w":35,"h":69},
+	"sourceSize": {"w":35,"h":69}
 },
 "Occurrence sports_dos 10005":
 {
-	"frame": {"x":210,"y":5,"w":36,"h":69},
+	"frame": {"x":205,"y":5,"w":35,"h":69},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":36,"h":69},
-	"sourceSize": {"w":36,"h":69}
+	"spriteSourceSize": {"x":0,"y":0,"w":35,"h":69},
+	"sourceSize": {"w":35,"h":69}
 },
 "Occurrence sports_dos 10006":
 {
-	"frame": {"x":5,"y":79,"w":36,"h":69},
+	"frame": {"x":5,"y":79,"w":35,"h":69},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":36,"h":69},
-	"sourceSize": {"w":36,"h":69}
+	"spriteSourceSize": {"x":0,"y":0,"w":35,"h":69},
+	"sourceSize": {"w":35,"h":69}
 },
 "Occurrence sports_dos 10007":
 {
-	"frame": {"x":46,"y":79,"w":36,"h":69},
+	"frame": {"x":45,"y":79,"w":35,"h":69},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":36,"h":69},
-	"sourceSize": {"w":36,"h":69}
+	"spriteSourceSize": {"x":0,"y":0,"w":35,"h":69},
+	"sourceSize": {"w":35,"h":69}
 },
 "Occurrence sports_dos_idle 10000":
 {
-	"frame": {"x":87,"y":79,"w":34,"h":68},
+	"frame": {"x":85,"y":79,"w":34,"h":68},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":34,"h":68},
@@ -74,7 +74,7 @@
 },
 "Occurrence sports_face 10000":
 {
-	"frame": {"x":126,"y":79,"w":35,"h":70},
+	"frame": {"x":124,"y":79,"w":35,"h":70},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":35,"h":70},
@@ -82,7 +82,7 @@
 },
 "Occurrence sports_face 10001":
 {
-	"frame": {"x":166,"y":79,"w":35,"h":70},
+	"frame": {"x":164,"y":79,"w":35,"h":70},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":35,"h":70},
@@ -90,7 +90,7 @@
 },
 "Occurrence sports_face 10002":
 {
-	"frame": {"x":206,"y":79,"w":35,"h":70},
+	"frame": {"x":204,"y":79,"w":35,"h":70},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":35,"h":70},
