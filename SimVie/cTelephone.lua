@@ -14,10 +14,6 @@ function Telephone:init( parent, perso, jeu )
     local cDonnees = require("cDonnees")
 
     local telephone = display.newGroup()
-    local phone
-    local tapZone
-    local btHome
-    local bgStats
     local screenSave = display.newGroup()
     local screenStats = display.newGroup()
     local screenContacts = display.newGroup()
@@ -26,6 +22,15 @@ function Telephone:init( parent, perso, jeu )
     local screenAlertes = display.newGroup()
     local screenMenu = display.newGroup()
     local screenHome = display.newGroup()
+    local alertContent
+    local bgAlerteContenu
+    local contenuAlerte
+    local contenuAlerteTexte
+    local btRetour
+    local phone
+    local tapZone
+    local btHome
+    local bgMenu
     local btScooter
     local btVoiture
     local aptitudesNum
@@ -35,6 +40,7 @@ function Telephone:init( parent, perso, jeu )
     local barreEnergie
     local balanceDisplay
     local interetDisplay
+    local screenMask = graphics.newMask( "screen.png" )
     
     function telephone:init()
         -- Monter/descendre le téléphone
@@ -108,18 +114,47 @@ function Telephone:init( parent, perso, jeu )
             jeu:kill()
         end
 
+        local function afficherAlerte( indexAlerte )
+            local index = indexAlerte
+            for i=1,alertContent.numChildren do
+                if alertContent[i].type == "bouton" then
+                    alertContent[i]:disable()
+                end
+            end
+            bgAlerteContenu.type = "content"
+            transition.to( bgAlerteContenu, { time = 500, x = 0, transition=easing.outQuart } )
+            transition.to( contenuAlerte, { time = 500, x = 0, transition=easing.outQuart } )
+            transition.to( contenuAlerteTexte, { time = 500, x = 0, transition=easing.outQuart } )
+            btRetour.isVisible = true
+        end
+
+        local function cacherAlerte()
+            for i=1,alertContent.numChildren do
+                if alertContent[i].type == "bouton" then
+                    alertContent[i]:enable()
+                end
+            end
+            transition.to( bgAlerteContenu, { time = 500, x = bgMenu.width, transition=easing.outQuart } )
+            transition.to( contenuAlerte, { time = 500, x = bgMenu.width, transition=easing.outQuart } )
+            transition.to( contenuAlerteTexte, { time = 500, x = bgMenu.width, transition=easing.outQuart } )
+            btRetour.isVisible = false
+        end
+
         phone = display.newImage( self, "telephone.png" )
-        -- Zone de contact dans le haut du téléphone où il faut tapper pour le monter/descendre
+        -- Zone de contact dans le haut du téléphone où il faut taper pour le monter/descendre
         -- tapZone = display.newRect( self, 0, -phone.height/2.25, phone.width, phone.height/6 )
         tapZone = cBouton:init( nil, nil, 0, -phone.height/2.25, toggleTelephone, nil, phone.width, phone.height/6 )
         self:insert(tapZone)
 
         -- Fonds des différents écrans
-        bgContacts = display.newImage( screenContacts, "screenContacts.png", 0, -10.5 )
-        bgStats = display.newImage( screenStats, "screenStats.png", 0, -10.5 )
-        bgBanque = display.newImage( screenBanque, "screenBanque.png", 0, -10.5 )
-        bgMenu = display.newImage( screenMenu, "screenMenu.png", 0, -10.5 )
-        bgSave = display.newImage( screenSave, "screenSave.png", 0, -10.5 )
+        local bgAlertes = display.newImage( screenAlertes, "screenAlertes.png", 0, -10.5 )
+        local bgContacts = display.newImage( screenContacts, "screenContacts.png", 0, -10.5 )
+        local bgStats = display.newImage( screenStats, "screenStats.png", 0, -10.5 )
+        local bgBanque = display.newImage( screenBanque, "screenBanque.png", 0, -10.5 )
+        local bgSave = display.newImage( screenSave, "screenSave.png", 0, -10.5 )
+        bgMenu = display.newImage( screenMenu, "screenMenu.png", 0, -10.5 ) -- Globale à la classe pour référence
+
+        -- bgAlertes:setMask( screenMask )
 
         -- Bouton physique du téléphone (home button)
         local btHome = cBouton:init( "", nil, 0, bgStats.height/1.8, afficherHome, nil, 75, 50 )
@@ -138,6 +173,7 @@ function Telephone:init( parent, perso, jeu )
         local btMute = cBouton:init( "btMute.png", nil, bgStats.width/3.25, -bgStats.height*.15, mute )
         local btSave = cBouton:init( "btSave.png", nil, -bgStats.width/3.25, bgStats.height*.05, afficherSave )
         local btMenu = cBouton:init( "btMenu.png", nil, 0, bgStats.height*.05, afficherMenu )
+
         -- Boutons de déplacement
         btMarche = cBouton:init( "btMarche.png", nil, -bgStats.width/3.25, bgStats.height*.35, transport, "marche" )
         btScooter = cBouton:init( "btScooter.png", nil, 0, bgStats.height*.35, transport, "scooter" )
@@ -241,7 +277,7 @@ function Telephone:init( parent, perso, jeu )
         balanceDisplay = display.newText( optionsBalance )
         balanceDisplay:setFillColor(0,0,.7)
 
-        local optionsBalance = {
+        local optionsInteret = {
             text = parent:getInteret().." %",
             x = bgMenu.width/2-110,
             y = bgMenu.height*.135,
@@ -251,10 +287,43 @@ function Telephone:init( parent, perso, jeu )
             fontSize = 40,
             align = "right"  -- Alignment parameter
         }
-        interetDisplay = display.newText( optionsBalance )
+        interetDisplay = display.newText( optionsInteret )
         interetDisplay:setFillColor(0,0,.7)
         screenBanque:insert(balanceDisplay)
         screenBanque:insert(interetDisplay)
+
+
+        -- Écran Alertes        --------------------------------------------------------------------------------------------------------
+        alertContent = display.newContainer( screenAlertes, bgMenu.width, bgMenu.height )
+        bgAlerteContenu = display.newImage( alertContent, "alertContent.png", bgMenu.width, 25 )
+        contenuAlerte = display.newRect( alertContent, bgMenu.width, bgAlerteContenu.y, bgAlerteContenu.width*.9, bgAlerteContenu.height*.9 )
+        contenuAlerte.alpha = 0.75
+
+        btRetour = cBouton:init( "flecheRetour.png", nil, -bgMenu.width/2.5, -bgMenu.height/2.4, cacherAlerte )
+        btRetour.isVisible = false
+        alertContent:insert( btRetour )
+
+        for i=1,4 do
+            local alerteItem = cBouton:init( "alertItem.png", nil, 0, -bgMenu.height/3.85+((i-1)*69), afficherAlerte, i )
+            alerteItem.type = "listItem"
+            alerteItem:disable()
+            alertContent:insert(alerteItem)
+        end
+
+        local optionsAlerte1 = {
+            parent = alertContent,
+            text = "Message d'interet public : \n\nLa banque sera fermee aujourd'hui suite au cambriolage de la veille.",
+            x = bgMenu.width,
+            y = -bgMenu.height/2+245,
+            width = bgMenu.width-40,
+            height = 300,
+            font = "8-Bit Madness.ttf",
+            fontSize = 25,
+            align = "left"  -- Alignment parameter
+        }
+        contenuAlerteTexte = display.newText( optionsAlerte1 )
+        contenuAlerteTexte:setFillColor(0,0,0)
+
 
 
         screenContacts.isVisible = false
@@ -320,10 +389,30 @@ function Telephone:init( parent, perso, jeu )
         end
     end
 
+    function telephone:updateAlertes( nbAlertes, texte1, texte2 )
+        local nb = nbAlertes
+        if nb == nil then
+            nb = 1
+        end
+        local cpt=0
+        for i=1,alertContent.numChildren do
+            if alertContent[i].type == "listItem" and cpt<nb then
+                cpt = cpt + 1
+                alertContent[i]:enable()
+                alertContent[i].type = "bouton"
+            end
+        end
+        bgAlerteContenu:toFront()
+        btRetour:toFront()
+        contenuAlerte:toFront()
+        contenuAlerteTexte:toFront()
+    end
+    
     function telephone:kill()
     end
-
+    
     telephone:init()
+    telephone:updateAlertes(2)
     return telephone
 end
 

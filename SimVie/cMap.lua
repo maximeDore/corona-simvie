@@ -32,9 +32,12 @@ function Map:init( perso )
         murEst.isVisible = false
 
         -- Bâtiments avec physiques
-        -- Batiment:init( parent, img, x, y, destination, porteX, outline )
         local gymTop = cBatiment:init(self,"gymTop.png",-1356.8,525)
         local depTop = cBatiment:init(self,"depanneurTop.png",-2275,435)
+        local panneauPub = cBatiment:init(self,"panneauPub.png",-2275,-525)
+        
+        -- Bâtiments avec intérieur
+        -- Batiment:init( parent, img, x, y, destination, porteX, outline )
         local gym = cBatiment:init(self,"gym.png",-1356.8,854.4,"gym",193.24)
         local depanneur = cBatiment:init(self,"depanneur.png",-2566.5,854.4,"depanneur",-64)
         local magasin = cBatiment:init(self,"magasin.png",1425,526,"magasin",0,true)

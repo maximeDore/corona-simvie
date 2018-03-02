@@ -79,7 +79,7 @@ function Joystick:init(innerRadius, outerRadius)
     
     function joyGroup:activate()
         self:addEventListener("touch", self.joystick )
-        angle = 0
+        angle = -90
         distance = 0
         self.isVisible = true
     end
