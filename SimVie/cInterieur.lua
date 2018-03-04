@@ -16,9 +16,9 @@ function Interieur:init( destination, jeu, map, perso )
     -- Tableau contenant les objets en vente et leur prix (index : 1-3 = dépanneur, 4-6 = magasin)
     local objets = {
         -- Objets d'énergie (dépanneur)
-        { nom = "Cafe", prix = 5, energie = 5 },
+        { nom = "Cafe", prix = 5, energie = 6 },
         { nom = "Barre d'energie", prix = 10, energie = 10 },
-        { nom = "Boisson energisante", prix = 25, energie = 25 },
+        { nom = "Boisson energisante", prix = 20, energie = 25 },
         -- Objets de qualité de vie
         { nom = "Tapis roulant", prix = 750 },
         { nom = "scooter", prix = 500 },
@@ -32,10 +32,10 @@ function Interieur:init( destination, jeu, map, perso )
         depanneur =     { titre = "Depanneur", bg = "bg.jpg", bt1 = "Cafe", bt1desc = "+5 nrg, -"..objets[1].prix.."$", bt2 = "Barre d'nrg", bt2desc = "+10 nrg, -"..objets[2].prix.."$", bt3 = "Boisson NRG", bt3desc = "+25 nrg, -"..objets[3].prix.."$" },
         magasin =       { titre = "Magasin", bg = "bg.jpg", bt1 = "Tapis Roulant", bt1desc = objets[4].prix.."$", bt2 = "Mobilette", bt2desc = "+12.5 vit, -"..objets[5].prix.."$", bt3 = "Voiture", bt3desc = "+20 vit, -"..objets[6].prix.."$" },
         banque =        { titre = "Banque", bg = "bg.jpg", bt1 = "Deposer", bt2 = "Retirer" },
-        appartement =   { titre = "Appartement", bg = "bg.jpg", bt1 = "Dormir", bt1desc = "+80 nrg, +9h", bt2 = "Sieste", bt2desc = "+5 nrg, +1h", bt3 = "S'entrainer", bt3desc = "+1 For" },
+        appartement =   { titre = "Appartement", bg = "bgAppartement.png", bt1 = "Dormir", bt1desc = "+80 nrg, +9h", bt2 = "Sieste", bt2desc = "+5 nrg, +1h", bt3 = "S'entrainer", bt3desc = "+1 For" },
         loft =          { titre = "Loft", bg = "bg.jpg", bt1 = "Dormir", bt1desc = "+100 nrg, +9h", bt2 = "Sieste", bt2desc = "+5 nrg, +1h", bt3 = "S'entrainer", bt3desc = "+1 For"},
-        centresportif = { titre = "Centre Sportif", bg = "bg.jpg", bt1 = "Travailler", bt1desc = "$$$", bt2 = "Demander", bt2desc = "une promotion"},
-        faculte =       { titre = "Faculte des sciences", bg = "bg.jpg", bt1 = "Travailler", bt1desc = "$$$", bt2 = "Demander", bt2desc = "une promotion"}
+        centresportif = { titre = "Centre Sportif", bg = "bgCentreSportif.png", bt1 = "Travailler", bt1desc = "$$$", bt2 = "Demander", bt2desc = "une promotion"},
+        faculte =       { titre = "Faculte des sciences", bg = "bgFaculte.png", bt1 = "Travailler", bt1desc = "$$$", bt2 = "Demander", bt2desc = "une promotion"}
     }
     if perso.carriere == "sciences" then
         tSrc.magasin.bt1 = "Bibliotheque"
@@ -48,11 +48,21 @@ function Interieur:init( destination, jeu, map, perso )
     function interieur:init()
         jeu:insert(self)
         -- local bgMusicChannel = audio.play( bgMusic, { channel=2, loops=-1, fadein=2000 } )
-        -- local bg = display.newImage("bg.jpg",display.contentCenterX,display.contentCenterY)
 
         -- Abréviation
         print(destination)
         local src = tSrc[destination]
+
+        -- Fond d'écran
+        local bg
+        if src.bg == "bg.jpg" then
+            bg = display.newRect(self, display.contentCenterX, display.contentCenterY, display.contentWidth-display.screenOriginX*2, display.contentHeight-display.screenOriginY)
+        else 
+            bg = display.newImageRect(self, src.bg, display.contentWidth-display.screenOriginX*2, display.contentHeight-display.screenOriginY)
+            bg.x = display.contentCenterX
+            bg.y = display.contentCenterY
+        end
+
         -- Fonctions locales des boutons
         local function retour()
             jeu:sortirBatiment()
@@ -312,8 +322,6 @@ function Interieur:init( destination, jeu, map, perso )
         local func = tFunc[destination]
 
         -- Affichage de l'interface et des boutons
-        local bg = display.newRect(self,display.contentCenterX,display.contentCenterY,display.contentWidth,display.contentHeight)
-        -- local bg = display.newImage(self,src.bg,display.contentCenterX,display.contentCenterY)
 
         -- Titre de l'endroit actuel
         local optionsTitre = {
@@ -348,12 +356,12 @@ function Interieur:init( destination, jeu, map, perso )
             -- Si le perso entre dans l'appartement et qu'il a acheté le loft
             if destination == "appartement" and table.indexOf( perso.inventaire, "loft" ) ~= nil then
                 btRetour.x = display.contentCenterX
-                btRetour.y = display.contentCenterY
+                btRetour.y = display.contentCenterY*1.25
                 retroaction.text = "Vous n'habitez plus ici desormais."
             -- Si le perso entre dans un bâtiment de travail et qu'il ne travaille pas là
             elseif (perso.carriere == "sports" and destination == "faculte") or (perso.carriere == "sciences" and destination == "centresportif") then
                 btRetour.x = display.contentCenterX
-                btRetour.y = display.contentCenterY
+                btRetour.y = display.contentCenterY*1.25
                 retroaction.text = "Vous ne travaillez pas ici."
             else
                 local bt1 = cBouton:init(src.bt1,src.bt1desc,display.contentCenterX/1.65,display.contentCenterY,func.bt1,func.bt1param)

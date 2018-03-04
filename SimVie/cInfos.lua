@@ -161,8 +161,8 @@ function Infos:init( heureDepart, indexDepart, map, perso, jeu )
     end
     
     function infos:promotion()
-        emploiIndex = emploiIndex + 1
         if tEmplois[perso.carriere][emploiIndex] ~= nil then 
+            emploiIndex = emploiIndex + 1
             emploi = tEmplois[perso.carriere][emploiIndex]
         end
         self.updateStats()
