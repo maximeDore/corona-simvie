@@ -12,7 +12,6 @@ function Telephone:init( parent, perso, jeu )
     local posDown = display.contentHeight-display.screenOriginY+210
 
     local cDonnees = require("cDonnees")
-    local tEvents = require("events")
 
     local telephone = display.newGroup()
     local screenSave = display.newGroup()
@@ -313,7 +312,7 @@ function Telephone:init( parent, perso, jeu )
 
         local optionsAlerte1 = {
             parent = alertContent,
-            text = tEvents.events.cambriolage,
+            text = "texte",
             x = bgMenu.width,
             y = -bgMenu.height/2+245,
             width = bgMenu.width-40,
@@ -413,7 +412,6 @@ function Telephone:init( parent, perso, jeu )
     end
     
     telephone:init()
-    telephone:updateAlertes(2)
     return telephone
 end
 

@@ -8,6 +8,7 @@ function Infos:init( heureDepart, indexDepart, map, perso, jeu )
 
     local infos = display.newGroup()
     local cTelephone = require("cTelephone")
+    local cEvenement = require("cEvenement")
     local hebdo = { "Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi" }
     local rightMarg = display.contentWidth - display.screenOriginX
     local heure = heureDepart
@@ -20,6 +21,7 @@ function Infos:init( heureDepart, indexDepart, map, perso, jeu )
     local moneyDisplay
     local telephone
     local interet
+    local evenementDuJour
 
     local tEmplois = {
         sports = {
@@ -40,6 +42,9 @@ function Infos:init( heureDepart, indexDepart, map, perso, jeu )
             cptJours = _G.data.cptJours
             interet = _G.data.interet
             _G.data = nil
+        end
+        if interet == nil then
+            interet = math.random( 4, 7 )/100
         end
 
         -- Accéder au nom de l'emploi actuel et au prochain objectif d'aptitude pour la promotion
@@ -109,6 +114,7 @@ function Infos:init( heureDepart, indexDepart, map, perso, jeu )
                     jourIndex = 1
                 else
                     jourIndex = jourIndex + 1
+                    evenementDuJour = cEvenement:init( perso.chaNum )
                     self:updateBanque()
                     if table.indexOf( perso.inventaire, "loft" ) == nil then
                         self:updateLoyer( 5 )

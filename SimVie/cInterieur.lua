@@ -20,10 +20,10 @@ function Interieur:init( destination, jeu, map, perso )
         { nom = "Barre d'energie", prix = 10, energie = 10 },
         { nom = "Boisson energisante", prix = 20, energie = 25 },
         -- Objets de qualité de vie
-        { nom = "Tapis roulant", prix = 750 },
+        { nom = "Tapis roulant", prix = 1 },
         { nom = "scooter", prix = 500 },
         { nom = "voiture", prix = 1500 },
-        { nom = "loft", prix = 3500 }
+        { nom = "loft", prix = 1 }
     }
     -- Tableau contenant des tableaux, contenant le nom de l'endroit et le texte affiché dans les boutons
     local tSrc = { 
@@ -53,6 +53,11 @@ function Interieur:init( destination, jeu, map, perso )
         print(destination)
         local src = tSrc[destination]
 
+        for i=1,#perso.inventaire do
+            print(perso.inventaire[i])
+        end
+
+
         -- Fond d'écran
         local bg
         if src.bg == "bg.jpg" then
@@ -69,7 +74,7 @@ function Interieur:init( destination, jeu, map, perso )
             self:kill()
         end
         local function ajouterFor( pt )
-            if infos:getHeure() < 6 then
+            if infos:getHeure() < 6 or (table.indexOf(perso.inventaire, "Tapis roulant") == nil and (destination=="appartement" or destination=="loft")) then
                 retroaction.text = "Il est trop tot pour s'entrainer."
             elseif infos:getHeure() < 22 then
                 if pt==1 then
@@ -121,9 +126,9 @@ function Interieur:init( destination, jeu, map, perso )
         end
 
         local function ajouterInt( pt )
-            if infos:getHeure() < 6 then
-                retroaction.text = "Il est trop tot pour etudier"
-            elseif infos:getHeure() < 22 then
+            if infos:getHeure() < 6 and (destination~="appartement" or destination~="loft") then
+                retroaction.text = "Il est trop tot pour etudier."
+            elseif infos:getHeure() < 22 or destination=="appartement" or destination=="loft" then
                 if pt==1 then
                     if perso:setEnergie( -10 ) then
                         perso.intNum = perso.intNum + pt
@@ -313,11 +318,17 @@ function Interieur:init( destination, jeu, map, perso )
             depanneur =      { bt1 = acheter, bt1param = 1, bt2 = acheter, bt2param = 2, bt3= acheter, bt3param = 3 },
             magasin =        { bt1 = acheter, bt1param = 4, bt2 = acheter, bt2param = 5, bt3= acheter, bt3param = 6 },
             banque =         { bt1 = deposer, bt1param = 1, bt2 = retirer, bt2param = 2 },
-            appartement =    { bt1 = dormir, bt1param = 1, bt2 = attendre, bt2param = 1 },
+            appartement =    { bt1 = dormir, bt1param = 1, bt2 = attendre, bt2param = 1, bt3 = ajouterFor, bt3param = 1 },
             loft =           { bt1 = dormir, bt1param = 1, bt2 = attendre, bt2param = 1, bt3 = ajouterFor, bt3param = 1 },
             centresportif =  { bt1 = travailler, bt1param = 1, bt2 = promotion, bt2param = 2 },
             faculte =        { bt1 = travailler, bt1param = 1, bt2 = promotion, bt2param = 2 }
         }
+        if perso.carriere == "sciences" then
+            tFunc.appartement.bt3 = ajouterInt
+            tFunc.appartement.bt3param = 1
+            tFunc.loft.bt3 = ajouterInt
+            tFunc.loft.bt3param = 1
+        end
 
         local func = tFunc[destination]
 
