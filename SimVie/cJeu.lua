@@ -17,7 +17,7 @@ function Jeu:init()
     local cMenu = require("cMenu")
     local cInfos = require("cInfos")
 
-    local bgMusic = audio.loadStream( "Miami Viceroy.mp3" )
+    -- local bgMusic = audio.loadStream( "Miami Viceroy.mp3" )
 
     local spawns = { 
         appartement = { x = 946, y= 1150 },

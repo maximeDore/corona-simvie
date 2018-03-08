@@ -26,6 +26,7 @@ function Telephone:init( parent, perso, jeu )
     local bgAlerteContenu
     local contenuAlerte
     local contenuAlerteTexte
+    local contenuAlerteTexte2
     local btRetour
     local phone
     local tapZone
@@ -389,10 +390,10 @@ function Telephone:init( parent, perso, jeu )
         end
     end
 
-    function telephone:updateAlertes( nbAlertes, texte1, texte2 )
-        local nb = nbAlertes
+    function telephone:updateAlertes( tEvents )
+        local nb = #tEvents
         if nb == nil then
-            nb = 1
+            nb = 0
         end
         local cpt=0
         for i=1,alertContent.numChildren do

@@ -115,6 +115,7 @@ function Infos:init( heureDepart, indexDepart, map, perso, jeu )
                 else
                     jourIndex = jourIndex + 1
                     evenementDuJour = cEvenement:init( perso.chaNum )
+                    telephone:updateAlertes( evenementDuJour )
                     self:updateBanque()
                     if table.indexOf( perso.inventaire, "loft" ) == nil then
                         self:updateLoyer( 5 )
