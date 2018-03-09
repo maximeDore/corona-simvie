@@ -20,10 +20,10 @@ function Interieur:init( destination, jeu, map, perso )
         { nom = "Barre d'energie", prix = 10, energie = 10 },
         { nom = "Boisson energisante", prix = 20, energie = 25 },
         -- Objets de qualité de vie
-        { nom = "Tapis roulant", prix = 1 },
-        { nom = "scooter", prix = 500 },
-        { nom = "voiture", prix = 1500 },
-        { nom = "loft", prix = 1 }
+        { nom = "Tapis roulant", prix = 1 },    --750
+        { nom = "scooter", prix = 1 },          --500
+        { nom = "voiture", prix = 1 },          --1500
+        { nom = "loft", prix = 1 }              --3500
     }
     -- Tableau contenant des tableaux, contenant le nom de l'endroit et le texte affiché dans les boutons
     local tSrc = { 
@@ -47,7 +47,6 @@ function Interieur:init( destination, jeu, map, perso )
     
     function interieur:init()
         jeu:insert(self)
-        -- local bgMusicChannel = audio.play( bgMusic, { channel=2, loops=-1, fadein=2000 } )
 
         -- Abréviation
         print(destination)

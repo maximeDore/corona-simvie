@@ -10,9 +10,26 @@ local Perso = {}
 local spriteSheet = require("sports_anim")
 local myImageSheet = graphics.newImageSheet("sports_anim.png", spriteSheet:getSheet() )
 
+-- Effets sonores
+local sfxVehicules = {
+    -- Marche
+    marche = audio.loadSound('footstep.mp3'),
+    --Scooter
+    scooterStart = audio.loadSound('scooter_start.mp3'),
+    scooter = audio.loadSound('scooter_idle.mp3'),
+    scooterOff = audio.loadSound('scooter_off.mp3'),
+    --Voiture
+    voitureStart = audio.loadSound('saturn_start.mp3'),
+    voiture = audio.loadSound('saturn_idle.mp3'),
+    voitureOff = audio.loadSound('saturn_off.mp3')
+}
+local sfxCrash = audio.loadSound('car_crash.mp3')
+
 -- Méthode init du perso
 function Perso:init(xorig, yorig, map, joystick, jeu)
     local perso = display.newGroup()
+    audio.setVolume( 0.1, {channel=5} )
+    audio.setVolume( 0.1, {channel=6} )
     -- Modificateurs de vitesse de chaque véhicule
     local vehicules = {
         marche  = 7.5,
@@ -23,6 +40,7 @@ function Perso:init(xorig, yorig, map, joystick, jeu)
     function perso:init()
         local avatar = display.newSprite(self, myImageSheet, spriteSheet:getSpriteIndex())
         self.type = "perso"
+        self.vehiculeActif = "marche"
         self.avatar = avatar
         self.x = xorig
         self.y = yorig
@@ -96,16 +114,34 @@ function Perso:init(xorig, yorig, map, joystick, jeu)
         -- Si la distance à parcourir vers le point d'arrivée est plus grande que la valeur, on joue l'animation du perso, sinon on la met en pause
         if self.vit>0.25 then
             self.avatar:play()
+            if self.vitModif == vehicules.marche and audio.isChannelActive( 5 ) == false then
+                audio.play( sfxVehicules[self.vehiculeActif], { channel=5 } )
+            end
         else
             self.avatar:setSequence(seq.."_idle")
             self.avatar:pause()
+            if self.vitModif == vehicules.marche then
+                audio.stop( 5 )
+            end
         end
     end
 
     -- Change la vitesse de déplacement du personnage et son visuel selon le véhicule passé en paramètre
     function perso:changerVehicule( vehicule )
+
+        local function listener()
+            audio.play( sfxVehicules[vehicule], { channel=5, loops=-1 } )
+        end
+
         if table.indexOf( self.inventaire, vehicule ) ~= nil or vehicule == "marche"  then
             self.vitModif = vehicules[vehicule]
+            audio.stop( 5 )
+            if vehicule ~= "marche" then
+                audio.play( sfxVehicules[vehicule.."Start"], { channel=5, onComplete=listener } )
+            elseif vehiculeActif ~= "marche" then
+                audio.play( sfxVehicules[self.vehiculeActif.."Off"], { channel=6 } )
+            end
+            self.vehiculeActif = vehicule
         end
     end
 
@@ -137,6 +173,7 @@ function Perso:init(xorig, yorig, map, joystick, jeu)
             if e.other.type=="porte" then
                 jeu:entrerBatiment(e.other.destination)
             elseif e.other.type=="auto" then
+                audio.play(sfxCrash)
                 jeu:kill()
             end
         end

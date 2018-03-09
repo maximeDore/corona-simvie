@@ -51,7 +51,7 @@ function Map:init( perso )
 
         -- Autos
         -- for i=1,8,2 do
-        --     local auto = cAuto:init(i)
+        --     local auto = cAuto:init(i,perso)
         --     autos:insert(auto)
         -- end
         -- self:insert(autos)
@@ -72,15 +72,6 @@ function Map:init( perso )
                 filtreNocturne.fill = { 0, .1 ,.25, (13-heure*2)*8/100 }
             end
         end
-    end
-
-    function map:sleep()
-        -- print("sleep")
-        -- désactiver les voitures
-    end
-
-    function map:wake()
-        -- réactiver les voitures
     end
 
     function map:kill()

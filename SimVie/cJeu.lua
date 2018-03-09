@@ -17,8 +17,9 @@ function Jeu:init()
     local cMenu = require("cMenu")
     local cInfos = require("cInfos")
 
-    -- local bgMusic = audio.loadStream( "Miami Viceroy.mp3" )
+    local bgMusic = audio.loadStream( "toune_loundge.mp3" )
 
+    -- Points d'apparition du personnage
     local spawns = { 
         appartement = { x = 946, y= 1150 },
         loft        = { x = -1275, y = -400 }
@@ -34,7 +35,7 @@ function Jeu:init()
         if audio.seek( 1000, bgMusicChannel ) then
             audio.stop( bgMusicChannel )
         end
-        -- bgMusicChannel = audio.play( bgMusic, { channel=1, loops=-1, fadein=2000 } )
+        bgMusicChannel = audio.play( bgMusic, { channel=1, loops=-1, fadein=1000 } )
         
         -- Point d'apparition du personnage (devant son domicile)
         local spawn = {}

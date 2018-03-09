@@ -53,9 +53,6 @@ function Joystick:init(innerRadius, outerRadius)
                 angle = 360 + angle
             end
             
-            -- could emit "direction" events here
-            --Runtime:dispatchEvent( {name='direction',directionId=directionId } )
-            
             distance = math.sqrt((posX*posX)+(posY*posY))
             
             if( distance >= stopRadius ) then

@@ -14,7 +14,7 @@ function Menu:init()
     local cInstructions = require("cInstructions")
     local cDonnees = require("cDonnees")
     local cJeu = require("cJeu")
-    local bgMusic = audio.loadStream( "Chill Wave.mp3" )
+    local bgMusic = audio.loadStream( "toune_menu.mp3" )
     local bg
     local menuCommencer
     local btCommencer
@@ -67,7 +67,8 @@ function Menu:init()
         end
 
         -- Charge la musique de fond dans le channel 1
-        -- bgMusicChannel = audio.play( bgMusic, { channel=1, loops=-1, fadein=2000 } )
+        audio.stop( 1 )
+        bgMusicChannel = audio.play( bgMusic, { channel=1, loops=-1, fadein=2000 } )
         
         -- Fondu d'entrée
         fade = display.newRect(display.contentCenterX,display.contentCenterY,display.contentWidth*2,display.contentHeight)

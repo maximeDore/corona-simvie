@@ -10,6 +10,7 @@ function Bouton:init ( texte1, texte2, x, y, callbackFunction, callbackParam, wi
     local bouton = display.newGroup()
     local titre
     local sousTitre
+    local sfxToc = audio.loadSound( "toc.wav" )
 
     -- Si le paramètre de largeur existe, le bouton est un rectangle invisible
     if width~=nil then
@@ -57,6 +58,7 @@ function Bouton:init ( texte1, texte2, x, y, callbackFunction, callbackParam, wi
     function bouton:touch( e )
         if e.phase == "began" then
             callbackFunction(callbackParam)
+            audio.play( sfxToc, { channel=10 } )
         end
     end
 

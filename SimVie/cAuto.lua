@@ -66,6 +66,7 @@ function Auto:init(actualWp)
 
     function auto:kill()
         active = false
+        waypoints=nil
     end
 
     auto:init()
