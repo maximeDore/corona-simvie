@@ -21,7 +21,7 @@ function Infos:init( heureDepart, indexDepart, map, perso, jeu )
     local moneyDisplay
     local telephone
     local interet
-    local evenementDuJour
+    self.evenementDuJour = {}
 
     local tEmplois = {
         sports = {
@@ -68,7 +68,7 @@ function Infos:init( heureDepart, indexDepart, map, perso, jeu )
         barre.fill = degrade
 
         -- Affichage du jour
-        local optionsJourDisplay = {text = hebdo[jourIndex], width = 256, x = display.screenOriginX+150, y = 25, font = "8-Bit Madness.ttf", fontSize = 50, align = "left"}
+        local optionsJourDisplay = {text = hebdo[jourIndex].." - jour "..cptJours, width = 500, x = display.screenOriginX+270, y = 25, font = "8-Bit Madness.ttf", fontSize = 50, align = "left"}
         jourDisplay = display.newText(optionsJourDisplay)
 
         -- Affichage de l'heure
@@ -108,8 +108,8 @@ function Infos:init( heureDepart, indexDepart, map, perso, jeu )
         if nb ~= nil then
             if heure+nb >= 24 then
                 -- Appel de l'événement du jour
-                evenementDuJour = cEvenement:init( perso.chaNum )
-                telephone:updateAlertes( evenementDuJour )
+                self.evenementDuJour = cEvenement:init( perso.chaNum )
+                telephone:updateAlertes( self.evenementDuJour )
                 -- Mise à jour de l'heure et du jour
                 heure = nb+heure-24
                 cptJours = cptJours + 1
@@ -123,7 +123,7 @@ function Infos:init( heureDepart, indexDepart, map, perso, jeu )
                         self:updateLoyer( 5 )
                     end
                 end
-                jourDisplay.text = hebdo[jourIndex]
+                jourDisplay.text = hebdo[jourIndex].." - jour "..cptJours
             else
                 heure = heure + nb
             end

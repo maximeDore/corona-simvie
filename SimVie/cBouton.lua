@@ -19,15 +19,15 @@ function Bouton:init ( texte1, texte2, x, y, callbackFunction, callbackParam, wi
     end
 
     function bouton:init()
-        local image
+        self.image = nil
         if width == nil then
             if string.find( texte1, ".png" ) ~= nil then
-                image = display.newImage( self, texte1 )
+                self.image = display.newImage( self, texte1 )
             elseif texte1 ~= nil then
-                image = display.newImage( self, "bt.png" )
+                self.image = display.newImage( self, "bt.png" )
                 local optionsTitre = {
                         text = texte1,
-                        y = -image.height/6,
+                        y = -self.image.height/6,
                         font = "Diskun.ttf",   
                         fontSize = 60,
                         align = "center"  -- Alignment parameter
@@ -38,7 +38,7 @@ function Bouton:init ( texte1, texte2, x, y, callbackFunction, callbackParam, wi
                 if texte2 ~= nil then
                     local optionsSousTitre = {
                             text = texte2,
-                            y = image.height/6,
+                            y = self.image.height/6,
                             font = "Diskun.ttf",   
                             fontSize = 50,
                             align = "center"  -- Alignment parameter

@@ -256,21 +256,21 @@ function Telephone:init( parent, perso, jeu )
         barreEnergie.fill = { 0, 1, 0 }
 
 
-    ------ Écran Menu           --------------------------------------------------------------------------------------------------------
+---------- Écran Menu           --------------------------------------------------------------------------------------------------------
         btOui = cBouton:init( "btOui.png", nil, -bgMenu.width/4.15, 0, quitter )
         btNon = cBouton:init( "btNon.png", nil, bgMenu.width/4.25, 0, afficherHome )
         screenMenu:insert(btOui)
         screenMenu:insert(btNon)
 
 
-    ------ Écran Save           --------------------------------------------------------------------------------------------------------
+---------- Écran Save           --------------------------------------------------------------------------------------------------------
         btOui = cBouton:init( "btOui.png", nil, -bgMenu.width/4.15, 0, save )
         btNon = cBouton:init( "btNon.png", nil, bgMenu.width/4.25, 0, afficherHome )
         screenSave:insert(btOui)
         screenSave:insert(btNon)
 
 
-    ------ Écran Banque         --------------------------------------------------------------------------------------------------------
+---------- Écran Banque         --------------------------------------------------------------------------------------------------------
         local optionsBalance = {
             text = perso.banque.." $",
             x = bgMenu.width/2-110,
@@ -300,7 +300,7 @@ function Telephone:init( parent, perso, jeu )
         screenBanque:insert(interetDisplay)
 
 
-    ------ Écran Alertes        --------------------------------------------------------------------------------------------------------
+---------- Écran Alertes        --------------------------------------------------------------------------------------------------------
         alertContent = display.newContainer( screenAlertes, bgMenu.width, bgMenu.height )
         bgAlerteContenu = display.newImage( alertContent, "alertContent.png", bgMenu.width, 25 )
         contenuAlerte = display.newRect( alertContent, bgMenu.width, bgAlerteContenu.y, bgAlerteContenu.width*.9, bgAlerteContenu.height*.9 )
@@ -333,8 +333,9 @@ function Telephone:init( parent, perso, jeu )
         contenuAlerteTexte2 = display.newText( optionsAlerte1 )
         contenuAlerteTexte2:setFillColor(0,0,0)
 
+----------------------------------------------------------------------------------------------------------------------------------------
 
-
+        -- Cacher les écrans par défaut
         screenContacts.isVisible = false
         screenStats.isVisible = false
         screenMenu.isVisible = false
@@ -343,7 +344,7 @@ function Telephone:init( parent, perso, jeu )
         screenBanque.isVisible = false
         screenInventaire.isVisible = false
 
-
+        -- Insertions dans le téléphone
         self:insert(tapZone)
         self:insert(screenHome)
         self:insert(screenContacts)
@@ -418,7 +419,7 @@ function Telephone:init( parent, perso, jeu )
         end
         for i=1,nb do
             if i==1 then
-                contenuAlerteTexte.text = tEvents[i].texte
+                contenuAlerteTexte.text = tEvents[i].texte .. (tEvents[i].auteur and "\n\n -" .. tEvents[i].auteur or "")
             elseif i==2 then
                 contenuAlerteTexte2.text = tEvents[i].texte .. "\n\n -" .. tEvents[i].auteur
             end
@@ -426,6 +427,11 @@ function Telephone:init( parent, perso, jeu )
         for i=1,alertContent.numChildren do
             if alertContent[i].type == "listItem" and cpt<nb then
                 cpt = cpt + 1
+                if tEvents[cpt].auteur ~= nil then
+                    alertContent[i].image.fill = { type="image", filename="alertItem2.png" }
+                else 
+                    alertContent[i].image.fill = { type="image", filename="alertItem.png" }
+                end
                 alertContent[i]:enable()
                 alertContent[i].type = "bouton"
             end

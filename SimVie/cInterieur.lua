@@ -359,9 +359,12 @@ function Interieur:init( destination, jeu, map, perso )
         
         local btRetour = cBouton:init("Retour",nil,display.contentCenterX*1.4,display.contentCenterY*1.5,retour)
         -- Si le perso entre dans un bâtiment qui n'est pas le loft ou qu'il a acheté le loft
-        if destination ~= "loft" or table.indexOf( perso.inventaire, "loft" ) ~= nil then
+        if destination ~= "loft" or table.indexOf( perso.inventaire, "loft") ~= nil then
             if destination == "appartement" and table.indexOf( perso.inventaire, "Tapis roulant") == nil then
                 src.bt3 = nil
+            end
+            if destination == "banque" and infos.evenementDuJour ~= nil and infos.evenementDuJour[1].destination == "banque" then
+                inputBanque = false
             end
             -- Si le perso entre dans l'appartement et qu'il a acheté le loft
             if destination == "appartement" and table.indexOf( perso.inventaire, "loft" ) ~= nil then
@@ -373,6 +376,10 @@ function Interieur:init( destination, jeu, map, perso )
                 btRetour.x = display.contentCenterX
                 btRetour.y = display.contentCenterY*1.25
                 retroaction.text = "Vous ne travaillez pas ici."
+            elseif infos.evenementDuJour ~= nil and destination == infos.evenementDuJour[1].destination then
+                btRetour.x = display.contentCenterX
+                btRetour.y = display.contentCenterY*1.25
+                retroaction.text = "L'etablissement est ferme aujourd'hui."
             else
                 local bt1 = cBouton:init(src.bt1,src.bt1desc,display.contentCenterX/1.65,display.contentCenterY,func.bt1,func.bt1param)
                 self:insert(bt1)
@@ -402,7 +409,7 @@ function Interieur:init( destination, jeu, map, perso )
         end
 
         -- Champ de texte pour la banque
-        if destination == "banque" then
+        if destination == "banque" and inputBanque ~= false then
             inputBanque = native.newTextField( display.contentCenterX/1.65, display.contentCenterY*1.5, btRetour.width-10, btRetour.height/2 )
             inputBanque.inputType = "number"
             inputBanque.placeholder = "-Montant-"
