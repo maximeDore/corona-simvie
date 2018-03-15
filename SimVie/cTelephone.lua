@@ -126,8 +126,11 @@ function Telephone:init( parent, perso, jeu )
             bgAlerteContenu.type = "content"
             transition.to( bgAlerteContenu, { time = 500, x = 0, transition=easing.outQuart } )
             transition.to( contenuAlerte, { time = 500, x = 0, transition=easing.outQuart } )
-            transition.to( contenuAlerteTexte, { time = 500, x = 0, transition=easing.outQuart } )
-            transition.to( contenuAlerteTexte2, { time = 500, x = 0, transition=easing.outQuart } )
+            if index==1 then
+                transition.to( contenuAlerteTexte, { time = 500, x = 0, transition=easing.outQuart } )
+            elseif index==2 then
+                transition.to( contenuAlerteTexte2, { time = 500, x = 0, transition=easing.outQuart } )
+            end
             btRetour.isVisible = true
         end
 
@@ -253,21 +256,21 @@ function Telephone:init( parent, perso, jeu )
         barreEnergie.fill = { 0, 1, 0 }
 
 
-        -- Écran Menu           --------------------------------------------------------------------------------------------------------
+    ------ Écran Menu           --------------------------------------------------------------------------------------------------------
         btOui = cBouton:init( "btOui.png", nil, -bgMenu.width/4.15, 0, quitter )
         btNon = cBouton:init( "btNon.png", nil, bgMenu.width/4.25, 0, afficherHome )
         screenMenu:insert(btOui)
         screenMenu:insert(btNon)
 
 
-        -- Écran Save           --------------------------------------------------------------------------------------------------------
+    ------ Écran Save           --------------------------------------------------------------------------------------------------------
         btOui = cBouton:init( "btOui.png", nil, -bgMenu.width/4.15, 0, save )
         btNon = cBouton:init( "btNon.png", nil, bgMenu.width/4.25, 0, afficherHome )
         screenSave:insert(btOui)
         screenSave:insert(btNon)
 
 
-        -- Écran Banque         --------------------------------------------------------------------------------------------------------
+    ------ Écran Banque         --------------------------------------------------------------------------------------------------------
         local optionsBalance = {
             text = perso.banque.." $",
             x = bgMenu.width/2-110,
@@ -297,7 +300,7 @@ function Telephone:init( parent, perso, jeu )
         screenBanque:insert(interetDisplay)
 
 
-        -- Écran Alertes        --------------------------------------------------------------------------------------------------------
+    ------ Écran Alertes        --------------------------------------------------------------------------------------------------------
         alertContent = display.newContainer( screenAlertes, bgMenu.width, bgMenu.height )
         bgAlerteContenu = display.newImage( alertContent, "alertContent.png", bgMenu.width, 25 )
         contenuAlerte = display.newRect( alertContent, bgMenu.width, bgAlerteContenu.y, bgAlerteContenu.width*.9, bgAlerteContenu.height*.9 )
@@ -328,7 +331,7 @@ function Telephone:init( parent, perso, jeu )
         contenuAlerteTexte = display.newText( optionsAlerte1 )
         contenuAlerteTexte:setFillColor(0,0,0)
         contenuAlerteTexte2 = display.newText( optionsAlerte1 )
-        contenuAlerteTexte:setFillColor(0,0,0)
+        contenuAlerteTexte2:setFillColor(0,0,0)
 
 
 
@@ -403,7 +406,6 @@ function Telephone:init( parent, perso, jeu )
         transition.to( contenuAlerteTexte2, { time = 500, x = bgMenu.width, transition=easing.outQuart } )
         alertes = tEvents
         local nb = #tEvents
-        print(nb)
         if nb == nil then
             nb = 0
         end
@@ -415,7 +417,11 @@ function Telephone:init( parent, perso, jeu )
             end
         end
         for i=1,nb do
-            contenuAlerteTexte.text = tEvents[i].texte
+            if i==1 then
+                contenuAlerteTexte.text = tEvents[i].texte
+            elseif i==2 then
+                contenuAlerteTexte2.text = tEvents[i].texte .. "\n\n -" .. tEvents[i].auteur
+            end
         end
         for i=1,alertContent.numChildren do
             if alertContent[i].type == "listItem" and cpt<nb then
@@ -428,6 +434,7 @@ function Telephone:init( parent, perso, jeu )
         btRetour:toFront()
         contenuAlerte:toFront()
         contenuAlerteTexte:toFront()
+        contenuAlerteTexte2:toFront()
     end
     
     function telephone:kill()

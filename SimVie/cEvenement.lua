@@ -45,7 +45,7 @@ function Evenement:init( chance )
     end
     if randIsQuote > #events.citations then
         local randQuote = math.random( #events.citations )
-        table.insert( self, events.citations[randQuote] )
+        table.insert( tEvenement, events.citations[randQuote] )
     end
     return tEvenement
 end
