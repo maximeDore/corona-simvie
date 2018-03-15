@@ -1,9 +1,8 @@
 local Evenement = {}
-local tEvenement = {}
 
 function Evenement:init( chance )
     local events = {
-        events = {
+        evenements = {
             { texte = "Message d'interet public : \n\nLa banque sera fermee aujourd'hui suite au cambriolage de la veille.", destination="banque", status = "ferme"},
             { texte = "Message d'interet public : \n\nSuite a l'echec d'une experience, la faculte des sciences sera fermee aujourd'hui.", destination="faculte", status = "ferme"},
             { texte = "Message d'interet public : \n\nDes plaintes ont ete portees au sujet d'odeurs fortes provoquant la fermeture du centre sportif.", destination="centreSportif", status = "ferme"},
@@ -34,15 +33,15 @@ function Evenement:init( chance )
             { auteur="Louis-Sebastien Mercier", texte="On est toujours riche, quand on a tout paye." },
             { auteur="Victor Hugo", texte="Le bonheur est parfois cache dans l'inconnu." },
             { auteur="Mirna Loy", texte="La vie, ce n'est pas avoir et obtenir, mais etre et devenir." },
-            { auteur="Michele Blouin", texte="La vie, c'est une tartine de merde et il faut que tu en manges une bouchee tous les jours." },
+            { auteur="Michele Blouin", texte="La vie, c'est une tartine de m**** et il faut que tu en manges une bouchee tous les jours." },
         }
     }
-    tEvenement = {}
+    local tEvenement = {}
     local randIsEvent = math.random( 15+chance )
     local randIsQuote = math.random( #events.citations*2 )
     if 15 > randIsEvent then
-        local randEvent = math.random( #events.events )
-        table.insert( tEvenement, events.events[randEvent] )
+        local randEvent = math.random( #events.evenements )
+        table.insert( tEvenement, events.evenements[randEvent] )
     end
     if randIsQuote > #events.citations then
         local randQuote = math.random( #events.citations )

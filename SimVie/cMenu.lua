@@ -68,7 +68,7 @@ function Menu:init()
 
         -- Charge la musique de fond dans le channel 1
         audio.stop( 1 )
-        bgMusicChannel = audio.play( bgMusic, { channel=1, loops=-1, fadein=2000 } )
+        -- bgMusicChannel = audio.play( bgMusic, { channel=1, loops=-1, fadein=2000 } )
         
         -- Fondu d'entrée
         fade = display.newRect(display.contentCenterX,display.contentCenterY,display.contentWidth*2,display.contentHeight)

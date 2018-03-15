@@ -22,6 +22,7 @@ function Telephone:init( parent, perso, jeu )
     local screenAlertes = display.newGroup()
     local screenMenu = display.newGroup()
     local screenHome = display.newGroup()
+    local alertes = {}
     local alertContent
     local bgAlerteContenu
     local contenuAlerte
@@ -126,6 +127,7 @@ function Telephone:init( parent, perso, jeu )
             transition.to( bgAlerteContenu, { time = 500, x = 0, transition=easing.outQuart } )
             transition.to( contenuAlerte, { time = 500, x = 0, transition=easing.outQuart } )
             transition.to( contenuAlerteTexte, { time = 500, x = 0, transition=easing.outQuart } )
+            transition.to( contenuAlerteTexte2, { time = 500, x = 0, transition=easing.outQuart } )
             btRetour.isVisible = true
         end
 
@@ -138,6 +140,7 @@ function Telephone:init( parent, perso, jeu )
             transition.to( bgAlerteContenu, { time = 500, x = bgMenu.width, transition=easing.outQuart } )
             transition.to( contenuAlerte, { time = 500, x = bgMenu.width, transition=easing.outQuart } )
             transition.to( contenuAlerteTexte, { time = 500, x = bgMenu.width, transition=easing.outQuart } )
+            transition.to( contenuAlerteTexte2, { time = 500, x = bgMenu.width, transition=easing.outQuart } )
             btRetour.isVisible = false
         end
 
@@ -324,6 +327,8 @@ function Telephone:init( parent, perso, jeu )
         }
         contenuAlerteTexte = display.newText( optionsAlerte1 )
         contenuAlerteTexte:setFillColor(0,0,0)
+        contenuAlerteTexte2 = display.newText( optionsAlerte1 )
+        contenuAlerteTexte:setFillColor(0,0,0)
 
 
 
@@ -391,11 +396,27 @@ function Telephone:init( parent, perso, jeu )
     end
 
     function telephone:updateAlertes( tEvents )
+        -- Fermer la page d'alerte
+        transition.to( bgAlerteContenu, { time = 500, x = bgMenu.width, transition=easing.outQuart } )
+        transition.to( contenuAlerte, { time = 500, x = bgMenu.width, transition=easing.outQuart } )
+        transition.to( contenuAlerteTexte, { time = 500, x = bgMenu.width, transition=easing.outQuart } )
+        transition.to( contenuAlerteTexte2, { time = 500, x = bgMenu.width, transition=easing.outQuart } )
+        alertes = tEvents
         local nb = #tEvents
+        print(nb)
         if nb == nil then
             nb = 0
         end
         local cpt=0
+        for i=1,alertContent.numChildren do
+            if alertContent[i].type == "bouton" then
+                alertContent[i]:disable()
+                alertContent[i].type = "listItem"
+            end
+        end
+        for i=1,nb do
+            contenuAlerteTexte.text = tEvents[i].texte
+        end
         for i=1,alertContent.numChildren do
             if alertContent[i].type == "listItem" and cpt<nb then
                 cpt = cpt + 1

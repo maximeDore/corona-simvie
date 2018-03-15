@@ -107,6 +107,10 @@ function Infos:init( heureDepart, indexDepart, map, perso, jeu )
     function infos:updateHeure(nb)
         if nb ~= nil then
             if heure+nb >= 24 then
+                -- Appel de l'événement du jour
+                evenementDuJour = cEvenement:init( perso.chaNum )
+                telephone:updateAlertes( evenementDuJour )
+                -- Mise à jour de l'heure et du jour
                 heure = nb+heure-24
                 cptJours = cptJours + 1
                 print("Jour "..cptJours)
@@ -114,8 +118,6 @@ function Infos:init( heureDepart, indexDepart, map, perso, jeu )
                     jourIndex = 1
                 else
                     jourIndex = jourIndex + 1
-                    evenementDuJour = cEvenement:init( perso.chaNum )
-                    telephone:updateAlertes( evenementDuJour )
                     self:updateBanque()
                     if table.indexOf( perso.inventaire, "loft" ) == nil then
                         self:updateLoyer( 5 )

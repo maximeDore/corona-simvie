@@ -35,7 +35,7 @@ function Jeu:init()
         if audio.seek( 1000, bgMusicChannel ) then
             audio.stop( bgMusicChannel )
         end
-        bgMusicChannel = audio.play( bgMusic, { channel=1, loops=-1, fadein=1000 } )
+        -- bgMusicChannel = audio.play( bgMusic, { channel=1, loops=-1, fadein=1000 } )
         
         -- Point d'apparition du personnage (devant son domicile)
         local spawn = {}
@@ -88,6 +88,7 @@ function Jeu:init()
                 end
             end
         end
+        audio.stop( 5,6 )
         recursiveKill(self)
         self:removeSelf()
         infos:removeSelf()
