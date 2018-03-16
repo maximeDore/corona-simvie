@@ -16,7 +16,6 @@ function Contacts:init()
             rand2 = math.random( #noms )
         end
         -- Génération d'un personnage par défaut ou avec valeur sauvegardées
-        print(_G.data.contacts[1].nom)
         if _G.data.contacts then
             contacts = _G.data.contacts
         else
