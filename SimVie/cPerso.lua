@@ -7,8 +7,30 @@
 local Perso = {}
 
 -- Mise en mémoire des infos du sprite de l'ogre (ogre en anim png et lua)
-local spriteSheet = require("sports_anim")
-local myImageSheet = graphics.newImageSheet("sports_anim.png", spriteSheet:getSheet() )
+local spriteSheetPerso = require("sports_anim")
+local spriteSheetVoiture = require("voiture_anim")
+local marcheImageSheet = graphics.newImageSheet("sports_anim.png", spriteSheetPerso:getSheet() )
+-- local scooterImageSheet = graphics.newImageSheet("scooter_anim.png", spriteSheetScooter:getSheet() )
+local voitureImageSheet = graphics.newImageSheet("voiture_anim.png", spriteSheetVoiture:getSheet() )
+print(spriteSheetVoiture:getFrameIndex("voitureTopSide")[1])
+
+local sprites = {
+    marche = {
+        type = "image",
+        sheet = marcheImageSheet,
+        frame = 1
+    },
+    -- scooter = {
+    --     type = "image",
+    --     sheet = scooterImageSheet,
+    --     frame = 1
+    -- },
+    voiture = {
+        type = "image",
+        sheet = voitureImageSheet,
+        frame = 1
+    }
+}
 
 -- Effets sonores
 local sfxVehicules = {
@@ -32,16 +54,15 @@ function Perso:init(xorig, yorig, map, joystick, jeu)
     audio.setVolume( 0.1, {channel=6} )
     -- Modificateurs de vitesse de chaque véhicule
     local vehicules = {
-        marche  = 7.5,
-        scooter = 12.5,
-        voiture = 20
+        marche  = {mod=7.5,sca=1.75},
+        scooter = {mod=12.5,sca=3},
+        voiture = {mod=20,sca=4.5}
     }
     -- Constructeur de Perso
     function perso:init()
-        local avatar = display.newSprite(self, myImageSheet, spriteSheet:getSpriteIndex())
+        self.avatar = display.newSprite(self, marcheImageSheet, spriteSheetPerso:getSpriteIndex())
         self.type = "perso"
         self.vehiculeActif = "marche"
-        self.avatar = avatar
         self.x = xorig
         self.y = yorig
         self.vitModif = 30
@@ -90,20 +111,53 @@ function Perso:init(xorig, yorig, map, joystick, jeu)
         end
 
         local seq
-        local sca = 1.75
+        local sca = vehicules[self.vehiculeActif].sca
         self.yScale = sca/1.15
 
-        -- Spectre des angles pour les séquence de sprite
-        if angle >= 135 or angle <= -135 then
-            seq ="perso_profil"
-            sca = -sca
-        elseif angle < 45 and angle >= -45 then
-            seq ="perso_profil"
-        elseif angle < 135 and angle >= 45 then
-            seq ="perso_face"
-        elseif angle < -35 and angle >= -135 then
-            seq ="perso_dos"
-        else print(angle)
+        if self.vehiculeActif == "marche" then
+            -- Spectre des angles pour les séquences de sprite de marche (4 directions)
+            if angle >= 135 or angle <= -135 then
+                seq ="perso_profil"
+                sca = -sca
+            elseif angle < 45 and angle >= -45 then
+                seq ="perso_profil"
+            elseif angle < 135 and angle >= 45 then
+                seq ="perso_face"
+            elseif angle < -35 and angle >= -135 then
+                seq ="perso_dos"
+            else print(angle)
+            end
+        else
+            -- Spectre des angles pour les séquences de sprite de véhicules (8 directions)
+            if angle < 22.5 and angle >= -22.5 then
+                seq = self.vehiculeActif.."Side"
+                sca = -sca
+                -- print("right")
+            elseif angle < 67.5 and angle >= 22.5 then
+                seq = self.vehiculeActif.."DownSide"
+                -- print("down Right")
+            elseif angle < 112.5 and angle >= 67.5 then
+                seq ="voitureDown"
+                -- print("down")
+            elseif angle < 157.5 and angle >= 112.5 then
+                seq = self.vehiculeActif.."DownSide"
+                sca = -sca
+                -- print("down Left")
+            elseif angle > 157.5 or angle < -157.5 then
+                seq = self.vehiculeActif.."Side"
+                -- print("left")
+            elseif angle >= -157.5 and angle < -112.5 then
+                seq = self.vehiculeActif.."TopSide"
+                sca = -sca
+                -- print("up Left")
+            elseif angle >= -112.5 and angle <- 67.5 then
+                seq = self.vehiculeActif.."Top"
+                -- print("up")
+            elseif angle >= -67.5 and angle < -22.5 then
+                seq = self.vehiculeActif.."TopSide"
+                -- print("up Right")
+            else print(angle)
+            end
         end
         -- Change l'orientation du personnage selon 1 et -1 de sca
         self.xScale = sca
@@ -114,13 +168,13 @@ function Perso:init(xorig, yorig, map, joystick, jeu)
         -- Si la distance à parcourir vers le point d'arrivée est plus grande que la valeur, on joue l'animation du perso, sinon on la met en pause
         if self.vit>0.25 then
             self.avatar:play()
-            if self.vitModif == vehicules.marche and audio.isChannelActive( 5 ) == false then
+            if self.vitModif == vehicules.marche.mod and audio.isChannelActive( 5 ) == false then
                 audio.play( sfxVehicules[self.vehiculeActif], { channel=5 } )
             end
         else
             self.avatar:setSequence(seq.."_idle")
             self.avatar:pause()
-            if self.vitModif == vehicules.marche then
+            if self.vitModif == vehicules.marche.mod then
                 audio.stop( 5 )
             end
         end
@@ -128,13 +182,19 @@ function Perso:init(xorig, yorig, map, joystick, jeu)
 
     -- Change la vitesse de déplacement du personnage et son visuel selon le véhicule passé en paramètre
     function perso:changerVehicule( vehicule )
+        self.avatar:removeSelf()
+        if vehicule == "marche" then
+            self.avatar = display.newSprite(self, marcheImageSheet, spriteSheetPerso:getSpriteIndex())
+        elseif vehicule == "voiture" then
+            self.avatar = display.newSprite(self, voitureImageSheet, spriteSheetVoiture:getSpriteIndex())
+        end
 
         local function listener()
             audio.play( sfxVehicules[vehicule], { channel=5, loops=-1 } )
         end
 
         if table.indexOf( self.inventaire, vehicule ) ~= nil or vehicule == "marche"  then
-            self.vitModif = vehicules[vehicule]
+            self.vitModif = vehicules[vehicule].mod
             audio.stop( 5 )
             if vehicule ~= "marche" then
                 audio.play( sfxVehicules[vehicule.."Start"], { channel=5, onComplete=listener } )
@@ -173,7 +233,7 @@ function Perso:init(xorig, yorig, map, joystick, jeu)
             if e.other.type=="porte" then
                 jeu:entrerBatiment(e.other.destination)
             elseif e.other.type=="auto" then
-                audio.play(sfxCrash)
+                audio.play(sfxCrash, {channel=20})
                 jeu:kill()
             end
         end

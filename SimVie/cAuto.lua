@@ -16,7 +16,9 @@ function Auto:init(actualWp)
     }
     local active = true
     local rand = math.random( 3 )
-    local width, height
+    local sideOutline = graphics.newOutline( 2, "autoSideBleu.png" )
+    local topOutline = graphics.newOutline( 2, "autoTopBleu.png" )
+    local width
 
     local wp1 = { time = 6000, x = -3186.5, y = 1496.5, transition=easing.inOutSine, seq = 3 }
     local wp2 = { time = 12000, x = 3195.5, y = 1496.5, transition=easing.inOutSine, seq = -1 }
@@ -45,7 +47,7 @@ function Auto:init(actualWp)
             sprite.x = waypoints[actualWp-1].x
             sprite.y = waypoints[actualWp-1].y
         end
-        physics.addBody( sprite, "static", { density=0.0, friction=0, bounce=0} )
+        physics.addBody( sprite, "static", { outline=sideOutline, density=0.0, friction=0, bounce=0} )
         self:start()
     end
 
@@ -53,18 +55,22 @@ function Auto:init(actualWp)
         local index = actualWp
         local function trajet()
             sprite.fill = { type="image", filename=src[rand][math.abs(waypoints[index].seq)] }
+            physics.removeBody( sprite )
             if waypoints[index].seq > 1 then
                 sprite.xScale = 1
                 sprite.width = sprite.height
                 sprite.height = width
+                physics.addBody( sprite, "static", { outline=topOutline, density=0.0, friction=0, bounce=0} )
             elseif waypoints[index].seq < 0 then
                 sprite.xScale = -1
                 sprite.height = sprite.width
                 sprite.width = width
+                physics.addBody( sprite, "static", { outline=sideOutline, density=0.0, friction=0, bounce=0} )
             else 
                 sprite.xScale = 1
                 sprite.height = sprite.width
                 sprite.width = width
+                physics.addBody( sprite, "static", { outline=sideOutline, density=0.0, friction=0, bounce=0} )
             end
             transition.to ( sprite, waypoints[index])
             timer.performWithDelay(waypoints[index].time, function()

@@ -1,6 +1,6 @@
 ﻿{"frames": {
 
-"Occurrence autoDown 1":
+"autoDown":
 {
 	"frame": {"x":5,"y":5,"w":24,"h":46},
 	"rotated": false,
@@ -8,7 +8,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":24,"h":46},
 	"sourceSize": {"w":24,"h":46}
 },
-"Occurrence autoDownSide 1":
+"autoDownSide":
 {
 	"frame": {"x":34,"y":5,"w":45,"h":44},
 	"rotated": false,
@@ -16,25 +16,25 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":45,"h":44},
 	"sourceSize": {"w":45,"h":44}
 },
-"Occurrence autoSide 1":
+"autoSide":
 {
-	"frame": {"x":84,"y":5,"w":56,"h":33},
+	"frame": {"x":5,"y":56,"w":56,"h":33},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":56,"h":33},
 	"sourceSize": {"w":56,"h":33}
 },
-"Occurrence autoTop 1":
+"autoTop":
 {
-	"frame": {"x":145,"y":5,"w":25,"h":46},
+	"frame": {"x":66,"y":56,"w":25,"h":46},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":25,"h":46},
 	"sourceSize": {"w":25,"h":46}
 },
-"Occurrence autoTopSide 1":
+"autoTopSide":
 {
-	"frame": {"x":175,"y":5,"w":44,"h":46},
+	"frame": {"x":5,"y":107,"w":44,"h":46},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":44,"h":46},
@@ -42,10 +42,10 @@
 }},
 "meta": {
 	"app": "Adobe Animate",
-	"version": "18.0.1.115",
-	"image": "Sans nom-1.png",
+	"version": "18.0.0.107",
+	"image": "voiture.png",
 	"format": "RGBA8888",
-	"size": {"w":256,"h":68},
+	"size": {"w":128,"h":160},
 	"scale": "1"
 }
 }

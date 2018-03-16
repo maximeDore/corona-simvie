@@ -9,11 +9,13 @@ function Infos:init( heureDepart, indexDepart, map, perso, jeu )
     local infos = display.newGroup()
     local cTelephone = require("cTelephone")
     local cEvenement = require("cEvenement")
+    local cContacts = require("cContacts")
     local hebdo = { "Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi" }
     local rightMarg = display.contentWidth - display.screenOriginX
     local heure = heureDepart
     local jourIndex = indexDepart
     local cptJours = 1
+    local contacts
     local emploiIndex = 1
     local emploi
     local heureDisplay
@@ -33,6 +35,10 @@ function Infos:init( heureDepart, indexDepart, map, perso, jeu )
     }
 
     function infos:init()
+        
+        -- Initialisation des contacts
+        contacts = cContacts:init( _G.data.contact1, _G.data.contact1 )
+        
         -- Chargement des données si partie chargée
         if _G.data then
             print("_G.data")
