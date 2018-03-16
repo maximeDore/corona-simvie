@@ -12,7 +12,6 @@ local spriteSheetVoiture = require("voiture_anim")
 local marcheImageSheet = graphics.newImageSheet("sports_anim.png", spriteSheetPerso:getSheet() )
 -- local scooterImageSheet = graphics.newImageSheet("scooter_anim.png", spriteSheetScooter:getSheet() )
 local voitureImageSheet = graphics.newImageSheet("voiture_anim.png", spriteSheetVoiture:getSheet() )
-print(spriteSheetVoiture:getFrameIndex("voitureTopSide")[1])
 
 local sprites = {
     marche = {
@@ -182,27 +181,30 @@ function Perso:init(xorig, yorig, map, joystick, jeu)
 
     -- Change la vitesse de déplacement du personnage et son visuel selon le véhicule passé en paramètre
     function perso:changerVehicule( vehicule )
-        self.avatar:removeSelf()
-        if vehicule == "marche" then
-            self.avatar = display.newSprite(self, marcheImageSheet, spriteSheetPerso:getSpriteIndex())
-        elseif vehicule == "voiture" then
-            self.avatar = display.newSprite(self, voitureImageSheet, spriteSheetVoiture:getSpriteIndex())
-        end
 
         local function listener()
             audio.play( sfxVehicules[vehicule], { channel=5, loops=-1 } )
         end
 
         if table.indexOf( self.inventaire, vehicule ) ~= nil or vehicule == "marche"  then
+            -- Visuel du personnage
+            self.avatar:removeSelf()
+            if vehicule == "marche" then
+                self.avatar = display.newSprite(self, marcheImageSheet, spriteSheetPerso:getSpriteIndex())
+            elseif vehicule == "voiture" then
+                self.avatar = display.newSprite(self, voitureImageSheet, spriteSheetVoiture:getSpriteIndex())
+            end
+            -- Vitesse
             self.vitModif = vehicules[vehicule].mod
             audio.stop( 5 )
             if vehicule ~= "marche" then
                 audio.play( sfxVehicules[vehicule.."Start"], { channel=5, onComplete=listener } )
-            elseif vehiculeActif ~= "marche" then
+            elseif self.vehiculeActif ~= "marche" then
                 audio.play( sfxVehicules[self.vehiculeActif.."Off"], { channel=6 } )
             end
             self.vehiculeActif = vehicule
         end
+        self:assombrir( infos:getHeure() )
     end
 
     -- Setters
@@ -241,12 +243,12 @@ function Perso:init(xorig, yorig, map, joystick, jeu)
 
     function perso:assombrir(heure)
         if heure > 12 then
-            perso.avatar:setFillColor( (heure-17)*8/-100+1 )
+            self.avatar:setFillColor( (heure-17)*8/-100+1 )
         else
             if heure < 4 then
-                perso.avatar:setFillColor( (7)*8/-100+1 )
+                self.avatar:setFillColor( (7)*8/-100+1 )
             else
-                perso.avatar:setFillColor( (13-heure*2)*8/-100+1 )
+                self.avatar:setFillColor( (13-heure*2)*8/-100+1 )
             end
         end
     end

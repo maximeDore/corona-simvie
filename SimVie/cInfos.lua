@@ -23,7 +23,8 @@ function Infos:init( heureDepart, indexDepart, map, perso, jeu )
     local moneyDisplay
     local telephone
     local interet
-    self.evenementDuJour = {}
+    local notification
+    local evenementDuJour = {}
 
     local tEmplois = {
         sports = {
@@ -37,11 +38,10 @@ function Infos:init( heureDepart, indexDepart, map, perso, jeu )
     function infos:init()
         
         -- Initialisation des contacts
-        contacts = cContacts:init( _G.data.contact1, _G.data.contact1 )
+        contacts = cContacts:init()
         
         -- Chargement des données si partie chargée
         if _G.data then
-            print("_G.data")
             heure = _G.data.heure
             emploiIndex = _G.data.emploiIndex
             jourIndex = _G.data.jourIndex
@@ -59,7 +59,6 @@ function Infos:init( heureDepart, indexDepart, map, perso, jeu )
         else
             emploi = tEmplois[perso.carriere][10]
         end
-        print(emploi.titre)
 
         telephone = cTelephone:init( self, perso, jeu )
 
@@ -82,16 +81,24 @@ function Infos:init( heureDepart, indexDepart, map, perso, jeu )
         heureDisplay = display.newText(optionsheureDisplay)
 
         -- Affichage de l'argent
-        local optionsMoneyDisplay = {text = perso.money .. " $", width = 256, x = rightMarg-150, y = 25, font = "8-Bit Madness.ttf", fontSize = 50, align = "right"}
+        local optionsMoneyDisplay = {text = perso.money .. " $", width = 256, x = rightMarg-200, y = 25, font = "8-Bit Madness.ttf", fontSize = 50, align = "right"}
         moneyDisplay = display.newText(optionsMoneyDisplay)
+
+        notification = display.newImageRect( "bell.png", 30, 30 )
+        notification.x = rightMarg - notification.width/2 - 25
+        notification.y = 25
 
         self:insert(barre)
         self:insert(jourDisplay)
         self:insert(heureDisplay)
         self:insert(moneyDisplay)
+        self:insert(notification)
 
+        self:updateAlerte()
         self:updateHeure()
-    end 
+    end
+
+    ------ GETTERS  ------------------------------------------------------------------------------
 
     function infos:getHeure()
         return heure
@@ -110,12 +117,32 @@ function Infos:init( heureDepart, indexDepart, map, perso, jeu )
         return interet*100
     end
 
+    function infos:getContacts()
+        return contacts
+    end
+    function infos:getEvenement()
+        if #evenementDuJour == 0 then
+            return nil
+        else
+            return evenementDuJour
+        end
+    end
+
+    function infos:getEmploi()
+        return emploi
+    end
+    function infos:getEmploiIndex()
+        return emploiIndex
+    end
+    
+    ------ UPDATES  ------------------------------------------------------------------------------
+
     function infos:updateHeure(nb)
         if nb ~= nil then
             if heure+nb >= 24 then
                 -- Appel de l'événement du jour
-                self.evenementDuJour = cEvenement:init( perso.chaNum )
-                telephone:updateAlertes( self.evenementDuJour )
+                evenementDuJour = cEvenement:init( perso.chaNum )
+                telephone:updateAlertes( evenementDuJour )
                 -- Mise à jour de l'heure et du jour
                 heure = nb+heure-24
                 cptJours = cptJours + 1
@@ -124,10 +151,11 @@ function Infos:init( heureDepart, indexDepart, map, perso, jeu )
                     jourIndex = 1
                 else
                     jourIndex = jourIndex + 1
-                    self:updateBanque()
-                    if table.indexOf( perso.inventaire, "loft" ) == nil then
-                        self:updateLoyer( 5 )
-                    end
+                end
+                self:updateBanque()
+                self:updateContacts()
+                if table.indexOf( perso.inventaire, "loft" ) == nil then
+                    self:updateLoyer( 5 )
                 end
                 jourDisplay.text = hebdo[jourIndex].." - jour "..cptJours
             else
@@ -141,6 +169,35 @@ function Infos:init( heureDepart, indexDepart, map, perso, jeu )
         end
         map:assombrir(heure)
         perso:assombrir(heure)
+    end
+
+    -- Mise à jour de l'icône d'alerte dans le coin supérieur droit
+    function infos:updateAlerte( on )
+        if on then
+            notification:setFillColor( display.getDefault( "fillColor" ) )
+        else
+            notification:setFillColor( black, 0.5 )
+        end
+    end
+
+    -- Mise à jour quotidienne des contacts
+    function infos:updateContacts()
+        local rand
+        local rand1
+        local rand2
+        for i=1,#contacts do
+            if perso.carriere == "sciences" then
+                rand2 = math.random( 4, 12 )
+                rand1 = math.random( 4 )
+            else
+                rand1 = math.random( 4, 12 )
+                rand2 = math.random( 4 )
+            end
+            print(i.." "..rand1, rand2 )
+            contacts[i].forNum = contacts[i].forNum + rand1
+            contacts[i].intNum = contacts[i].intNum + rand2
+        end
+        telephone:updateContacts()
     end
     
     -- Mise à jour de l'affichage des informations dans le téléphone
@@ -181,14 +238,6 @@ function Infos:init( heureDepart, indexDepart, map, perso, jeu )
             emploi = tEmplois[perso.carriere][emploiIndex]
         end
         self.updateStats()
-        print(emploi.titre)
-    end
-
-    function infos:getEmploi()
-        return emploi
-    end
-    function infos:getEmploiIndex()
-        return emploiIndex
     end
 
     infos:init()

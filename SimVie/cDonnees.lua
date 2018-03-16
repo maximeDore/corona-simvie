@@ -48,6 +48,8 @@ function donnees:prepForSave( perso, infos )
 	persoParams.jourIndex = infos:getJourIndex()
 	persoParams.interet = infos:getInteret()/100
 	persoParams.heure = infos:getHeure()
+	persoParams.evenement = infos:getEvenement()
+	persoParams.contacts = infos:getContacts()
 	persoParams.energie = perso.energie
 	persoParams.money = perso.money
 	persoParams.banque = perso.banque

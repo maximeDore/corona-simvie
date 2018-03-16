@@ -22,6 +22,9 @@ function Telephone:init( parent, perso, jeu )
     local screenAlertes = display.newGroup()
     local screenMenu = display.newGroup()
     local screenHome = display.newGroup()
+    local contacts
+    local contactDisplay1
+    local contactDisplay2
     local alertes = {}
     local alertContent
     local bgAlerteContenu
@@ -147,6 +150,7 @@ function Telephone:init( parent, perso, jeu )
             btRetour.isVisible = false
         end
 
+        contacts = parent.getContacts()
         phone = display.newImage( self, "telephone.png" )
         -- Zone de contact dans le haut du téléphone où il faut taper pour le monter/descendre
         -- tapZone = display.newRect( self, 0, -phone.height/2.25, phone.width, phone.height/6 )
@@ -219,22 +223,28 @@ function Telephone:init( parent, perso, jeu )
             align = "center"  -- Alignment parameter
         }
         aptitudesNum = display.newText( optionsAptitudesNum )
-        aptitudesNum:setFillColor(1,0,0)
+        aptitudesNum:setFillColor(0,0,0)
         screenStats:insert(aptitudesNum)
 
         -- Affichage de la carrière
         local optionsCarriere = {
-            text = perso.carriere,
+            text = perso.carriere:upper(),
             y = bgStats.y+bgStats.height/12,
             width = 235,
             height = 50,
             font = "8-Bit Madness.ttf",
             fontSize = 30,
-            align = "left"  -- Alignment parameter
+            align = "center"  -- Alignment parameter
         }
         carriereDisplay = display.newText( optionsCarriere )
-        carriereDisplay:setFillColor(1,0,0)
+        carriereDisplay:setFillColor(0,0,0)
         screenStats:insert(carriereDisplay)
+        screenStats:insert(aptitudesNum)
+        
+        emploiDisplay = display.newText( optionsCarriere )
+        emploiDisplay.y = emploiDisplay.y + 30
+        emploiDisplay:setFillColor(0,0,0)
+        screenStats:insert(emploiDisplay)
 
         -- Affichage de la barre d'énergie
         local optionsEnergie = {
@@ -255,6 +265,40 @@ function Telephone:init( parent, perso, jeu )
         barreEnergie = display.newRect( screenStats, fondEnergie.x, fondEnergie.y, fondEnergie.width-10, fondEnergie.height-10 )
         barreEnergie.fill = { 0, 1, 0 }
 
+
+---------- Écran Contacts       --------------------------------------------------------------------------------------------------------
+        -- Options d'affichage des contacts
+        local optionsContactNom = {
+            text = contacts[1].nom,
+            x = bgStats.width/12,
+            y = bgStats.y-bgStats.height/4.5,
+            width = 175,
+            height = 50,
+            font = "8-Bit Madness.ttf",
+            fontSize = 30,
+            align = "left"  -- Alignment parameter
+        }
+        contactDisplayName1 = display.newText( optionsContactNom )
+        contactDisplayName2 = display.newText( optionsContactNom )
+        contactDisplayName2.text = contacts[2].nom
+        contactDisplayName2.y = bgStats.y+bgStats.height/12
+        
+        contactApt1 = display.newText( optionsAptitudesNum )
+        contactApt1.y = contactDisplayName1.y + 60
+        contactApt2 = display.newText( optionsAptitudesNum )
+        contactApt2.y = contactDisplayName2.y + 60
+
+        contactDisplayName1:setFillColor(0,0,0)
+        contactDisplayName2:setFillColor(0,0,0)
+        contactApt1:setFillColor(0,0,0)
+        contactApt2:setFillColor(0,0,0)
+
+        screenContacts:insert(contactDisplayName1)
+        screenContacts:insert(contactDisplayName2)
+        screenContacts:insert(contactApt1)
+        screenContacts:insert(contactApt2)
+        self:updateContacts()
+        
 
 ---------- Écran Menu           --------------------------------------------------------------------------------------------------------
         btOui = cBouton:init( "btOui.png", nil, -bgMenu.width/4.15, 0, quitter )
@@ -362,6 +406,9 @@ function Telephone:init( parent, perso, jeu )
         self:updateStats()
         self:updateEnergie()
     end
+    
+
+------ UPDATES  ------------------------------------------------------------------------------
 
     function telephone:updateBoutons()
         -- État des boutons de déplacement
@@ -375,7 +422,13 @@ function Telephone:init( parent, perso, jeu )
 
     function telephone:updateStats()
         aptitudesNum.text = perso.forNum.."\n"..perso.intNum.."\n"..perso.chaNum
-        carriereDisplay.text = parent:getEmploi().titre
+        emploiDisplay.text = parent:getEmploi().titre
+    end
+
+    function telephone:updateContacts()
+        contacts = parent.getContacts()
+        contactApt1.text = contacts[1].forNum.."\n"..contacts[1].intNum
+        contactApt2.text = contacts[2].forNum.."\n"..contacts[2].intNum
     end
 
     function telephone:updateBanque()
@@ -409,6 +462,11 @@ function Telephone:init( parent, perso, jeu )
         local nb = #tEvents
         if nb == nil then
             nb = 0
+        end
+        if nb > 0 then
+            parent:updateAlerte( true )
+        else 
+            parent:updateAlerte()            
         end
         local cpt=0
         for i=1,alertContent.numChildren do

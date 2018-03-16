@@ -5,7 +5,7 @@
 -----------------------------------------------------------------------------------------
 local Contacts = {}
 
-function Contacts:init( )
+function Contacts:init()
     local noms = { "Martin", "Daniel", "Jeremie", "William", "Sarah", "Justin", "Henry", "Marty", "Justine", "Alexandre", "Bernard", "Sophie", "Yannick", "Maxime", "Olivier", "Audrey", "Francis" }
     local contacts = {}
 
@@ -15,23 +15,21 @@ function Contacts:init( )
         while rand2 == rand1 do
             rand2 = math.random( #noms )
         end
-        -- Assignation des valeurs chargées ou celles par défaut
-        if _G.data.contact1 and _G.data.contact2 then
-            self = {
-                { nom = contact1.nom, forNum = contact1.forNum, intNum = contact1.intNum },
-                { nom = contact2.nom, forNum = contact2.forNum, intNum = contact2.intNum },
-            }
+        -- Génération d'un personnage par défaut ou avec valeur sauvegardées
+        print(_G.data.contacts[1].nom)
+        if _G.data.contacts then
+            contacts = _G.data.contacts
         else
-            self = {
+            contacts = {
                 { nom = noms[rand1], forNum = 5, intNum = 5 },
                 { nom = noms[rand2], forNum = 5, intNum = 5 },
             }
         end
-        print(self[1].nom)
-        print(self[2].nom)
     end
-
+    
     contacts:init()
+    print(contacts[1].nom)
+    print(contacts[2].nom)
     return contacts
 end
 

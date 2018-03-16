@@ -49,13 +49,8 @@ function Interieur:init( destination, jeu, map, perso )
         perso:changerVehicule( "marche" )
 
         -- Abréviation
-        print(destination)
         local src = tSrc[destination]
-
-        for i=1,#perso.inventaire do
-            print(perso.inventaire[i])
-        end
-
+        local evenement = infos:getEvenement()
 
         -- Fond d'écran
         local bg
@@ -363,7 +358,7 @@ function Interieur:init( destination, jeu, map, perso )
             if destination == "appartement" and table.indexOf( perso.inventaire, "Tapis roulant") == nil then
                 src.bt3 = nil
             end
-            if destination == "banque" and infos.evenementDuJour ~= nil and infos.evenementDuJour[1].destination == "banque" then
+            if destination == "banque" and evenement ~= nil and evenement[1].destination == "banque" then
                 inputBanque = false
             end
             -- Si le perso entre dans l'appartement et qu'il a acheté le loft
@@ -376,7 +371,7 @@ function Interieur:init( destination, jeu, map, perso )
                 btRetour.x = display.contentCenterX
                 btRetour.y = display.contentCenterY*1.25
                 retroaction.text = "Vous ne travaillez pas ici."
-            elseif infos.evenementDuJour ~= nil and destination == infos.evenementDuJour[1].destination then
+            elseif evenement ~= nil and destination == evenement[1].destination then
                 btRetour.x = display.contentCenterX
                 btRetour.y = display.contentCenterY*1.25
                 retroaction.text = "L'etablissement est ferme aujourd'hui."
@@ -441,10 +436,6 @@ function Interieur:init( destination, jeu, map, perso )
     end
 
     interieur:init()
-
-    if inputBanque ~= nil then
-        -- inputBanque:addEventListener( "userInput", testListener )
-    end
 
     return interieur
 end
