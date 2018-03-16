@@ -43,8 +43,6 @@ function Menu:init()
     function menu:init()
         -- Affiche la barre de notifications
         display.setStatusBar( display.LightTransparentStatusBar )
-        -- Applique un filtre qui rend l'image moins floue (pour mieux voir les pixels)
-        display.setDefault( "magTextureFilter", "nearest" )
         
         local function commencer()
             menuCommencer = cMenuCommencer:init()
