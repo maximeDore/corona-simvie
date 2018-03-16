@@ -13,17 +13,17 @@ local myImageSheet = graphics.newImageSheet("sports_anim.png", spriteSheet:getSh
 -- Effets sonores
 local sfxVehicules = {
     -- Marche
-    marche = audio.loadSound('footstep.mp3'),
+    marche = audio.loadSound('footstep.wav'),
     --Scooter
-    scooterStart = audio.loadSound('scooter_start.mp3'),
-    scooter = audio.loadSound('scooter_idle.mp3'),
-    scooterOff = audio.loadSound('scooter_off.mp3'),
+    scooterStart = audio.loadSound('scooter_start.wav'),
+    scooter = audio.loadSound('scooter_idle.wav'),
+    scooterOff = audio.loadSound('scooter_off.wav'),
     --Voiture
-    voitureStart = audio.loadSound('saturn_start.mp3'),
-    voiture = audio.loadSound('saturn_idle.mp3'),
-    voitureOff = audio.loadSound('saturn_off.mp3')
+    voitureStart = audio.loadSound('saturn_start.wav'),
+    voiture = audio.loadSound('saturn_idle.wav'),
+    voitureOff = audio.loadSound('saturn_off.wav')
 }
-local sfxCrash = audio.loadSound('car_crash.mp3')
+local sfxCrash = audio.loadSound('car_crash.wav')
 
 -- Méthode init du perso
 function Perso:init(xorig, yorig, map, joystick, jeu)

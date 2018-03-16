@@ -10,7 +10,6 @@ function Interieur:init( destination, jeu, map, perso )
     local interieur = display.newGroup()
     local cJeu = require("cJeu")
     local cBouton = require("cBouton")
-    local bgMusic = audio.loadStream( "Miami Viceroy.mp3" )
     local retroaction
     local inputBanque
     -- Tableau contenant les objets en vente et leur prix (index : 1-3 = dépanneur, 4-6 = magasin)
@@ -47,6 +46,7 @@ function Interieur:init( destination, jeu, map, perso )
     
     function interieur:init()
         jeu:insert(self)
+        perso:changerVehicule( "marche" )
 
         -- Abréviation
         print(destination)

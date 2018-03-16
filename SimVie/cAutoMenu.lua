@@ -10,8 +10,8 @@ function AutoMenu:init()
     local autoMenu = display.newGroup()
     local autoResetter
     local autoBleue
-    local autoRouge
-    local autoJaune
+    local autoGrise
+    local autoVerte
 
     local function autoReset(e)
         timer.performWithDelay(1, function()
@@ -28,30 +28,36 @@ function AutoMenu:init()
         autoMenu:insert(autoResetter)
         
         -- Voitures
-        autoRouge = display.newImage("autoRouge.png",math.random(display.contentWidth),display.contentHeight*0.82)
-        autoMenu:insert(autoRouge)
+        autoGrise = display.newImage("autoSideGris.png",math.random(display.contentWidth),display.contentHeight*0.82)
+        autoGrise.xScale = -2
+        autoGrise.yScale = 2
+        autoMenu:insert(autoGrise)
     
-        autoBleue = display.newImage("autoBleue.png",math.random(display.contentWidth),display.contentHeight*0.58)
+        autoBleue = display.newImage("autoSideBleu.png",math.random(display.contentWidth),display.contentHeight*0.58)
+        autoBleue.xScale = -2
+        autoBleue.yScale = 2
         autoMenu:insert(autoBleue)
     
-        autoJaune = display.newImage("autoJaune.png",math.random(display.contentWidth),display.contentHeight*0.69)
-        autoMenu:insert(autoJaune)
+        autoVerte = display.newImage("autoSideVert.png",math.random(display.contentWidth),display.contentHeight*0.69)
+        autoVerte.xScale = -2
+        autoVerte.yScale = 2
+        autoMenu:insert(autoVerte)
 
         -- Ajout des corps de physique avec un délai d'un frame pour éviter un bogue de collision en fin de partie
         timer.performWithDelay(1, function()
             physics.addBody( autoResetter, "static", { density=100.0, friction=1, bounce=0 } )
-            physics.addBody( autoRouge, "dynamic", { density=100.0, friction=1, bounce=0 } )
-            autoRouge.isFixedRotation = true
+            physics.addBody( autoGrise, "dynamic", { density=100.0, friction=1, bounce=0 } )
+            autoGrise.isFixedRotation = true
             physics.addBody( autoBleue, "dynamic", { density=100.0, friction=1, bounce=0 } )
             autoBleue.isFixedRotation = true
-            physics.addBody( autoJaune, "dynamic", { density=100.0, friction=1, bounce=0 } )
-            autoJaune.isFixedRotation = true
+            physics.addBody( autoVerte, "dynamic", { density=100.0, friction=1, bounce=0 } )
+            autoVerte.isFixedRotation = true
         end)
     
         -- Déplacement des voitures
-        transition.to ( autoRouge, { time = math.random(2000,4000), x = display.contentWidth*1.5, y = autoRouge.y})
+        transition.to ( autoGrise, { time = math.random(2000,4000), x = display.contentWidth*1.5, y = autoGrise.y})
         transition.to ( autoBleue, { time = math.random(2000,4000), x = display.contentWidth*1.5, y = autoBleue.y})
-        transition.to ( autoJaune, { time = math.random(2000,4000), x = display.contentWidth*1.5, y = autoJaune.y})
+        transition.to ( autoVerte, { time = math.random(2000,4000), x = display.contentWidth*1.5, y = autoVerte.y})
 
     end
 

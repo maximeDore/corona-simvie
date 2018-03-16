@@ -50,11 +50,11 @@ function Map:init( perso )
         local faculte = cBatiment:init(self,"faculte.png",2330,675,"faculte",-40,true)
 
         -- Autos
-        -- for i=1,8,2 do
-        --     local auto = cAuto:init(i,perso)
-        --     autos:insert(auto)
-        -- end
-        -- self:insert(autos)
+        for i=1,8,2 do
+            local auto = cAuto:init(i,perso)
+            autos:insert(auto)
+        end
+        self:insert(autos)
 
         -- Filtre qui obscurcit l'écran selon l'heure
         filtreNocturne = display.newRect(self, 0, 0, 6800, 3400 )
