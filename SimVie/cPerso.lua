@@ -8,9 +8,10 @@ local Perso = {}
 
 -- Mise en mémoire des infos du sprite de l'ogre (ogre en anim png et lua)
 local spriteSheetPerso = require("sports_anim")
+local spriteSheetScooter = require("scooter_anim")
 local spriteSheetVoiture = require("voiture_anim")
 local marcheImageSheet = graphics.newImageSheet("sports_anim.png", spriteSheetPerso:getSheet() )
--- local scooterImageSheet = graphics.newImageSheet("scooter_anim.png", spriteSheetScooter:getSheet() )
+local scooterImageSheet = graphics.newImageSheet("scooter_anim.png", spriteSheetScooter:getSheet() )
 local voitureImageSheet = graphics.newImageSheet("voiture_anim.png", spriteSheetVoiture:getSheet() )
 
 local sprites = {
@@ -19,11 +20,11 @@ local sprites = {
         sheet = marcheImageSheet,
         frame = 1
     },
-    -- scooter = {
-    --     type = "image",
-    --     sheet = scooterImageSheet,
-    --     frame = 1
-    -- },
+    scooter = {
+        type = "image",
+        sheet = scooterImageSheet,
+        frame = 1
+    },
     voiture = {
         type = "image",
         sheet = voitureImageSheet,
@@ -55,7 +56,7 @@ function Perso:init(xorig, yorig, map, joystick, jeu)
     -- Modificateurs de vitesse de chaque véhicule
     local vehicules = {
         marche  = { mod=7.5, sca=1.75, size=1 },
-        scooter = { mod=12.5, sca=3, size=2 },
+        scooter = { mod=12.5, sca=4, size=3 },
         voiture = { mod=20, sca=4.5, size=3 }
     }
     -- Constructeur de Perso
@@ -138,7 +139,7 @@ function Perso:init(xorig, yorig, map, joystick, jeu)
                 seq = self.vehiculeActif.."DownSide"
                 -- print("down Right")
             elseif angle < 112.5 and angle >= 67.5 then
-                seq ="voitureDown"
+                seq =self.vehiculeActif.."Down"
                 -- print("down")
             elseif angle < 157.5 and angle >= 112.5 then
                 seq = self.vehiculeActif.."DownSide"
@@ -196,6 +197,8 @@ function Perso:init(xorig, yorig, map, joystick, jeu)
                 self.avatar:removeSelf()
                 if vehicule == "marche" then
                     self.avatar = display.newSprite(self, marcheImageSheet, spriteSheetPerso:getSpriteIndex())
+                elseif vehicule == "scooter" then
+                    self.avatar = display.newSprite(self, scooterImageSheet, spriteSheetScooter:getSpriteIndex())
                 elseif vehicule == "voiture" then
                     self.avatar = display.newSprite(self, voitureImageSheet, spriteSheetVoiture:getSpriteIndex())
                 end
@@ -217,6 +220,9 @@ function Perso:init(xorig, yorig, map, joystick, jeu)
                     if vehicule == "marche" then
                         w,h = self.width/2,self.height/2
                         bodyShape = { w-10,h-10,  w,h,  w,h+h/2-10,  w-10,h+h/2,  -w+10,h+h/2,  -w,h+h/2-10,  -w,h,  -w+10,h-10 }
+                    elseif vehicule == "scooter" then
+                        w,h = self.width/2*vehicules[vehicule].size,self.height*vehicules[vehicule].size
+                        bodyShape = { w-10,h-100,  w,h-90,  w,h+h/2-110,  w-10,h+h/2-100,  -w+10,h+h/2-100,  -w,h+h/2-110,  -w,h-90,  -w+10,h-100 }
                     elseif vehicule == "voiture" then
                         w,h = self.width/2*vehicules[vehicule].size,self.height*vehicules[vehicule].size
                         bodyShape = { w+20-10,h-180,  w+20,h-170,  w+20,h+h/2-160,  w+20-10,h+h/2-150,  -w-20+10,h+h/2-150,  -w-20,h+h/2-160,  -w-20,h-170,  -w-20+10,h-180 }
