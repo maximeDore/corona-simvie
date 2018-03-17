@@ -15,14 +15,14 @@ function Interieur:init( destination, jeu, map, perso )
     -- Tableau contenant les objets en vente et leur prix (index : 1-3 = dépanneur, 4-6 = magasin)
     local objets = {
         -- Objets d'énergie (dépanneur)
-        { nom = "Cafe", prix = 5, energie = 6 },
-        { nom = "Barre d'energie", prix = 10, energie = 10 },
-        { nom = "Boisson energisante", prix = 20, energie = 25 },
+        { nom = "Cafe", prix = 6, energie = 5, max = 5 },
+        { nom = "Barre d'nrg", prix = 10, energie = 10, max = 5 },
+        { nom = "Boisson nrg", prix = 20, energie = 25, max = 2 },
         -- Objets de qualité de vie
-        { nom = "Tapis roulant", prix = 1 },    --750
-        { nom = "scooter", prix = 1 },          --500
-        { nom = "voiture", prix = 1 },          --1500
-        { nom = "loft", prix = 1 }              --3500
+        { nom = "Tapis roulant", prix = 750 },     --750
+        { nom = "scooter", prix = 500 },           --500
+        { nom = "voiture", prix = 1500 },          --1500
+        { nom = "loft", prix = 3500 }              --3500
     }
     -- Tableau contenant des tableaux, contenant le nom de l'endroit et le texte affiché dans les boutons
     local tSrc = { 
@@ -190,6 +190,9 @@ function Interieur:init( destination, jeu, map, perso )
                         retroaction.text = "Vous devez posseder un loft pour acheter une voiture."
                     end
                 else
+                    -- if objets[i].max >= perso.inventaire[table.indexOf(perso.inventaire, objets[i].nom)] then
+                    --     print("max atteint")
+                    -- end
                     retroaction.text = "Vous achetez un(e) "..objet.nom.." pour "..objet.prix.." $."
                     perso:setMoney( -objet.prix )
                     perso:setEnergie( objet.energie )

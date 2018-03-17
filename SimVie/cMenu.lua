@@ -83,12 +83,10 @@ function Menu:init()
         -- Boutons
         btCommencer = bouton:init("Commencer",nil,display.contentCenterX/2,display.contentHeight/1.37,commencer)
         btContinuer = bouton:init("Continuer",nil,display.contentCenterX/.67,display.contentHeight/1.37,continuer)
-        shadowCredits = display.newText( { text = "Maxime Dore © 2018  |  voir les sources", width = display.contentWidth, x = display.contentCenterX-1, y = display.contentHeight-display.screenOriginY-11, font = "8-Bit Madness.ttf", fontSize = 25, align = "center" } )
-        btCredits = display.newText( { text = "Maxime Dore © 2018  |  voir les sources", width = display.contentWidth, x = display.contentCenterX, y = display.contentHeight-display.screenOriginY-10, font = "8-Bit Madness.ttf", fontSize = 25, align = "center" } )
-        btCredits:setFillColor(1,0,0)
+        btCredits = display.newText( { text = "Maxime Dore © 2018  |  voir les sources", width = display.contentWidth, x = display.contentCenterX, y = display.contentHeight-display.screenOriginY-15, font = "8-Bit Madness.ttf", fontSize =35, align = "center" } )
+        btCredits:setFillColor(.7,.5,.5)
         self:insert(btCommencer)
         self:insert(btContinuer)
-        self:insert(shadowCredits)
         self:insert(btCredits)
     end
         

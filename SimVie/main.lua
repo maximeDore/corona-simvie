@@ -13,8 +13,8 @@ audio.setVolume( 0.25, { channel=1 } )
 -- Applique un filtre qui rend l'image moins floue (pour mieux voir les pixels)
 display.setDefault( "magTextureFilter", "nearest" )
 
---  local cSplash = require("cSplashscreen")
---  cSplash:init()
+ local cSplash = require("cSplashscreen")
+ cSplash:init()
 
-local cMenu = require("cMenu")
-cMenu:init()
+-- local cMenu = require("cMenu")
+-- cMenu:init()
