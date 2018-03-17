@@ -35,7 +35,7 @@ function Jeu:init()
         if audio.seek( 1000, bgMusicChannel ) then
             audio.stop( bgMusicChannel )
         end
-        -- bgMusicChannel = audio.play( bgMusic, { channel=1, loops=-1, fadein=1000 } )
+        bgMusicChannel = audio.play( bgMusic, { channel=1, loops=-1, fadein=1000 } )
         
         -- Fondu d'entrée
         fade = display.newRect(display.contentCenterX,display.contentCenterY,display.contentWidth*2,display.contentHeight)

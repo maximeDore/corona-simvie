@@ -30,7 +30,7 @@ function Evenement:init( chance )
             { auteur="Mathilde Mercier", texte="Blehschmeuh!" },
             { auteur="Martine Mercier", texte="J'ai la toune de Dora l'exploratrice dans tête." },
             { auteur="Samuel De Matos", texte="*Finger guns*" },
-            { auteur="Samuel De Matos", texte="Nom mais j'suis un expert-la." },
+            { auteur="Samuel De Matos", texte="Non mais j'suis un expert-la." },
             { auteur="Maman", texte="Les p'tits jus c'est pour les lunchs." },
             -- Citations autres
             { auteur="Anonyme", texte="Le suicide n'est pas une option." },

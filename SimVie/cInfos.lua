@@ -47,6 +47,7 @@ function Infos:init( heureDepart, indexDepart, map, perso, jeu )
             jourIndex = _G.data.jourIndex
             cptJours = _G.data.cptJours
             interet = _G.data.interet
+            evenementDuJour = _G.data.evenement
             _G.data = nil
         end
         if interet == nil then
@@ -96,6 +97,7 @@ function Infos:init( heureDepart, indexDepart, map, perso, jeu )
 
         self:updateAlerte()
         self:updateHeure()
+        telephone:updateAlertes( evenementDuJour )
     end
 
     ------ GETTERS  ------------------------------------------------------------------------------
