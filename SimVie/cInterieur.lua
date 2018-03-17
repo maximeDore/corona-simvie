@@ -26,11 +26,11 @@ function Interieur:init( destination, jeu, map, perso )
     }
     -- Tableau contenant des tableaux, contenant le nom de l'endroit et le texte affiché dans les boutons
     local tSrc = { 
-        gym =           { titre = "Gym", bg = "bg.jpg", bt1 = "Courir", bt1desc = "+1 force", bt2 = "S'entrainer", bt2desc = "+2 Force, -20$", bt3 = "Steroides", bt3desc = "? For (chance)" },
-        universite =    { titre = "Universite", bg = "bg.jpg", bt1 = "Etudier", bt1desc = "+1 intelligence", bt2 = "Classe", bt2desc = "+2 int, -20$", bt3 = "Tricher", bt3desc = "?int (chance)"},
+        gym =           { titre = "Gym", bg = "bgGym.png", bt1 = "Courir", bt1desc = "+1 force", bt2 = "S'entrainer", bt2desc = "+2 Force, -20$", bt3 = "Steroides", bt3desc = "? For (chance)" },
+        universite =    { titre = "Universite", bg = "bgUniversite.png", bt1 = "Etudier", bt1desc = "+1 intelligence", bt2 = "Classe", bt2desc = "+2 int, -20$", bt3 = "Tricher", bt3desc = "?int (chance)"},
         depanneur =     { titre = "Depanneur", bg = "bg.jpg", bt1 = "Cafe", bt1desc = "+5 nrg, -"..objets[1].prix.."$", bt2 = "Barre d'nrg", bt2desc = "+10 nrg, -"..objets[2].prix.."$", bt3 = "Boisson NRG", bt3desc = "+25 nrg, -"..objets[3].prix.."$" },
-        magasin =       { titre = "Magasin", bg = "bg.jpg", bt1 = "Tapis Roulant", bt1desc = objets[4].prix.."$", bt2 = "Mobilette", bt2desc = "+12.5 vit, -"..objets[5].prix.."$", bt3 = "Voiture", bt3desc = "+20 vit, -"..objets[6].prix.."$" },
-        banque =        { titre = "Banque", bg = "bg.jpg", bt1 = "Deposer", bt2 = "Retirer" },
+        magasin =       { titre = "Magasin", bg = "bgMagasin.png", bt1 = "Tapis Roulant", bt1desc = objets[4].prix.."$", bt2 = "Mobilette", bt2desc = "+12.5 vit, -"..objets[5].prix.."$", bt3 = "Voiture", bt3desc = "+20 vit, -"..objets[6].prix.."$" },
+        banque =        { titre = "Banque", bg = "bgBanque.png", bt1 = "Deposer", bt2 = "Retirer" },
         appartement =   { titre = "Appartement", bg = "bgAppartement.png", bt1 = "Dormir", bt1desc = "+80 nrg, +9h", bt2 = "Sieste", bt2desc = "+5 nrg, +1h", bt3 = "S'entrainer", bt3desc = "+1 For" },
         loft =          { titre = "Loft", bg = "bg.jpg", bt1 = "Dormir", bt1desc = "+100 nrg, +9h", bt2 = "Sieste", bt2desc = "+5 nrg, +1h", bt3 = "S'entrainer", bt3desc = "+1 For"},
         centresportif = { titre = "Centre Sportif", bg = "bgCentreSportif.png", bt1 = "Travailler", bt1desc = "$$$", bt2 = "Demander", bt2desc = "une promotion"},
@@ -405,12 +405,14 @@ function Interieur:init( destination, jeu, map, perso )
 
         -- Champ de texte pour la banque
         if destination == "banque" and inputBanque ~= false then
-            inputBanque = native.newTextField( display.contentCenterX/1.65, display.contentCenterY*1.5, btRetour.width-10, btRetour.height/2 )
+            local btBanque = display.newImage( self, "bt.png" )
+            inputBanque = native.newTextField( display.contentCenterX/1.65, display.contentCenterY*1.5, btRetour.width-50, btRetour.height/2 )
             inputBanque.inputType = "number"
             inputBanque.placeholder = "-Montant-"
             inputBanque.isFontSizeScaled = true
             inputBanque.font = native.newFont( "8-Bit Madness.ttf", 75 )
             inputBanque.align = "center"
+            btBanque.x, btBanque.y = inputBanque.x, inputBanque.y
             self:insert(inputBanque)
         end
 
