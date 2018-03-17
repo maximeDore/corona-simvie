@@ -112,6 +112,12 @@ function Menu:init()
 
     end
 
+    local function afficherCredits()
+        menu:kill(true)
+        menu:removeSelf()
+        cCredits:init()
+    end
+
     function menu:kill( param )
         local function recursiveKill(group) -- fonction locale appelant la fonction kill de chaque enfant (removeEventListeners)
             for i=group.numChildren,1,-1 do
@@ -124,15 +130,10 @@ function Menu:init()
             end
         end
         recursiveKill(self)
+        btCredits:removeEventListener( "tap", afficherCredits )
         if param == nil then
             listener()
         end
-    end
-
-    local function afficherCredits()
-        menu:kill(true)
-        menu:removeSelf()
-        cCredits:init()
     end
     
 

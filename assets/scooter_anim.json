@@ -1,0 +1,51 @@
+﻿{"frames": {
+
+"Occurrence scooterDown 1":
+{
+	"frame": {"x":5,"y":5,"w":19,"h":33},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":19,"h":33},
+	"sourceSize": {"w":19,"h":33}
+},
+"Occurrence scooterDownSide 1":
+{
+	"frame": {"x":29,"y":5,"w":26,"h":30},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":26,"h":30},
+	"sourceSize": {"w":26,"h":30}
+},
+"Occurrence scooterSide 1":
+{
+	"frame": {"x":60,"y":5,"w":31,"h":32},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":31,"h":32},
+	"sourceSize": {"w":31,"h":32}
+},
+"Occurrence scooterTop 1":
+{
+	"frame": {"x":96,"y":5,"w":21,"h":33},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":21,"h":33},
+	"sourceSize": {"w":21,"h":33}
+},
+"Occurrence scooterTopSide 1":
+{
+	"frame": {"x":5,"y":43,"w":26,"h":31},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":26,"h":31},
+	"sourceSize": {"w":26,"h":31}
+}},
+"meta": {
+	"app": "Adobe Animate",
+	"version": "18.0.0.107",
+	"image": "scooter_anim.png",
+	"format": "RGBA8888",
+	"size": {"w":128,"h":80},
+	"scale": "1"
+}
+}

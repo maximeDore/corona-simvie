@@ -53,8 +53,8 @@ function Credits:init()
         local optionsTitreDisplay = {text = "CREDITS", width = 500, x = display.contentCenterX, y = 25, font = "8-Bit Madness.ttf", fontSize = 50, align = "center"}
         local titreDisplay = display.newText(optionsTitreDisplay)
 
-        btRetour = cBouton:init("Retour",nil,display.contentCenterX/2.25,display.contentCenterY*1.65,retour)
-        local optionsTexte = {text = "-PROGRAMMATION-\nMaxime Dore\n\n-MUSIQUE-\nMaxime Dore\nHermes Maheu\n\n-GRAPHISME-\nMaxime Dore\n\nRealise dans le cadre du cours de Production de jeu video et de Creativite multimedia de Techniques d'integration multimedia du Cegep de Saint-Jerome © 2018", width = display.contentWidth/3*1.5, x = display.contentCenterX*1.4, y = display.contentCenterY, font = "8-Bit Madness.ttf", fontSize = 50, align = "center"}
+        btRetour = cBouton:init("Retour",nil,display.contentCenterX/2.25,display.contentCenterY*1.5,retour)
+        local optionsTexte = {text = "-PROGRAMMATION-\nMaxime Dore\n\n-MUSIQUE-\nMaxime Dore\nHermes Maheu\n\n-GRAPHISME-\nMaxime Dore\n\nProduit dans le cadre du cours de Production de jeu video et de Creativite multimedia de Techniques d'integration multimedia du Cegep de Saint-Jerome © 2018", width = display.contentWidth/3*1.5, x = display.contentCenterX*1.4, y = display.contentCenterY, font = "8-Bit Madness.ttf", fontSize = 50, align = "center"}
         texte = display.newText( optionsTexte )
         logo = display.newImage( self, "logo.png", btRetour.x, display.contentCenterY/1.5 )
         
