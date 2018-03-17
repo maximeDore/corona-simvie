@@ -22,6 +22,7 @@ function Instructions:init()
     local narration
     local narration2
     local btSuivant
+    local isPhoneUp = false
     
     local function listener()
         local function listener2()
@@ -33,6 +34,7 @@ function Instructions:init()
     end
 
     function instructions:init()
+        display.setStatusBar( display.HiddenStatusBar )
         local cpt = 1
         local textes = {
             "Vous etes jeune, sans experience et vous souhaitez vous eloigner de chez vous.",
@@ -40,33 +42,52 @@ function Instructions:init()
             "Vous qui etes "..( carriere == "sports" and "athletique" or "intelligent" )..", revez d'etre riche et celebre.",
             "Vous vendez votre voiture, trouvez un appartement et "..( carriere == "sports" and "une place dans une petite equipe sportive professionnelle." or "un emploi minable dans une faculte de sciences." ),
             "Vous devrez maintenant payer votre loyer, gerer votre niveau d'energie et placer votre argent en banque pour prosperer.",
-            "Votre telephone est votre meilleur outil. Il vous permettra d'utiliser un vehicule ou un objet en inventaire.",
-            "Il vous permettra aussi de voir l'avancement de certains collegues de travail. Tentez d'avoir plus de succes qu'eux.",
+            "Votre telephone est votre meilleur outil. Touchez le haut du telephone pour le sortir ou le cacher.",
+            "C'est grace a celui-ci que vous pourrez utiliser un vehicule ou sauvegarder votre progression.",
+            "Il vous permettra aussi de voir l'avancement de certains collegues de travail. Touchez le bouton CONTACTS.",
+            "Tentez d'avoir une meilleure vie que vos autres contacts. Cet application affichera leurs statistiques de vie.",
             "Vous devrez apprendre le reste par vous-meme, explorez votre nouvel environnement.\nBonne vie!"
         }
-
-        -- Monter/descendre le téléphone
-        local function toggleTelephone()
-            if telephone.y >= display.contentHeight-display.screenOriginY+125 then
-                transition.to( telephone, { time = 500, y = posUp, transition=easing.outQuart } )
-            elseif telephone.y <= display.contentHeight-display.screenOriginY-100 then
-                transition.to( telephone, { time = 500, y = posDown, transition=easing.outQuart } )
-            end
-        end
-
+        
         -- Afficher le texte suivant/activer les animations/démarrer le jeu
         local function suivant()
-            cpt = cpt +1
+            if cpt ~= #textes-4 or isPhoneUp == true then
+                cpt = cpt +1
+            end
             narration.text = textes[cpt]
             narration2.text = textes[cpt]
-            if cpt == #textes-2 then
-                transition.to( telephone, { time = 500, y = posUp, transition=easing.outQuart } )
+            if cpt == #textes-4 then
+                btSuivant:disable()
+            elseif cpt == #textes-2 then
+                btSuivant:disable()
             elseif cpt == #textes-1 then
                 bgContacts.isVisible = true
             elseif cpt == #textes then
                 transition.to( telephone, { time = 500, y = posDown, transition=easing.outQuart } )
             elseif cpt > #textes then
                 listener()
+            end
+        end
+
+        -- Monter/descendre le téléphone
+        local function toggleTelephone()
+            if telephone.y >= display.contentHeight-display.screenOriginY+125 and cpt >= #textes-4 then
+                isPhoneUp = true
+                transition.to( telephone, { time = 500, y = posUp, transition=easing.outQuart } )
+                if cpt == #textes-4 then
+                    suivant()
+                    btSuivant:enable()
+                end
+            elseif telephone.y <= display.contentHeight-display.screenOriginY-100 then
+                isPhoneUp = false
+                transition.to( telephone, { time = 500, y = posDown, transition=easing.outQuart } )
+            end
+        end
+
+        local function afficherContacts()
+            if cpt == #textes-2 then
+                suivant()
+                btSuivant:enable()
             end
         end
         
@@ -84,6 +105,20 @@ function Instructions:init()
         bg2 = display.newImage( self, "bg2.jpg", display.contentCenterX+bg1.width, display.contentCenterY )
         bg2.x = bg2.x - 70
         bg2.xScale = -1
+        
+        -- Affichage de la barre du haut
+        local barre = display.newRect( self, display.screenOriginX, 0, display.contentWidth*3, 100 )
+        local degrade = {
+            type = "gradient",
+            color1 = { .5, .1, .1 },
+            color2 = { .4, .3, .3 },
+            direction = "up"
+        }
+        barre.fill = degrade
+
+        -- Affichage du titre
+        local optionsJourDisplay = {text = "INTRODUCTION", width = 500, x = display.contentCenterX, y = 25, font = "8-Bit Madness.ttf", fontSize = 50, align = "center"}
+        local titreDisplay = display.newText(optionsJourDisplay)
 
         -- Voiture
         auto = display.newImage( self, sprites[rand], display.contentCenterX*1.5, display.contentCenterY*1.35  )
@@ -130,7 +165,7 @@ function Instructions:init()
         -- btSave   btMenu
         -- btMarche btScooter   btVoiture
         local btStats = cBouton:init( "btStats.png", nil, -bgContacts.width/3.25, -bgContacts.height*.35, dummy )
-        local btContacts = cBouton:init( "btContacts.png", nil, 0, -bgContacts.height*.35, dummy )
+        local btContacts = cBouton:init( "btContacts.png", nil, 0, -bgContacts.height*.35, afficherContacts )
         local btAlertes = cBouton:init( "btAlertes.png", nil, bgContacts.width/3.25, -bgContacts.height*.35, dummy )
         local btInventaire = cBouton:init( "btGps.png", nil, -bgContacts.width/3.25, -bgContacts.height*.15, dummy )
         local btBanque = cBouton:init( "btBanque.png", nil, 0, -bgContacts.height*.15, dummy )
@@ -162,6 +197,7 @@ function Instructions:init()
         self:insert(narration)
         self:insert(narration2)
         self:insert(telephone)
+        self:insert(titreDisplay)
     end
 
     -- Démarrer le jeu
@@ -194,8 +230,8 @@ function Instructions:init()
                 end
             end
         end
-        self:removeSelf()
         recursiveKill(self)
+        self:removeSelf()
     end
 
     instructions:init()

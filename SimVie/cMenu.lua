@@ -12,6 +12,7 @@ function Menu:init()
     local autoMenu = require("cAutoMenu")
     local cMenuCommencer = require("cMenuCommencer")
     local cInstructions = require("cInstructions")
+    local cCredits = require("cCredits")
     local cDonnees = require("cDonnees")
     local cJeu = require("cJeu")
     local bgMusic = audio.loadStream( "toune_menu.mp3" )
@@ -82,8 +83,13 @@ function Menu:init()
         -- Boutons
         btCommencer = bouton:init("Commencer",nil,display.contentCenterX/2,display.contentHeight/1.37,commencer)
         btContinuer = bouton:init("Continuer",nil,display.contentCenterX/.67,display.contentHeight/1.37,continuer)
+        shadowCredits = display.newText( { text = "Maxime Dore © 2018  |  voir les sources", width = display.contentWidth, x = display.contentCenterX-1, y = display.contentHeight-display.screenOriginY-11, font = "8-Bit Madness.ttf", fontSize = 25, align = "center" } )
+        btCredits = display.newText( { text = "Maxime Dore © 2018  |  voir les sources", width = display.contentWidth, x = display.contentCenterX, y = display.contentHeight-display.screenOriginY-10, font = "8-Bit Madness.ttf", fontSize = 25, align = "center" } )
+        btCredits:setFillColor(1,0,0)
         self:insert(btCommencer)
         self:insert(btContinuer)
+        self:insert(shadowCredits)
+        self:insert(btCredits)
     end
         
     function menu:retour()
@@ -96,10 +102,8 @@ function Menu:init()
 
         local function continuer()
             if donnees:loadTable( "sauvegarde.json" ) ~= nil then
-                btCommencer:removeSelf()
-                btContinuer:removeSelf()
                 _G.data = donnees:loadTable( "sauvegarde.json" )
-                listener()
+                menu:kill()
             end
         end
         menuCommencer:removeSelf()
@@ -108,7 +112,7 @@ function Menu:init()
 
     end
 
-    function menu:kill()
+    function menu:kill( param )
         local function recursiveKill(group) -- fonction locale appelant la fonction kill de chaque enfant (removeEventListeners)
             for i=group.numChildren,1,-1 do
                 if group[i].numChildren~=nil then
@@ -120,11 +124,20 @@ function Menu:init()
             end
         end
         recursiveKill(self)
-        listener()
+        if param == nil then
+            listener()
+        end
+    end
+
+    local function afficherCredits()
+        menu:kill(true)
+        menu:removeSelf()
+        cCredits:init()
     end
     
 
     menu:init()
+    btCredits:addEventListener( "tap", afficherCredits )
     return menu
 
 end
