@@ -50,9 +50,9 @@ local sfxCrash = audio.loadSound('car_crash.wav')
 -- Méthode init du perso
 function Perso:init(xorig, yorig, map, joystick, jeu)
     local perso = display.newGroup()
-    audio.setVolume( 0.1, {channel=5} )
-    audio.setVolume( 0.1, {channel=6} )
-    audio.setVolume( 0.5, {channel=20} )
+    audio.setVolume( 0.75, {channel=5} )
+    audio.setVolume( 0.75, {channel=6} )
+    audio.setVolume( 0.75, {channel=20} )
     -- Modificateurs de vitesse de chaque véhicule
     local vehicules = {
         marche  = { mod=7.5, sca=1.75, size=1 },

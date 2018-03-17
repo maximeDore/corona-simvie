@@ -459,9 +459,9 @@ function Telephone:init( parent, perso, jeu )
         transition.to( contenuAlerteTexte, { time = 500, x = bgMenu.width, transition=easing.outQuart } )
         transition.to( contenuAlerteTexte2, { time = 500, x = bgMenu.width, transition=easing.outQuart } )
         alertes = tEvents
-        local nb = #tEvents
-        if nb == nil then
-            nb = 0
+        local nb = 0
+        if alertes ~= nil then
+            nb = #tEvents
         end
         if nb > 0 then
             parent:updateAlerte( true )
