@@ -68,17 +68,15 @@ function Jeu:init()
 
     -- Désactiver le monde/joystick et charger l'interface d'intérieur d'un batiment
     function jeu:entrerBatiment(destination)
-        -- maMap:sleep()
         monJoystick:kill()
         interieur = cInterieur:init(destination,self,maMap,monPerso)
     end
 
     -- Réactiver le monde/joystick et décharger l'interface d'intérieur
     function jeu:sortirBatiment()
-        -- maMap:wake()
         interieur:removeSelf()
         monJoystick:activate()
-        -- monPerso:changerVehicule( "marche" )
+        monPerso:setDestination()
     end
 
     -- Détruire le jeu et tous ses enfants
@@ -93,7 +91,6 @@ function Jeu:init()
                 end
             end
         end
-        audio.stop( 5,6 )
         recursiveKill(self)
         self:removeSelf()
         infos:removeSelf()

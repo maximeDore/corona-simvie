@@ -47,6 +47,7 @@ function Interieur:init( destination, jeu, map, perso )
     function interieur:init()
         jeu:insert(self)
         perso:changerVehicule( "marche" )
+        perso:setDestination( destination )
 
         -- Abréviation
         local src = tSrc[destination]

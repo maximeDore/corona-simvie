@@ -51,17 +51,19 @@ function Perso:init(xorig, yorig, map, joystick, jeu)
     local perso = display.newGroup()
     audio.setVolume( 0.1, {channel=5} )
     audio.setVolume( 0.1, {channel=6} )
+    audio.setVolume( 0.5, {channel=20} )
     -- Modificateurs de vitesse de chaque véhicule
     local vehicules = {
-        marche  = {mod=7.5,sca=1.75},
-        scooter = {mod=12.5,sca=3},
-        voiture = {mod=20,sca=4.5}
+        marche  = { mod=7.5, sca=1.75, size=1 },
+        scooter = { mod=12.5, sca=3, size=2 },
+        voiture = { mod=20, sca=4.5, size=3 }
     }
     -- Constructeur de Perso
     function perso:init()
         self.avatar = display.newSprite(self, marcheImageSheet, spriteSheetPerso:getSpriteIndex())
         self.type = "perso"
         self.vehiculeActif = "marche"
+        self.destination = nil
         self.x = xorig
         self.y = yorig
         self.vitModif = vehicules.marche.mod
@@ -181,12 +183,15 @@ function Perso:init(xorig, yorig, map, joystick, jeu)
 
     -- Change la vitesse de déplacement du personnage et son visuel selon le véhicule passé en paramètre
     function perso:changerVehicule( vehicule )
-        if vehicule ~= self.vehiculeActif then
+        if vehicule ~= self.vehiculeActif and self.destination == nil then
             local function listener()
-                audio.play( sfxVehicules[vehicule], { channel=5, loops=-1 } )
+                if self.type~="dead" then
+                    audio.play( sfxVehicules[vehicule], { channel=5, loops=-1 } )
+                end
             end
 
             if table.indexOf( self.inventaire, vehicule ) ~= nil or vehicule == "marche"  then
+
                 -- Visuel du personnage
                 self.avatar:removeSelf()
                 if vehicule == "marche" then
@@ -203,6 +208,23 @@ function Perso:init(xorig, yorig, map, joystick, jeu)
                     audio.play( sfxVehicules[self.vehiculeActif.."Off"], { channel=6 } )
                 end
                 self.vehiculeActif = vehicule
+
+                -- Suppression et réinstanciation du corps de physique
+                timer.performWithDelay(1,function()
+                    physics.removeBody( self )
+                    local w,h
+                    local bodyShape
+                    if vehicule == "marche" then
+                        w,h = self.width/2,self.height/2
+                        bodyShape = { w-10,h-10,  w,h,  w,h+h/2-10,  w-10,h+h/2,  -w+10,h+h/2,  -w,h+h/2-10,  -w,h,  -w+10,h-10 }
+                    elseif vehicule == "voiture" then
+                        w,h = self.width/2*vehicules[vehicule].size,self.height*vehicules[vehicule].size
+                        bodyShape = { w+20-10,h-180,  w+20,h-170,  w+20,h+h/2-160,  w+20-10,h+h/2-150,  -w-20+10,h+h/2-150,  -w-20,h+h/2-160,  -w-20,h-170,  -w-20+10,h-180 }
+                    end
+                    physics.addBody( perso, { density=1, friction=1, bounce=0, shape=bodyShape } )
+                    perso.isFixedRotation = true
+                end)
+                
             end
             self:assombrir( infos:getHeure() )
         end
@@ -231,6 +253,10 @@ function Perso:init(xorig, yorig, map, joystick, jeu)
         end
     end
 
+    function perso:setDestination( destination )
+        self.destination = destination
+    end
+
     function perso:collision(e)
         if e.phase=="began" then
             if e.other.type=="porte" then
@@ -255,6 +281,8 @@ function Perso:init(xorig, yorig, map, joystick, jeu)
     end
 
     function perso:kill()
+        audio.stop( 5 )
+        self.type = "dead"
         Runtime:removeEventListener( "enterFrame", self )
         self:removeEventListener( "collision" )
     end

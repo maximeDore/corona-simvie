@@ -65,7 +65,7 @@ function Menu:init()
         end
 
         -- Charge la musique de fond dans le channel 1
-        audio.stop( 1 )
+        audio.stop( 1,5 )
         -- bgMusicChannel = audio.play( bgMusic, { channel=1, loops=-1, fadein=2000 } )
         
         -- Fondu d'entrée
