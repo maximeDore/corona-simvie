@@ -84,7 +84,6 @@ function Menu:init()
         btContinuer = bouton:init("Continuer",nil,display.contentCenterX/.67,display.contentHeight/1.37,continuer)
         self:insert(btCommencer)
         self:insert(btContinuer)
-
     end
         
     function menu:retour()

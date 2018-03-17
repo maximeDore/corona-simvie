@@ -16,7 +16,7 @@ function Contacts:init()
             rand2 = math.random( #noms )
         end
         -- Génération d'un personnage par défaut ou avec valeur sauvegardées
-        if _G.data.contacts then
+        if _G.data and _G.data.contacts then
             contacts = _G.data.contacts
         else
             contacts = {

@@ -37,6 +37,11 @@ function Jeu:init()
         end
         -- bgMusicChannel = audio.play( bgMusic, { channel=1, loops=-1, fadein=1000 } )
         
+        -- Fondu d'entrée
+        fade = display.newRect(display.contentCenterX,display.contentCenterY,display.contentWidth*2,display.contentHeight)
+        fade.fill = {0,0,0}
+        transition.fadeOut( fade, { time=500, onComplete=fadeListener } )
+        
         -- Point d'apparition du personnage (devant son domicile)
         local spawn = {}
         spawn.x = spawns.appartement.x

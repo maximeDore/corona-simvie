@@ -64,7 +64,7 @@ function Perso:init(xorig, yorig, map, joystick, jeu)
         self.vehiculeActif = "marche"
         self.x = xorig
         self.y = yorig
-        self.vitModif = 30
+        self.vitModif = vehicules.marche.mod
         self.vit = 0
         self.angRad = 0
         self.avatar:play()

@@ -153,7 +153,6 @@ function Telephone:init( parent, perso, jeu )
         contacts = parent.getContacts()
         phone = display.newImage( self, "telephone.png" )
         -- Zone de contact dans le haut du téléphone où il faut taper pour le monter/descendre
-        -- tapZone = display.newRect( self, 0, -phone.height/2.25, phone.width, phone.height/6 )
         tapZone = cBouton:init( nil, nil, 0, -phone.height/2.25, toggleTelephone, nil, phone.width, phone.height/6 )
         self:insert(tapZone)
 
