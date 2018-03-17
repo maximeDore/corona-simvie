@@ -181,30 +181,31 @@ function Perso:init(xorig, yorig, map, joystick, jeu)
 
     -- Change la vitesse de déplacement du personnage et son visuel selon le véhicule passé en paramètre
     function perso:changerVehicule( vehicule )
-
-        local function listener()
-            audio.play( sfxVehicules[vehicule], { channel=5, loops=-1 } )
-        end
-
-        if table.indexOf( self.inventaire, vehicule ) ~= nil or vehicule == "marche"  then
-            -- Visuel du personnage
-            self.avatar:removeSelf()
-            if vehicule == "marche" then
-                self.avatar = display.newSprite(self, marcheImageSheet, spriteSheetPerso:getSpriteIndex())
-            elseif vehicule == "voiture" then
-                self.avatar = display.newSprite(self, voitureImageSheet, spriteSheetVoiture:getSpriteIndex())
+        if vehicule ~= self.vehiculeActif then
+            local function listener()
+                audio.play( sfxVehicules[vehicule], { channel=5, loops=-1 } )
             end
-            -- Vitesse
-            self.vitModif = vehicules[vehicule].mod
-            audio.stop( 5 )
-            if vehicule ~= "marche" then
-                audio.play( sfxVehicules[vehicule.."Start"], { channel=5, onComplete=listener } )
-            elseif self.vehiculeActif ~= "marche" then
-                audio.play( sfxVehicules[self.vehiculeActif.."Off"], { channel=6 } )
+
+            if table.indexOf( self.inventaire, vehicule ) ~= nil or vehicule == "marche"  then
+                -- Visuel du personnage
+                self.avatar:removeSelf()
+                if vehicule == "marche" then
+                    self.avatar = display.newSprite(self, marcheImageSheet, spriteSheetPerso:getSpriteIndex())
+                elseif vehicule == "voiture" then
+                    self.avatar = display.newSprite(self, voitureImageSheet, spriteSheetVoiture:getSpriteIndex())
+                end
+                -- Vitesse
+                self.vitModif = vehicules[vehicule].mod
+                audio.stop( 5 )
+                if vehicule ~= "marche" then
+                    audio.play( sfxVehicules[vehicule.."Start"], { channel=5, onComplete=listener } )
+                elseif self.vehiculeActif ~= "marche" then
+                    audio.play( sfxVehicules[self.vehiculeActif.."Off"], { channel=6 } )
+                end
+                self.vehiculeActif = vehicule
             end
-            self.vehiculeActif = vehicule
+            self:assombrir( infos:getHeure() )
         end
-        self:assombrir( infos:getHeure() )
     end
 
     -- Setters
