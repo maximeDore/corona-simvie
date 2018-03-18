@@ -15,9 +15,9 @@ function Interieur:init( destination, jeu, map, perso )
     -- Tableau contenant les objets en vente et leur prix (index : 1-3 = dépanneur, 4-6 = magasin)
     local objets = {
         -- Objets d'énergie (dépanneur)
-        { nom = "Cafe", prix = 6, energie = 5, max = 5 },
-        { nom = "Barre d'nrg", prix = 10, energie = 10, max = 5 },
-        { nom = "Boisson nrg", prix = 20, energie = 25, max = 2 },
+        { nom = "Cafe", slug = "cafe", prix = 6, energie = 5, max = 5 },
+        { nom = "Barre d'NRG", slug = "barreNrg", prix = 10, energie = 10, max = 5 },
+        { nom = "Boisson NRG", slug = "boissonNrg", prix = 20, energie = 25, max = 2 },
         -- Objets de qualité de vie
         { nom = "Tapis roulant", prix = 750 },     --750
         { nom = "scooter", prix = 500 },           --500
@@ -190,12 +190,15 @@ function Interieur:init( destination, jeu, map, perso )
                         retroaction.text = "Vous devez posseder un loft pour acheter une voiture."
                     end
                 else
-                    -- if objets[i].max >= perso.inventaire[table.indexOf(perso.inventaire, objets[i].nom)] then
-                    --     print("max atteint")
+                    -- if objets[i].max > perso.inventaire[objets[i].slug].nb then
+                        retroaction.text = "Vous achetez un(e) "..objet.nom.." pour "..objet.prix.." $."
+                        perso:setMoney( -objet.prix )
+                        -- perso.inventaire[objets[i].slug].nb = perso.inventaire[objets[i].slug].nb + 1
+                    -- else 
+                        -- print("max atteint")
+                        -- retroaction.text = "Vous ne pouvez posseder plus de "..objets[i].max.." "..objets[i].nom.."s."
                     -- end
-                    retroaction.text = "Vous achetez un(e) "..objet.nom.." pour "..objet.prix.." $."
-                    perso:setMoney( -objet.prix )
-                    perso:setEnergie( objet.energie )
+                    -- perso:setEnergie( objet.energie )
                 end
                 if objet.nom == "loft" then
                     retour()

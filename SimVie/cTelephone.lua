@@ -103,6 +103,7 @@ function Telephone:init( parent, perso, jeu )
             screenSave.isVisible = true
         end
         local function mute()
+            toggleTelephone()
             if audio.pause() > 0 then
                 audio.pause( 1 )
             else
@@ -112,7 +113,10 @@ function Telephone:init( parent, perso, jeu )
 
         local function transport( vehicule )
             print(vehicule)
-            perso:changerVehicule( vehicule )
+            if vehicule ~= perso.vehiculeActif then
+                toggleTelephone()
+                perso:changerVehicule( vehicule )
+            end
         end
 
         local function quitter()
@@ -178,7 +182,7 @@ function Telephone:init( parent, perso, jeu )
         local btStats = cBouton:init( "btStats.png", nil, -bgStats.width/3.25, -bgStats.height*.35, afficherStats )
         local btContacts = cBouton:init( "btContacts.png", nil, 0, -bgStats.height*.35, afficherContacts )
         local btAlertes = cBouton:init( "btAlertes.png", nil, bgStats.width/3.25, -bgStats.height*.35, afficherAlertes )
-        local btInventaire = cBouton:init( "btGps.png", nil, -bgStats.width/3.25, -bgStats.height*.15, afficherInventaire )
+        local btInventaire = cBouton:init( "btInventaire.png", nil, -bgStats.width/3.25, -bgStats.height*.15, afficherInventaire )
         btInventaire:disable()
         local btBanque = cBouton:init( "btBanque.png", nil, 0, -bgStats.height*.15, afficherBanque )
         local btMute = cBouton:init( "btMute.png", nil, bgStats.width/3.25, -bgStats.height*.15, mute )

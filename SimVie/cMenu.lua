@@ -44,6 +44,10 @@ function Menu:init()
     function menu:init()
         -- Affiche la barre de notifications
         display.setStatusBar( display.LightTransparentStatusBar )
+
+        -- Charge la musique de fond dans le channel 1
+        audio.stop( 1 )
+        -- bgMusicChannel = audio.play( bgMusic, { channel=1, loops=-1, fadein=2000 } )
         
         local function commencer()
             menuCommencer = cMenuCommencer:init()
@@ -65,10 +69,6 @@ function Menu:init()
             fade:removeSelf()
         end
 
-        -- Charge la musique de fond dans le channel 1
-        audio.stop( 1 )
-        bgMusicChannel = audio.play( bgMusic, { channel=1, loops=-1, fadein=2000 } )
-        
         -- Fondu d'entrée
         fade = display.newRect(display.contentCenterX,display.contentCenterY,display.contentWidth*2,display.contentHeight)
         fade.fill = {0,0,0}
@@ -108,12 +108,16 @@ function Menu:init()
         btCommencer = bouton:init("Commencer",nil,display.contentCenterX/2,display.contentHeight/1.37,commencer)
         btContinuer = bouton:init("Continuer",nil,display.contentCenterX/.67,display.contentHeight/1.37,continuer)
 
+        self:insert(btCommencer)
+        self:insert(btContinuer)
     end
 
-    local function afficherCredits()
-        menu:kill(true)
-        menu:removeSelf()
-        cCredits:init()
+    local function afficherCredits(e)
+        if e.phase == "began" then
+            menu:kill(true)
+            menu:removeSelf()
+            cCredits:init()
+        end
     end
 
     function menu:kill( param )
@@ -128,7 +132,7 @@ function Menu:init()
             end
         end
         recursiveKill(self)
-        btCredits:removeEventListener( "tap", afficherCredits )
+        btCredits:removeEventListener( "touch", afficherCredits )
         if param == nil then
             listener()
         end
@@ -136,7 +140,7 @@ function Menu:init()
     
 
     menu:init()
-    btCredits:addEventListener( "tap", afficherCredits )
+    btCredits:addEventListener( "touch", afficherCredits )
     return menu
 
 end

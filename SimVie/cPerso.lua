@@ -76,7 +76,7 @@ function Perso:init(xorig, yorig, map, joystick, jeu)
             self.energie = 100
             self.money = 100
             self.banque = 0
-            self.inventaire = {}
+            self.inventaire = { cafe = { nb=0, nrg=5 }, barreNrg = { nb=0, nrg=10 }, boissonNrg = { nb=0, nrg=25 } }
             self.forNum = _G.forNum
             self.intNum = _G.intNum
             self.chaNum = _G.chaNum
@@ -233,6 +233,15 @@ function Perso:init(xorig, yorig, map, joystick, jeu)
                 
             end
             self:assombrir( infos:getHeure() )
+        end
+    end
+
+    function perso:consommer( aliment )
+        if self.inventaire[aliment].nb > 0 then
+            self:updateEnergie( self.inventaire[aliment].nrg )
+            self.inventaire[aliment].nb = self.inventaire[aliment].nb
+        else
+            print("rupture de stock")
         end
     end
 

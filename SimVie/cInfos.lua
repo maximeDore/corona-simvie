@@ -123,7 +123,7 @@ function Infos:init( heureDepart, indexDepart, map, perso, jeu )
         return contacts
     end
     function infos:getEvenement()
-        if evenementDuJour == {} or #evenementDuJour == 0 then
+        if evenementDuJour == {} or not evenementDuJour or #evenementDuJour == 0 then
             return nil
         else
             return evenementDuJour
