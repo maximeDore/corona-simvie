@@ -32,6 +32,9 @@ function Telephone:init( parent, perso, jeu )
     local contenuAlerteTexte
     local contenuAlerteTexte2
     local btRetour
+    local nbCafe
+    local nbBarre
+    local nbBoisson
     local phone
     local tapZone
     local btHome
@@ -154,6 +157,10 @@ function Telephone:init( parent, perso, jeu )
             btRetour.isVisible = false
         end
 
+        local function consommer( aliment )
+            perso:consommer(aliment)
+        end
+
         contacts = parent.getContacts()
         phone = display.newImage( self, "telephone.png" )
         -- Zone de contact dans le haut du téléphone où il faut taper pour le monter/descendre
@@ -162,6 +169,7 @@ function Telephone:init( parent, perso, jeu )
 
         -- Fonds des différents écrans
         local bgAlertes = display.newImage( screenAlertes, "screenAlertes.png", 0, -10.5 )
+        local bgInventaire = display.newImage( screenInventaire, "screenInventaire.png", 0, -10.5 )
         local bgContacts = display.newImage( screenContacts, "screenContacts.png", 0, -10.5 )
         local bgStats = display.newImage( screenStats, "screenStats.png", 0, -10.5 )
         local bgBanque = display.newImage( screenBanque, "screenBanque.png", 0, -10.5 )
@@ -183,7 +191,6 @@ function Telephone:init( parent, perso, jeu )
         local btContacts = cBouton:init( "btContacts.png", nil, 0, -bgStats.height*.35, afficherContacts )
         local btAlertes = cBouton:init( "btAlertes.png", nil, bgStats.width/3.25, -bgStats.height*.35, afficherAlertes )
         local btInventaire = cBouton:init( "btInventaire.png", nil, -bgStats.width/3.25, -bgStats.height*.15, afficherInventaire )
-        btInventaire:disable()
         local btBanque = cBouton:init( "btBanque.png", nil, 0, -bgStats.height*.15, afficherBanque )
         local btMute = cBouton:init( "btMute.png", nil, bgStats.width/3.25, -bgStats.height*.15, mute )
         local btSave = cBouton:init( "btSave.png", nil, -bgStats.width/3.25, bgStats.height*.05, afficherSave )
@@ -380,6 +387,37 @@ function Telephone:init( parent, perso, jeu )
         contenuAlerteTexte:setFillColor(0,0,0)
         contenuAlerteTexte2 = display.newText( optionsAlerte1 )
         contenuAlerteTexte2:setFillColor(0,0,0)
+        screenBanque:insert(interetDisplay)
+
+
+---------- Écran Inventaire     --------------------------------------------------------------------------------------------------------
+        local cafeItem = cBouton:init( "itemCafe.png", nil, 0, -bgInventaire.height/3.85, consommer, "cafe" )
+        local barreItem = cBouton:init( "itemBarre.png", nil, 0, -bgInventaire.height/3.85+69, consommer, "barreNrg" )
+        local boissonItem = cBouton:init( "itemBoisson.png", nil, 0, -bgInventaire.height/3.85+138, consommer, "boissonNrg" )
+
+        screenInventaire:insert(cafeItem)
+        screenInventaire:insert(barreItem)
+        screenInventaire:insert(boissonItem)
+
+        local optionsItem = {
+            parent = screenInventaire,
+            text = "0/5",
+            x = bgInventaire.width/2-30,
+            y = -bgInventaire.height/3.65,
+            width = 50,
+            height = 25,
+            font = "8-Bit Madness.ttf",
+            fontSize = 25,
+            align = "right"  -- Alignment parameter
+        }
+        nbCafe = display.newText( optionsItem )
+        nbCafe:setFillColor(0,0,0)
+        nbBarre = display.newText( optionsItem )
+        nbBarre.y = nbCafe.y + 69
+        nbBarre:setFillColor(0,0,0)
+        nbBoisson = display.newText( optionsItem )
+        nbBoisson.y = nbBarre.y + 69
+        nbBoisson:setFillColor(0,0,0)
 
 ----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -409,6 +447,7 @@ function Telephone:init( parent, perso, jeu )
         parent:insert(self)
         self:updateStats()
         self:updateEnergie()
+        self:updateInventaire()
     end
     
 
@@ -503,6 +542,33 @@ function Telephone:init( parent, perso, jeu )
         contenuAlerte:toFront()
         contenuAlerteTexte:toFront()
         contenuAlerteTexte2:toFront()
+    end
+
+    function telephone:updateInventaire()
+        local cafe = perso.inventaire["cafe"]
+        local barre = perso.inventaire["barreNrg"]
+        local boisson = perso.inventaire["boissonNrg"]
+
+        nbCafe.text = cafe.nb .. "/" .. cafe.max
+        nbBarre.text = barre.nb .. "/" .. barre.max
+        nbBoisson.text = boisson.nb .. "/" .. boisson.max
+
+        if cafe.nb <= 0 then
+            screenInventaire[2]:disable()
+        elseif cafe.nb > 0 then
+            screenInventaire[2]:enable()
+        end
+        if barre.nb <= 0 then
+            screenInventaire[3]:disable()
+        elseif barre.nb > 0 then
+            screenInventaire[3]:enable()
+        end
+        if boisson.nb <= 0 then
+            screenInventaire[4]:disable()
+        elseif boisson.nb > 0 then
+            screenInventaire[4]:enable()
+        end
+
     end
     
     function telephone:kill()

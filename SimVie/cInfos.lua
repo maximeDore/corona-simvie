@@ -213,6 +213,9 @@ function Infos:init( heureDepart, indexDepart, map, perso, jeu )
     function infos:updateEnergie()
         telephone:updateEnergie()
     end
+    function infos:updateInventaire()
+        telephone:updateInventaire()
+    end
     function infos:updateBanque()
         perso.banque = math.round( perso.banque + perso.banque*interet )
         interet = math.random( 4, 7 )/100

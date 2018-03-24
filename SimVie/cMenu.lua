@@ -47,7 +47,7 @@ function Menu:init()
 
         -- Charge la musique de fond dans le channel 1
         audio.stop( 1 )
-        -- bgMusicChannel = audio.play( bgMusic, { channel=1, loops=-1, fadein=2000 } )
+        bgMusicChannel = audio.play( bgMusic, { channel=1, loops=-1, fadein=2000 } )
         
         local function commencer()
             menuCommencer = cMenuCommencer:init()

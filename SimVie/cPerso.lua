@@ -76,7 +76,7 @@ function Perso:init(xorig, yorig, map, joystick, jeu)
             self.energie = 100
             self.money = 100
             self.banque = 0
-            self.inventaire = { cafe = { nb=0, nrg=5 }, barreNrg = { nb=0, nrg=10 }, boissonNrg = { nb=0, nrg=25 } }
+            self.inventaire = { cafe = { nb=1, nrg=5, max=5 }, barreNrg = { nb=0, nrg=10, max=5 }, boissonNrg = { nb=0, nrg=25, max=2 } }
             self.forNum = _G.forNum
             self.intNum = _G.intNum
             self.chaNum = _G.chaNum
@@ -238,11 +238,13 @@ function Perso:init(xorig, yorig, map, joystick, jeu)
 
     function perso:consommer( aliment )
         if self.inventaire[aliment].nb > 0 then
-            self:updateEnergie( self.inventaire[aliment].nrg )
-            self.inventaire[aliment].nb = self.inventaire[aliment].nb
+            self.energie = self.energie + self.inventaire[aliment].nrg
+            infos:updateEnergie()
+            self.inventaire[aliment].nb = self.inventaire[aliment].nb - 1
         else
             print("rupture de stock")
         end
+        infos:updateInventaire()
     end
 
     -- Setters

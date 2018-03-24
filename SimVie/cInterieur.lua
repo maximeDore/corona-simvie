@@ -190,15 +190,15 @@ function Interieur:init( destination, jeu, map, perso )
                         retroaction.text = "Vous devez posseder un loft pour acheter une voiture."
                     end
                 else
-                    -- if objets[i].max > perso.inventaire[objets[i].slug].nb then
+                    if objets[i].max > perso.inventaire[objets[i].slug].nb then
                         retroaction.text = "Vous achetez un(e) "..objet.nom.." pour "..objet.prix.." $."
                         perso:setMoney( -objet.prix )
-                        -- perso.inventaire[objets[i].slug].nb = perso.inventaire[objets[i].slug].nb + 1
-                    -- else 
-                        -- print("max atteint")
-                        -- retroaction.text = "Vous ne pouvez posseder plus de "..objets[i].max.." "..objets[i].nom.."s."
-                    -- end
-                    -- perso:setEnergie( objet.energie )
+                        perso.inventaire[objets[i].slug].nb = perso.inventaire[objets[i].slug].nb + 1
+                        infos:updateInventaire()
+                    else 
+                        print("max atteint")
+                        retroaction.text = "Vous ne pouvez posseder plus de "..objets[i].max.." "..objets[i].nom.."s."
+                    end
                 end
                 if objet.nom == "loft" then
                     retour()
