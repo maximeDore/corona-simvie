@@ -58,8 +58,9 @@ function Menu:init()
 
         local function continuer()
             if donnees:loadTable( "sauvegarde.json" ) ~= nil then
-                btCommencer:removeSelf()
-                btContinuer:removeSelf()
+                btCommencer:disable()
+                btContinuer:disable()
+                btCredits:removeSelf()
                 _G.data = donnees:loadTable( "sauvegarde.json" )
                 listener()
             end
@@ -121,6 +122,7 @@ function Menu:init()
     end
 
     function menu:kill( param )
+        btCredits:removeEventListener( "touch", afficherCredits )
         local function recursiveKill(group) -- fonction locale appelant la fonction kill de chaque enfant (removeEventListeners)
             for i=group.numChildren,1,-1 do
                 if group[i].numChildren~=nil then
@@ -132,7 +134,6 @@ function Menu:init()
             end
         end
         recursiveKill(self)
-        btCredits:removeEventListener( "touch", afficherCredits )
         if param == nil then
             listener()
         end

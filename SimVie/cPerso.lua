@@ -47,6 +47,7 @@ local sfxVehicules = {
 }
 local sfxCrash = audio.loadSound('car_crash.wav')
 
+
 -- Méthode init du perso
 function Perso:init(xorig, yorig, map, joystick, jeu)
     local perso = display.newGroup()
@@ -71,6 +72,7 @@ function Perso:init(xorig, yorig, map, joystick, jeu)
         self.vit = 0
         self.angRad = 0
         self.avatar:play()
+        local inventaire = { cafe = { nb=1, nrg=5, max=5 }, barreNrg = { nb=0, nrg=10, max=5 }, boissonNrg = { nb=0, nrg=25, max=2 } }
         -- Données sauvegardées
         if _G.data == nil then
             self.energie = 100
@@ -238,7 +240,7 @@ function Perso:init(xorig, yorig, map, joystick, jeu)
 
     function perso:consommer( aliment )
         if self.inventaire[aliment].nb > 0 then
-            self.energie = self.energie + self.inventaire[aliment].nrg
+            self:setEnergie( self.inventaire[aliment].nrg )
             infos:updateEnergie()
             self.inventaire[aliment].nb = self.inventaire[aliment].nb - 1
         else
