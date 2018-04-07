@@ -5,7 +5,7 @@ function Evenement:init( chance )
         evenements = {
             { texte = "Message d'interet public : \n\nLa banque sera fermee aujourd'hui suite au cambriolage de la veille.", destination="banque", status = "ferme"},
             { texte = "Message d'interet public : \n\nSuite a l'echec d'une experience, la faculte des sciences sera fermee aujourd'hui.", destination="faculte", status = "ferme"},
-            { texte = "Message d'interet public : \n\nDes plaintes ont ete portees au sujet d'odeurs fortes provoquant la fermeture du centre sportif.", destination="centreSportif", status = "ferme"},
+            { texte = "Message d'interet public : \n\nDes plaintes ont ete portees au sujet d'odeurs fortes provoquant la fermeture du centre sportif.", destination="centresportif", status = "ferme"},
             { texte = "Message d'interet public : \n\nLe magasin n'ouvrira pas ses portes aujourd'hui pour aucune raison valable.", destination="magasin", status = "ferme"},
             { texte = "Message d'interet public : \n\nUne greve d'etudiants a provoque un feu dans l'universite, le batiment sera donc ferme aujourd'hui.", destination="universite", status = "ferme"},
             { texte = "Message d'interet public : \n\nEn raison de la fin de session, le depanneur est maintenant vide. La prochaine livraison sera demain.", destination="depanneur", status = "ferme"},

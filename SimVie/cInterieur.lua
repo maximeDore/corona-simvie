@@ -374,14 +374,14 @@ function Interieur:init( destination, jeu, map, perso )
                 btRetour.y = display.contentCenterY*1.25
                 retroaction.text = "Vous n'habitez plus ici desormais."
             -- Si le perso entre dans un bâtiment de travail et qu'il ne travaille pas là
-            elseif (perso.carriere == "sports" and destination == "faculte") or (perso.carriere == "sciences" and destination == "centresportif") then
-                btRetour.x = display.contentCenterX
-                btRetour.y = display.contentCenterY*1.25
-                retroaction.text = "Vous ne travaillez pas ici."
             elseif evenement ~= nil and destination == evenement[1].destination then
                 btRetour.x = display.contentCenterX
                 btRetour.y = display.contentCenterY*1.25
                 retroaction.text = "L'etablissement est ferme aujourd'hui."
+            elseif (perso.carriere == "sports" and destination == "faculte") or (perso.carriere == "sciences" and destination == "centresportif") then
+                btRetour.x = display.contentCenterX
+                btRetour.y = display.contentCenterY*1.25
+                retroaction.text = "Vous ne travaillez pas ici."
             else
                 local bt1 = cBouton:init(src.bt1,src.bt1desc,display.contentCenterX/1.65,display.contentCenterY,func.bt1,func.bt1param)
                 self:insert(bt1)
