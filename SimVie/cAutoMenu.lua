@@ -2,6 +2,8 @@
 --
 -- cAutoMenu.lua
 --
+-- Classe qui affiche des voitures dans le fond du menu principal et qui gère leur déplacement
+--
 -----------------------------------------------------------------------------------------
 local AutoMenu = {}
 

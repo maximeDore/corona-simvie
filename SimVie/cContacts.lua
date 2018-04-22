@@ -2,13 +2,25 @@
 --
 -- cContacts.lua
 --
+-- Classe contenant les noms des deux contacts potentiels et qui choisit les noms des contacts aléatoirement ou selon une sauvegarde
+--
 -----------------------------------------------------------------------------------------
 local Contacts = {}
 
 function Contacts:init()
-    local noms = { "Martin", "Daniel", "Jeremie", "William", "Sarah", "Justin", "Henry", "Marty", "Justine", "Alexandre", "Bernard", "Sophie", "Yannick", "Maxime", "Olivier", "Audrey", "Francis" }
+    local noms = {  
+        "Martin", "Daniel", "Jeremie", "William", "Sarah", 
+        "Justin", "Henry", "Marty", "Justine", "Alexandre", 
+        "Bernard", "Sophie", "Yannick", "Maxime", "Olivier", 
+        "Audrey", "Francis", "Francois", "Kyan", "Travis", 
+        "Julius", "Damien", "Eric", "Julio", "Alexandra", 
+        "Janick", "Karl", "Carl", "James", "Amelie", 
+        "Amanda", "Ariane", "Marie", "Michèle", "Ericka", 
+        "Martha", "Natalie", "Michel", "José", "Josée"
+    }
     local contacts = {}
 
+    -- Constructeur, détermine les deux noms aléatoirement ou selon une sauvegarde
     function contacts:init( )
         local rand1 = math.random( #noms )
         local rand2 = math.random( #noms )

@@ -238,11 +238,10 @@ function Interieur:init( destination, jeu, map, perso )
         local function promotion()
             local emploi = infos:getEmploi()
             if perso.carriere == "sciences" then
-                print("actuel : "..perso.intNum, "requis : "..emploi.apt)
+                infos:promotion()
                 if perso.intNum >= emploi.apt then
                     if emploi.apt ~= infos:getEmploi().apt then
                         retroaction.text = "Promotion : "..infos:getEmploi().titre
-                        infos:promotion()
                     else 
                         retroaction.text = "Vous occupez le poste le plus important imaginable."
                     end
@@ -250,7 +249,6 @@ function Interieur:init( destination, jeu, map, perso )
                     retroaction.text = "Il vous manque "..infos:getEmploi().apt-perso.intNum.." d'Int pour etre promu."
                 end
             else
-                print("actuel : "..perso.forNum, "requis : "..emploi.apt)
                 if perso.forNum >= emploi.apt then
                     infos:promotion()
                     if emploi.apt ~= infos:getEmploi().apt then

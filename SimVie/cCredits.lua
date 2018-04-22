@@ -2,6 +2,8 @@
 --
 -- cCredits.lua
 --
+-- Classe qui affiche la page des crédits et qui gère son interactivité
+--
 -----------------------------------------------------------------------------------------
 local Credits = {}
 
@@ -15,6 +17,7 @@ function Credits:init()
     local btRetour
     local texte
     
+    -- Fait une transition en fondu noir avant de supprimer la page-écran
     local function listener()
         local function listener2()
             credits:kill()
@@ -24,6 +27,9 @@ function Credits:init()
         transition.fadeOut( credits, { time=500, onComplete=listener2 } )
     end
 
+    ------ Méthodes  ------------------------------------------------------------------------------
+
+    -- Constructeur, affiche les éléments visuels et instancie le bouton
     function credits:init()
         display.setStatusBar( display.HiddenStatusBar )
 
@@ -49,11 +55,11 @@ function Credits:init()
         }
         barre.fill = degrade
 
-        -- Affichage du titre
+        -- Instanciation du bouton
+        btRetour = cBouton:init("Retour",nil,display.contentCenterX/2.25,display.contentCenterY*1.5,retour)
+        -- Affichage du titre, du logo et des textes
         local optionsTitreDisplay = {text = "CREDITS", width = 500, x = display.contentCenterX, y = 25, font = "8-Bit Madness.ttf", fontSize = 50, align = "center"}
         local titreDisplay = display.newText(optionsTitreDisplay)
-
-        btRetour = cBouton:init("Retour",nil,display.contentCenterX/2.25,display.contentCenterY*1.5,retour)
         local optionsTexte = {text = "-PROGRAMMATION-\nMaxime Dore\n\n-MUSIQUE-\nMaxime Dore\nHermes Maheu\n\n-GRAPHISME-\nMaxime Dore\n\nProduit dans le cadre du cours de Production de jeu video et de Creativite multimedia de Techniques d'integration multimedia du Cegep de Saint-Jerome © 2018", width = display.contentWidth/3*1.5, x = display.contentCenterX*1.4, y = display.contentCenterY, font = "8-Bit Madness.ttf", fontSize = 50, align = "center"}
         texte = display.newText( optionsTexte )
         logo = display.newImage( self, "logo.png", btRetour.x, display.contentCenterY/1.5 )
@@ -63,6 +69,7 @@ function Credits:init()
         self:insert(btRetour)
     end
 
+    -- Suppression de la page et de tous ses enfants
     function credits:kill()
         local function recursiveKill(group) -- fonction locale appelant la fonction kill de chaque enfant (removeEventListeners)
             for i=group.numChildren,1,-1 do

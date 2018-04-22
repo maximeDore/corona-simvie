@@ -1,7 +1,18 @@
+-----------------------------------------------------------------------------------------
+--
+-- cEvenement.lua
+--
+-- Classe contenant des événements et des citations et qui retourne un événement et/ou citation au hasard
+--
+-- Return : Array   Tableau de tableaux pouvant contenir un événement et/ou une citation aléatoire(s)
+--
+-----------------------------------------------------------------------------------------
 local Evenement = {}
 
+-- @params chance : Number  Valeur de chance du personnage
 function Evenement:init( chance )
     local events = {
+        -- Tableau des événements
         evenements = {
             { texte = "Message d'interet public : \n\nLa banque sera fermee aujourd'hui suite au cambriolage de la veille.", destination="banque", status = "ferme"},
             { texte = "Message d'interet public : \n\nSuite a l'echec d'une experience, la faculte des sciences sera fermee aujourd'hui.", destination="faculte", status = "ferme"},
@@ -12,6 +23,7 @@ function Evenement:init( chance )
             { texte = "Message d'interet public : \n\nL'air climatise de la gym ne fonctionne plus. L'endroit n'ouvrira pas ses porte avant demain.", destination="gym", status = "ferme"},
     
         },
+        -- Tableau des citations
         citations = { 
             -- TIM
             { auteur="Daniel Gentile", texte="Le multimedia, un outil essentiel dans un monde moderne." },
@@ -27,11 +39,10 @@ function Evenement:init( chance )
             { auteur="Dominique Coupal", texte="Ta tadada dada." },
             { auteur="Maxime Dore", texte="Ca marche pas si ca n'a pas de jambe!" },
             { auteur="Kim Lampron-Cote", texte="C'est parti!" },
-            { auteur="Mathilde Mercier", texte="Blehschmeuh!" },
-            { auteur="Martine Mercier", texte="J'ai la toune de Dora l'exploratrice dans tête." },
             { auteur="Samuel De Matos", texte="*Finger guns*" },
             { auteur="Samuel De Matos", texte="Non mais j'suis un expert-la." },
             { auteur="Maman", texte="Les p'tits jus c'est pour les lunchs." },
+            { auteur="Francois Lavigne", texte="Push uuuuuup!"},
             -- Citations autres
             { auteur="Anonyme", texte="Le suicide n'est pas une option." },
             { auteur="Sully Prud'homme", texte="La vie n'est qu'un long reve dont la mort nous reveille." },
@@ -47,16 +58,22 @@ function Evenement:init( chance )
         }
     }
     local tEvenement = {}
+
+    -- Nombres aléatoires servant à déterminer si un événement/citation va être retourné
     local randIsEvent = math.random( 15+chance )
     local randIsQuote = math.random( #events.citations*2 )
+
+    -- S'il y a un événement aujourd'hui, insère le tableau d'un événement au hasard dans le tableau d'événement du jour
     if 15 > randIsEvent then
         local randEvent = math.random( #events.evenements )
         table.insert( tEvenement, events.evenements[randEvent] )
     end
+    -- S'il y a une citation aujourd'hui, insère le tableau d'une citation au hasard dans le tableau d'événement du jour
     if randIsQuote > #events.citations then
         local randQuote = math.random( #events.citations )
         table.insert( tEvenement, events.citations[randQuote] )
     end
+
     return tEvenement
 end
 

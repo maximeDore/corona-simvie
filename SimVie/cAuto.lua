@@ -2,6 +2,11 @@
 --
 -- cAuto.lua
 --
+-- Classe qui génère une voiture et qui gère son déplacement dans le monde
+--
+-- TODO :   Ajouter plus de waypoints et diriger les voitures aléatoirement d'un waypoint vers un autre partageant le même x ou y
+--          Important : Enregistrer le dernier waypoint ou la différence de x ou y pour éviter que la voiture ne roule en sens inverse
+--
 -----------------------------------------------------------------------------------------
 local Auto = {}
 
@@ -9,6 +14,7 @@ function Auto:init(actualWp)
 
     local auto = display.newGroup()
     local sprite
+    -- noms des fichiers images
     local src = {
         {"autoSideGris.png","autoTopGris.png","autoDownGris.png"},
         {"autoSideVert.png","autoTopVert.png","autoDownVert.png"},
@@ -20,6 +26,7 @@ function Auto:init(actualWp)
     local topOutline = graphics.newOutline( 2, "autoTopBleu.png" )
     local width
 
+    -- Transitions vers les points de repères
     local wp1 = { time = 6000, x = -3186.5, y = 1496.5, transition=easing.inOutSine, seq = 3 }
     local wp2 = { time = 12000, x = 3195.5, y = 1496.5, transition=easing.inOutSine, seq = -1 }
     local wp3 = { time = 6000, x = 3195.5, y = -1502.5, transition=easing.inOutSine, seq= 2 }
@@ -34,6 +41,7 @@ function Auto:init(actualWp)
     local wp12 = { time = 12000, x = -3186.5, y = -120,5, transition=easing.inOutSine, seq= 1 }
     local waypoints = {wp1,wp2,wp3,wp4,wp5,wp6,wp7,wp8,wp9,wp10,wp11,wp12}
 
+    -- Constructeur, instancie l'auto à un emplacement dépendant du waypoint qui lui est donné et ajoute son corps physique
     function auto:init()
         sprite = display.newImage(self,src[rand][1])
         sprite.type = "auto"
@@ -51,6 +59,7 @@ function Auto:init(actualWp)
         self:start()
     end
 
+    -- Démarre le parcours infini de l'auto à partir de son prochain waypoint
     function auto:start()
         local index = actualWp
         local function trajet()
@@ -87,9 +96,10 @@ function Auto:init(actualWp)
         trajet()
     end
 
+    -- Désactive l'auto et supprime ses waypoints par précaution
     function auto:kill()
         active = false
-        waypoints=nil
+        waypoints = nil
     end
 
     auto:init()

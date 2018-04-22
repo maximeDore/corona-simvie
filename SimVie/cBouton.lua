@@ -2,10 +2,21 @@
 --
 -- cBouton.lua
 --
+-- Classe qui génère un bouton selon une liste de paramètres
+--
 -----------------------------------------------------------------------------------------
 local Bouton = {}
 
-function Bouton:init ( texte1, texte2, x, y, callbackFunction, callbackParam, width, height )
+-- @params
+-- texte1 :         String  Plus gros texte affiché sur le bouton centré si texte2 est nil || fichier image s'il contient l'extension ".png"
+-- texte2 :         String  Si !nil, affiche un second texte dans le bouton, plus petit
+-- x, y :           Number  Position du bouton en x et y
+-- callbackFunc :   Func    Fonction appelée une fois le bouton touché
+-- callbackParam :  Any     Paramètre donné à callbackFunc
+---- POUR QUE LE BOUTON SOIT UN RECTANGLE QUASI INVISIBLE --------------------------------------------------------
+-- width :          Number  Si !nil, largeur du bouton invisible
+-- height :         Number  Hauteur du bouton invisible
+function Bouton:init ( texte1, texte2, x, y, callbackFunc, callbackParam, width, height )
     
     local bouton = display.newGroup()
     local titre
@@ -18,6 +29,7 @@ function Bouton:init ( texte1, texte2, x, y, callbackFunction, callbackParam, wi
         bouton.alpha = 0.01
     end
 
+    -- Constructeur
     function bouton:init()
         self.image = nil
         if width == nil then
@@ -55,13 +67,15 @@ function Bouton:init ( texte1, texte2, x, y, callbackFunction, callbackParam, wi
         end
     end
 
+    -- Event.touch
     function bouton:touch( e )
         if e.phase == "began" then
-            callbackFunction(callbackParam)
+            callbackFunc(callbackParam)
             audio.play( sfxToc, { channel=10 } )
         end
     end
 
+    -- Active le bouton et lui donne 100% d'opacité
     function bouton:enable()
         if self._tableListeners["touch"] then else
             self:addEventListener("touch", self)
@@ -69,13 +83,15 @@ function Bouton:init ( texte1, texte2, x, y, callbackFunction, callbackParam, wi
         self.alpha = 1
     end
 
+    -- Désactive le bouton et lui donne 25% d'opacité
     function bouton:disable()
         if self._tableListeners["touch"] then
-            bouton:removeEventListener("touch", bouton)
+            self:removeEventListener("touch", bouton)
         end
-        bouton.alpha = .25
+        self.alpha = .25
     end
 
+    -- Supprime l'événement
     function bouton:kill()
         self:removeEventListener("touch", bouton)
     end

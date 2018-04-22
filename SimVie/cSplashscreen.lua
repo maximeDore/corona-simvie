@@ -2,6 +2,8 @@
 --
 -- cSplashscreen.lua
 --
+-- Classe qui gère l'affichage du splashscreen
+--
 -----------------------------------------------------------------------------------------
 local Splash = {}
 
@@ -13,16 +15,18 @@ function Splash:init()
     local logo
     local fade
 
+    -- Fondu noir
     function listener()
         transition.fadeOut( splash, { time=500, onComplete=listener2 } )
     end
 
+    -- Supprime la page-écran et affiche le menu
     function listener2()
         cMenu:init()
         splash:removeSelf()
     end
     
-    -- create()
+    -- Constructeur, affiche les éléments de la page-écran
     function splash:init()
     
         fade = display.newRect(display.contentCenterX,display.contentCenterY,display.contentWidth*2,display.contentHeight)
@@ -44,7 +48,6 @@ function Splash:init()
         self:insert(bg)
         self:insert(logo)
         self:insert(fade)
-        
     end
 
     splash:init()

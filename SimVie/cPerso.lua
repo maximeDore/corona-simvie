@@ -2,8 +2,9 @@
 --
 -- cPerso.lua
 --
+-- Classe qui gère l'affichage du personnage et des véhicules ainsi que son comportement dans le monde
+--
 -----------------------------------------------------------------------------------------
--- Création du constructeur Perso
 local Perso = {}
 
 -- Mise en mémoire des infos du sprite de l'ogre (ogre en anim png et lua)
@@ -51,6 +52,7 @@ local sfxCrash = audio.loadSound('car_crash.wav')
 -- Méthode init du perso
 function Perso:init(xorig, yorig, map, joystick, jeu)
     local perso = display.newGroup()
+    -- Volume des channels audio utilisés
     audio.setVolume( 0.75, {channel=5} )
     audio.setVolume( 0.75, {channel=6} )
     audio.setVolume( 0.75, {channel=20} )
@@ -118,6 +120,7 @@ function Perso:init(xorig, yorig, map, joystick, jeu)
         local sca = vehicules[self.vehiculeActif].sca
         self.yScale = sca/1.15
 
+        -- Séquences de sprite de marche selon l'angle de direction
         if self.vehiculeActif == "marche" then
             -- Spectre des angles pour les séquences de sprite de marche (4 directions)
             if angle >= 135 or angle <= -135 then
@@ -131,8 +134,7 @@ function Perso:init(xorig, yorig, map, joystick, jeu)
                 seq ="perso_dos"
             else print(angle)
             end
-        else
-            -- Spectre des angles pour les séquences de sprite de véhicules (8 directions)
+        else -- Spectre des angles pour les séquences de sprite de véhicules (8 directions)
             if angle < 22.5 and angle >= -22.5 then
                 seq = self.vehiculeActif.."Side"
                 sca = -sca
@@ -194,7 +196,6 @@ function Perso:init(xorig, yorig, map, joystick, jeu)
             end
 
             if table.indexOf( self.inventaire, vehicule ) ~= nil or vehicule == "marche"  then
-
                 -- Visuel du personnage
                 self.avatar:removeSelf()
                 if vehicule == "marche" then
@@ -238,6 +239,8 @@ function Perso:init(xorig, yorig, map, joystick, jeu)
         end
     end
 
+    -- Consommation d'un objet dans l'inventaire, donne de l'énergie et réduit le nombre en inventaire
+    -- @params aliment  String  Nom de l'aliment consommé
     function perso:consommer( aliment )
         if self.inventaire[aliment].nb > 0 then
             self:setEnergie( self.inventaire[aliment].nrg )
@@ -249,7 +252,8 @@ function Perso:init(xorig, yorig, map, joystick, jeu)
         infos:updateInventaire()
     end
 
-    -- Setters
+    ------ Setters  ------------------------------------------------------------------------------
+
     function perso:setMoney( valeur )
         self.money = self.money + valeur
         _G.infos:updateMoney()
@@ -287,6 +291,7 @@ function Perso:init(xorig, yorig, map, joystick, jeu)
         end
     end
 
+    -- Assombri/éclairci le monde en contrôlant l'opacité du filtre nocturne
     function perso:assombrir(heure)
         if heure > 12 then
             self.avatar:setFillColor( (heure-17)*8/-100+1 )
@@ -299,6 +304,7 @@ function Perso:init(xorig, yorig, map, joystick, jeu)
         end
     end
 
+    -- Suppression des écouteurs et des sons
     function perso:kill()
         audio.stop( 5 )
         self.type = "dead"

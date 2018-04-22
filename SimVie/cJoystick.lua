@@ -2,9 +2,12 @@
 --
 -- cJoystick.lua
 --
+-- Classe qui affiche et contrôle le joystick dans l'écran
+--
 -----------------------------------------------------------------------------------------
 local Joystick = {}
 
+-- Constructeur, génère le joystick et ses composantes
 function Joystick:init(innerRadius, outerRadius)
     local stage = display.getCurrentStage()
     
@@ -40,6 +43,7 @@ function Joystick:init(innerRadius, outerRadius)
         return radAngle*-1
     end
     
+    -- Event.touch
     function joystick:touch(event)
         local phase = event.phase
         if phase=='began' or phase=="moved"  then
@@ -74,6 +78,7 @@ function Joystick:init(innerRadius, outerRadius)
         return true
     end
     
+    -- Active le joystick
     function joyGroup:activate()
         self:addEventListener("touch", self.joystick )
         angle = -90
@@ -81,6 +86,7 @@ function Joystick:init(innerRadius, outerRadius)
         self.isVisible = true
     end
     
+    -- Désactive le joystick
     function joyGroup:kill()
         self:removeEventListener("touch", self.joystick )
         stage:setFocus(nil)

@@ -2,6 +2,8 @@
 --
 -- cMap.lua
 --
+-- Classe qui génère le monde et ses bâtiments
+--
 -----------------------------------------------------------------------------------------
 local Map = {}
 
@@ -13,7 +15,9 @@ function Map:init( perso )
     local cAuto = require("cAuto")
     local autos = display.newGroup()
     local filtreNocturne
+    local nbAutos = 4   -- Maximum 6
 
+    -- Constructeur, construit tous les bâtiments et 
     function map:init()
         local ville = display.newImageRect(self, "map.png", 6800, 3400)
 
@@ -49,8 +53,8 @@ function Map:init( perso )
         local centreSportif = cBatiment:init(self,"centreSportif.png",1519,-777,"centresportif",-177)
         local faculte = cBatiment:init(self,"faculte.png",2330,675,"faculte",-40,true)
 
-        -- Autos
-        for i=1,8,2 do
+        -- Instanciation des autos
+        for i=1,nbAutos*2,2 do
             local auto = cAuto:init(i,perso)
             autos:insert(auto)
         end
@@ -62,6 +66,7 @@ function Map:init( perso )
 
     end
     
+    -- Augmente/diminue l'opacité du filtre de nuit selon l'heure du jour
     function map:assombrir(heure)
         if heure > 12 then
             filtreNocturne.fill = { 0, .1 ,.25, (heure-17)*8/100 }
@@ -74,6 +79,7 @@ function Map:init( perso )
         end
     end
 
+    -- Supprime le monde
     function map:kill()
         self:removeSelf()
     end

@@ -2,6 +2,9 @@
 --
 -- cInfos.lua
 --
+-- Classe agissant d'intermédiaire entre le personnage, le monde et le téléphone,
+-- Gère l'affichage des données dans la barre d'information et s'occupe du traitement de toutes l'information requise au déroulement du jeu
+--
 ----------------------------------------------------------------------------------------- 
 local Infos = {}
 function Infos:init( heureDepart, indexDepart, map, perso, jeu )
@@ -61,9 +64,10 @@ function Infos:init( heureDepart, indexDepart, map, perso, jeu )
             emploi = tEmplois[perso.carriere][10]
         end
 
+        -- Initialisation du téléphone
         telephone = cTelephone:init( self, perso, jeu )
 
-        -- Affichage de la barre du haut
+        -- Affichage de la barre d'information
         local barre = display.newRect( self, display.screenOriginX, 0, display.contentWidth*3, 100 )
         local degrade = {
             type = "gradient",
@@ -85,6 +89,7 @@ function Infos:init( heureDepart, indexDepart, map, perso, jeu )
         local optionsMoneyDisplay = {text = perso.money .. " $", width = 256, x = rightMarg-200, y = 25, font = "8-Bit Madness.ttf", fontSize = 50, align = "right"}
         moneyDisplay = display.newText(optionsMoneyDisplay)
 
+        -- Affichage du voyant de notification
         notification = display.newImageRect( "bell.png", 30, 30 )
         notification.x = rightMarg - notification.width/2 - 25
         notification.y = 25
@@ -118,7 +123,6 @@ function Infos:init( heureDepart, indexDepart, map, perso, jeu )
     function infos:getInteret()
         return interet*100
     end
-
     function infos:getContacts()
         return contacts
     end
@@ -129,7 +133,6 @@ function Infos:init( heureDepart, indexDepart, map, perso, jeu )
             return evenementDuJour
         end
     end
-
     function infos:getEmploi()
         return emploi
     end
@@ -139,6 +142,8 @@ function Infos:init( heureDepart, indexDepart, map, perso, jeu )
     
     ------ UPDATES  ------------------------------------------------------------------------------
 
+    -- Met l'heure à jour en ajoutant le nombre en paramètre à l'heure actuelle
+    -- Gère l'affichage du filtre nocturne selon l'heure du jour
     function infos:updateHeure(nb)
         if nb ~= nil then
             if heure+nb >= 24 then
@@ -173,7 +178,7 @@ function Infos:init( heureDepart, indexDepart, map, perso, jeu )
         perso:assombrir(heure)
     end
 
-    -- Mise à jour de l'icône d'alerte dans le coin supérieur droit
+    -- Mise à jour du voyant d'alerte dans le coin supérieur droit
     function infos:updateAlerte( on )
         if on then
             notification:setFillColor( display.getDefault( "fillColor" ) )
@@ -189,11 +194,11 @@ function Infos:init( heureDepart, indexDepart, map, perso, jeu )
         local rand2
         for i=1,#contacts do
             if perso.carriere == "sciences" then
-                rand2 = math.random( 4, 12 )
-                rand1 = math.random( 4 )
+                rand2 = math.random( 4, 10 )
+                rand1 = math.random( 0, 1  )
             else
-                rand1 = math.random( 4, 12 )
-                rand2 = math.random( 4 )
+                rand1 = math.random( 4, 10 )
+                rand2 = math.random( 0, 1  )
             end
             print(i.." "..rand1, rand2 )
             contacts[i].forNum = contacts[i].forNum + rand1
@@ -239,8 +244,9 @@ function Infos:init( heureDepart, indexDepart, map, perso, jeu )
         telephone:menu()
     end
     
+    -- Augmente le niveau de carrière du personnage
     function infos:promotion()
-        if tEmplois[perso.carriere][emploiIndex] ~= nil then 
+        if tEmplois[perso.carriere][emploiIndex] ~= nil and tEmplois[perso.carriere][emploiIndex+1] ~= nil then 
             emploiIndex = emploiIndex + 1
             emploi = tEmplois[perso.carriere][emploiIndex]
         end

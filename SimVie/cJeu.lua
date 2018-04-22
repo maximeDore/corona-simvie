@@ -2,6 +2,8 @@
 --
 -- cJeu.lua
 --
+-- Classe qui génère tous les éléments du jeu, gère les changements de scène et contrôle la musique d'ambiance
+--
 -----------------------------------------------------------------------------------------
 local Jeu = {}
 
@@ -30,6 +32,7 @@ function Jeu:init()
     local interieur
     local monJoystick
 
+    -- Constructeur, appelle les constructeurs des éléments du jeu
     function jeu:init()
         display.setStatusBar( display.HiddenStatusBar )
         if audio.seek( 1000, bgMusicChannel ) then
@@ -79,7 +82,7 @@ function Jeu:init()
         monPerso:setDestination()
     end
 
-    -- Détruire le jeu et tous ses enfants
+    -- Détruire le jeu, ses écouteurs et tous ses enfants
     function jeu:kill()
         Runtime:removeEventListener( "key", jeu )
         local function recursiveKill(group) -- fonction locale récursive appelant la fonction kill de chaque enfant (removeEventListeners)
@@ -99,7 +102,9 @@ function Jeu:init()
         cMenu:init()
     end
 
+    -- Event.key
     function jeu:key(e)
+        -- Bouton retour d'Android ou Window Phone
         if e.keyName == "back" then
             if e.phase == "down" then
                 _G.infos:menu()

@@ -2,6 +2,8 @@
 --
 -- cInstructions.lua
 --
+-- Classe affichant l'écran de tutoriel du jeu et gérant son interactivité
+--
 -----------------------------------------------------------------------------------------
 local Instructions = {}
 
@@ -24,6 +26,7 @@ function Instructions:init()
     local btSuivant
     local isPhoneUp = false
     
+    -- Fondu noir avant la destruction de la page-écran et l'instanciation du jeu
     local function listener()
         local function listener2()
             instructions:kill()
@@ -33,9 +36,12 @@ function Instructions:init()
         transition.fadeOut( instructions, { time=500, onComplete=listener2 } )
     end
 
+    -- Constructeur, affiche tous les éléments visuels et les boutons
     function instructions:init()
         display.setStatusBar( display.HiddenStatusBar )
+        -- Index du tableau de narration
         local cpt = 1
+        -- Tableau des textes narratifs
         local textes = {
             "Vous etes jeune, sans experience et vous souhaitez vous eloigner de chez vous.",
             "C'est pourquoi vous voila en route vers Saint-Jerome. C'est le temps de vous faire une nouvelle vie." ,
@@ -84,6 +90,7 @@ function Instructions:init()
             end
         end
 
+        -- Affiche l'écran Contacts du téléphone
         local function afficherContacts()
             if cpt == #textes-2 then
                 suivant()
@@ -148,7 +155,7 @@ function Instructions:init()
 
     ------ Téléphone    ------------------------------------------------------------------------------------------------------------
 
-        -- Fonction appelée par les boutons, pour éviter un plantage
+        -- Fonction appelée par les boutons inactifs, pour éviter un plantage
         local function dummy()
         end
 
@@ -160,10 +167,10 @@ function Instructions:init()
 
         -- Boutons de l'écran d'accueil
         -- Disposition :
-        -- BtStats  btContacts  btAlertes
-        -- btInventaire    btBanque    btMute
-        -- btSave   btMenu
-        -- btMarche btScooter   btVoiture
+        --  BtStats  btContacts  btAlertes
+        --  btInventaire    btBanque    btMute
+        --  btSave   btMenu
+        --  btMarche btScooter   btVoiture
         local btStats = cBouton:init( "btStats.png", nil, -bgContacts.width/3.25, -bgContacts.height*.35, dummy )
         local btContacts = cBouton:init( "btContacts.png", nil, 0, -bgContacts.height*.35, afficherContacts )
         local btAlertes = cBouton:init( "btAlertes.png", nil, bgContacts.width/3.25, -bgContacts.height*.35, dummy )
@@ -207,6 +214,7 @@ function Instructions:init()
         self:kill()
     end
 
+    -- Event.enterFrame
     function instructions:enterFrame(e)
         bg1.x = bg1.x - 4
         bg2.x = bg2.x - 4
@@ -218,6 +226,7 @@ function Instructions:init()
         end
     end
 
+    -- Suppression de la page écran, de l'écouteur et de tous ses enfants
     function instructions:kill()
         Runtime:removeEventListener( "enterFrame", instructions )
         local function recursiveKill(group) -- fonction locale appelant la fonction kill de chaque enfant (removeEventListeners)

@@ -2,6 +2,8 @@
 --
 -- cMenuCommencer.lua
 --
+-- Classe qui génère un menu secondaire de personnalisation des points d'aptitude avant de lancer une nouvelle partie
+--
 -----------------------------------------------------------------------------------------
 local MenuCommencer = {}
 
@@ -17,8 +19,10 @@ function MenuCommencer:init()
     _G.intNum = 5
     _G.chaNum = 5
 
+    -- Constructeur
     function menuCommencer:init()
 
+        -- Ajoute un point de l'aptitude passée en paramètre
         local function ajouterPoint(apt)
             erreurMsg.text = ""
             if pointsRestants > 0 then
@@ -41,6 +45,7 @@ function MenuCommencer:init()
             end
         end
 
+        -- Enlève un point de l'aptitude passée en paramètre
         local function enleverPoint(apt)
             erreurMsg.text = ""
             if apt=="for" and forNum>0 then
@@ -58,10 +63,12 @@ function MenuCommencer:init()
             aptitudesNum.text = pointsRestants.." "..forNum.." "..intNum.." "..chaNum
         end
 
+        -- Demande au menu de supprimer le menuCommencer pour revenir au menu principal
         local function retour()
             self.parent:retour()
         end
 
+        -- Demande au menu de se supprimer et de lancer le tutoriel
         local function jouer()
             if forNum == intNum and pointsRestants == 0 then
                 erreurMsg.text = "Votre INTELLIGENCE et votre FORCE ne peuvent etre egaux."
@@ -124,7 +131,7 @@ function MenuCommencer:init()
         self:insert(aptitudesNum)
         self:insert(erreurMsg)
 
-        -- boutons aptitudes 
+        -- Boutons aptitudes 
         btForPlus = bouton:init("btFleche.png",nil,display.contentWidth/1.35,display.contentCenterY*.86,ajouterPoint,"for")
         btForMoins = bouton:init("btFleche.png",nil,display.contentWidth/1.70,display.contentCenterY*.86,enleverPoint,"for")
         btForMoins.xScale = -1
@@ -148,8 +155,6 @@ function MenuCommencer:init()
         btCommencerPartie = bouton:init("Commencer",nil,display.contentCenterX/.725,display.contentHeight/1.3,jouer)
         self:insert(btRetour)
         self:insert(btCommencerPartie)
-
-
     end
 
     menuCommencer:init()

@@ -2,12 +2,18 @@
 --
 -- cDonnees.lua
 --
+-- Objet contenant des méthodes qui gère la sauvegarde et le chargement de données (IO) 
+--
 -----------------------------------------------------------------------------------------
 local json = require("json")
 
 donnees = {}
 local persoParams
 
+-- Sauvegarde les données dans un fichier dans le sandbox
+-- @params 
+-- t		Array	Tableau contenant les données à sauvegarder
+-- filename	String	Nom du fichier dans lequel les données seront sauvegardées
 function donnees:saveTable( t, filename )
 	local path = system.pathForFile( filename, system.DocumentsDirectory )
 	local fichier = io.open(path, "w+")
@@ -21,6 +27,9 @@ function donnees:saveTable( t, filename )
 	end
 end
 
+-- Récupère les données depuis un fichier dans le sandbox
+-- @params 
+-- filename	String	Nom du fichier dans lequel les données seront chargées
 function donnees:loadTable( filename )
 	local path = system.pathForFile( filename, system.DocumentsDirectory )
 	local contenu = ""
@@ -36,6 +45,10 @@ function donnees:loadTable( filename )
 	return nil
 end
 
+-- Récupère toutes les valeurs à sauvegarder à partir du jeu dans un tableau et l'envoie se faire sauvegarder
+-- @params 
+-- perso	Object	Classe contenant le personnage
+-- infos	Object	Classe contenant les informations relatives au déroulement du jeu
 function donnees:prepForSave( perso, infos )
 	local interet = infos:getInteret()
 	persoParams = {}
@@ -56,7 +69,5 @@ function donnees:prepForSave( perso, infos )
 	persoParams.inventaire = perso.inventaire
 	self:saveTable(persoParams, "sauvegarde.json")
 end
-
-
 
 return donnees

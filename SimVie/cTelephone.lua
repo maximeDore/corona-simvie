@@ -2,6 +2,8 @@
 --
 -- cTelephone.lua
 --
+-- Classe qui génère un téléphone avec plusieurs applications/écrans
+--
 -----------------------------------------------------------------------------------------
 local Telephone = {}
 local cBouton = require("cBouton")
@@ -50,6 +52,7 @@ function Telephone:init( parent, perso, jeu )
     local interetDisplay
     local screenMask = graphics.newMask( "screen.png" )
     
+    -- Constructeur, génère toutes les applications/écrans du téléphone ainsi que ses boutons avec leur fonction assignées
     function telephone:init()
         -- Monter/descendre le téléphone
         local function toggleTelephone()
@@ -96,6 +99,7 @@ function Telephone:init( parent, perso, jeu )
             screenHome.isVisible = false
             screenMenu.isVisible = true
         end
+        -- Sauvegarde la partie
         local function save()
             print("Partie sauvegardée")
             donnees:prepForSave( perso, _G.infos )
@@ -105,6 +109,7 @@ function Telephone:init( parent, perso, jeu )
             screenHome.isVisible = false
             screenSave.isVisible = true
         end
+        -- Met la musique d'ambiance en sourdine
         local function mute()
             toggleTelephone()
             if audio.pause() > 0 then
@@ -114,6 +119,7 @@ function Telephone:init( parent, perso, jeu )
             end
         end
 
+        -- Changer de véhicule
         local function transport( vehicule )
             print(vehicule)
             if vehicule ~= perso.vehiculeActif then
@@ -122,10 +128,12 @@ function Telephone:init( parent, perso, jeu )
             end
         end
 
+        -- Quitter le jeu
         local function quitter()
             jeu:kill()
         end
 
+        -- Afficher la page d'une alerte 
         local function afficherAlerte( indexAlerte )
             local index = indexAlerte
             for i=1,alertContent.numChildren do
@@ -144,6 +152,7 @@ function Telephone:init( parent, perso, jeu )
             btRetour.isVisible = true
         end
 
+        -- Revenir sur la page d'accueil des alertes
         local function cacherAlerte()
             for i=1,alertContent.numChildren do
                 if alertContent[i].type == "bouton" then
@@ -157,6 +166,7 @@ function Telephone:init( parent, perso, jeu )
             btRetour.isVisible = false
         end
 
+        -- Demande au personnage de consommer l'aliment passé en paramètre
         local function consommer( aliment )
             perso:consommer(aliment)
         end
@@ -222,6 +232,7 @@ function Telephone:init( parent, perso, jeu )
         screenHome:insert(btVoiture)
 
         -- Écran Statistiques   --------------------------------------------------------------------------------------------------------
+        
         -- Affichage des points d'aptitudes
         local optionsAptitudesNum = {
             text = "",
@@ -278,6 +289,7 @@ function Telephone:init( parent, perso, jeu )
 
 
 ---------- Écran Contacts       --------------------------------------------------------------------------------------------------------
+
         -- Options d'affichage des contacts
         local optionsContactNom = {
             text = contacts[1].nom,
@@ -312,6 +324,7 @@ function Telephone:init( parent, perso, jeu )
         
 
 ---------- Écran Menu           --------------------------------------------------------------------------------------------------------
+
         btOui = cBouton:init( "btOui.png", nil, -bgMenu.width/4.15, 0, quitter )
         btNon = cBouton:init( "btNon.png", nil, bgMenu.width/4.25, 0, afficherHome )
         screenMenu:insert(btOui)
@@ -319,6 +332,7 @@ function Telephone:init( parent, perso, jeu )
 
 
 ---------- Écran Save           --------------------------------------------------------------------------------------------------------
+
         btOui = cBouton:init( "btOui.png", nil, -bgMenu.width/4.15, 0, save )
         btNon = cBouton:init( "btNon.png", nil, bgMenu.width/4.25, 0, afficherHome )
         screenSave:insert(btOui)
@@ -326,6 +340,7 @@ function Telephone:init( parent, perso, jeu )
 
 
 ---------- Écran Banque         --------------------------------------------------------------------------------------------------------
+
         local optionsBalance = {
             text = perso.banque.." $",
             x = bgMenu.width/2-110,
@@ -356,6 +371,7 @@ function Telephone:init( parent, perso, jeu )
 
 
 ---------- Écran Alertes        --------------------------------------------------------------------------------------------------------
+
         alertContent = display.newContainer( screenAlertes, bgMenu.width, bgMenu.height )
         bgAlerteContenu = display.newImage( alertContent, "alertContent.png", bgMenu.width, 25 )
         contenuAlerte = display.newRect( alertContent, bgMenu.width, bgAlerteContenu.y, bgAlerteContenu.width*.9, bgAlerteContenu.height*.9 )
@@ -391,6 +407,7 @@ function Telephone:init( parent, perso, jeu )
 
 
 ---------- Écran Inventaire     --------------------------------------------------------------------------------------------------------
+
         local cafeItem = cBouton:init( "itemCafe.png", nil, 0, -bgInventaire.height/3.85, consommer, "cafe" )
         local barreItem = cBouton:init( "itemBarre.png", nil, 0, -bgInventaire.height/3.85+69, consommer, "barreNrg" )
         local boissonItem = cBouton:init( "itemBoisson.png", nil, 0, -bgInventaire.height/3.85+138, consommer, "boissonNrg" )
@@ -454,6 +471,7 @@ function Telephone:init( parent, perso, jeu )
 
 ------ UPDATES  ------------------------------------------------------------------------------
 
+    -- Active les boutons de véhicules s'ils sont dans l'inventaire
     function telephone:updateBoutons()
         -- État des boutons de déplacement
         if table.indexOf( perso.inventaire, "scooter" ) then
@@ -464,22 +482,26 @@ function Telephone:init( parent, perso, jeu )
         end
     end
 
+    -- Met l'affichage des statistiques à jour
     function telephone:updateStats()
         aptitudesNum.text = perso.forNum.."\n"..perso.intNum.."\n"..perso.chaNum
         emploiDisplay.text = parent:getEmploi().titre
     end
 
+    -- Met l'affichage des contacts à jour
     function telephone:updateContacts()
         contacts = parent.getContacts()
         contactApt1.text = contacts[1].forNum.."\n"..contacts[1].intNum
         contactApt2.text = contacts[2].forNum.."\n"..contacts[2].intNum
     end
 
+    -- Met l'affichage de l'argent en banque à jour
     function telephone:updateBanque()
         balanceDisplay.text = perso.banque.." $"
         interetDisplay.text = parent:getInteret() .. " %"
     end
 
+    -- Met l'affichage de l'énergie à jour
     function telephone:updateEnergie()
         local maxWidth = fondEnergie.width-10
         energieDisplay.text = perso.energie.." %"
@@ -496,6 +518,7 @@ function Telephone:init( parent, perso, jeu )
         end
     end
 
+    -- Met l'affichage des alertes à jour
     function telephone:updateAlertes( tEvents )
         -- Fermer la page d'alerte
         transition.to( bgAlerteContenu, { time = 500, x = bgMenu.width, transition=easing.outQuart } )
@@ -545,6 +568,7 @@ function Telephone:init( parent, perso, jeu )
         contenuAlerteTexte2:toFront()
     end
 
+    -- Met l'affichage de l'inventaire à jour
     function telephone:updateInventaire()
         local cafe = perso.inventaire["cafe"]
         local barre = perso.inventaire["barreNrg"]
@@ -572,8 +596,9 @@ function Telephone:init( parent, perso, jeu )
 
     end
 
+    -- Gère la fonction du bouton Back d'Android ou Windows Phone
     function telephone:menu()
-
+        -- Si le téléphone est levé et qu'il est sur une application
         if screenHome.isVisible == false and self.y == posUp then
             screenHome.isVisible = true
             screenContacts.isVisible = false
@@ -584,8 +609,10 @@ function Telephone:init( parent, perso, jeu )
             screenAlertes.isVisible = false
             screenMenu.isVisible = false
             screenSave.isVisible = false
+        -- Si le téléphone est levé et qu'il est sur l'accueil
         elseif screenHome.isVisible == true and self.y == posUp then
             transition.to( self, { time = 500, y = posDown, transition=easing.outQuart } )
+        -- Si le téléphone est baissé
         else
             screenHome.isVisible = false
             screenMenu.isVisible = true

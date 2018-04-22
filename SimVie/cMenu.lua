@@ -2,6 +2,8 @@
 --
 -- cMenu.lua
 --
+-- Classe qui affiche le menu principal et gère son interactivité
+--
 -----------------------------------------------------------------------------------------
  
 local Menu = {}
@@ -22,7 +24,9 @@ function Menu:init()
     local btContinuer
     local fade
     
+    -- Définit la carrière du personnage et fait une transition en fondu noir avant de supprimer le menu
     local function listener()
+        -- Initialisation et destruction
         local function listener2()
             if _G.data == nil then
                 if forNum>intNum then
@@ -37,10 +41,14 @@ function Menu:init()
             end
             menu:removeSelf()
         end
+        -- Fondu
         transition.fadeOut( menu, { time=500, onComplete=listener2 } )
     end
 
 
+    ------ Méthodes  ------------------------------------------------------------------------------
+
+    -- Constructeur, instancie tous les éléments visuels et interactifs
     function menu:init()
         -- Affiche la barre de notifications
         display.setStatusBar( display.LightTransparentStatusBar )
@@ -49,13 +57,15 @@ function Menu:init()
         audio.stop( 1 )
         bgMusicChannel = audio.play( bgMusic, { channel=1, loops=-1, fadein=2000 } )
         
+        -- Instancie le menu de personnalisation et cache les boutons du menu principal
         local function commencer()
             menuCommencer = cMenuCommencer:init()
             self:insert(menuCommencer)
-            btCommencer:removeSelf()
-            btContinuer:removeSelf()
+            btCommencer.isVisible = false
+            btContinuer.isVisible = false
         end
 
+        -- Démarre le jeu s'il y a une sauvegarde dans le sandbox
         local function continuer()
             if donnees:loadTable( "sauvegarde.json" ) ~= nil then
                 btCommencer:disable()
@@ -66,6 +76,7 @@ function Menu:init()
             end
         end
 
+        -- Supprime le rectangle de fondu
         local function fadeListener()
             fade:removeSelf()
         end
@@ -89,30 +100,22 @@ function Menu:init()
         self:insert(btCommencer)
         self:insert(btContinuer)
         self:insert(btCredits)
+
+        -- Désactive le bouton commencer s'il n'y a pas de partie sauvegardée dans le sandbox
+        if donnees:loadTable( "sauvegarde.json" ) == nil then
+            btContinuer:disable()
+        end
     end
         
+    -- Supprime le menu de personnalisation et affiche les boutons du menu principal
     function menu:retour()
-        local function commencer()
-            menuCommencer = cMenuCommencer:init()
-            self:insert(menuCommencer)
-            btCommencer:removeSelf()
-            btContinuer:removeSelf()
-        end
-
-        local function continuer()
-            if donnees:loadTable( "sauvegarde.json" ) ~= nil then
-                _G.data = donnees:loadTable( "sauvegarde.json" )
-                menu:kill()
-            end
-        end
         menuCommencer:removeSelf()
-        btCommencer = bouton:init("Commencer",nil,display.contentCenterX/2,display.contentHeight/1.37,commencer)
-        btContinuer = bouton:init("Continuer",nil,display.contentCenterX/.67,display.contentHeight/1.37,continuer)
-
-        self:insert(btCommencer)
-        self:insert(btContinuer)
+        -- Boutons
+        btCommencer.isVisible = true
+        btContinuer.isVisible = true
     end
 
+    -- Affiche la page de crédits et supprime le menu
     local function afficherCredits(e)
         if e.phase == "began" then
             menu:kill(true)
@@ -121,6 +124,8 @@ function Menu:init()
         end
     end
 
+    -- Suppression du menu, ses enfants et tous ses écouteurs
+    -- @params bool Destruction sans fondu (défaut avec fondu)
     function menu:kill( param )
         btCredits:removeEventListener( "touch", afficherCredits )
         local function recursiveKill(group) -- fonction locale appelant la fonction kill de chaque enfant (removeEventListeners)
@@ -139,7 +144,6 @@ function Menu:init()
         end
     end
     
-
     menu:init()
     btCredits:addEventListener( "touch", afficherCredits )
     return menu

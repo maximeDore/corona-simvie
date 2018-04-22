@@ -2,14 +2,24 @@
 --
 -- cBatiment.lua
 --
+-- Classe qui affiche un bâtiment sur la carte et y crée un porte d'entrée
+--
 -----------------------------------------------------------------------------------------
 local Batiment = {}
 
+-- @params 
+-- parent :     Group   Map, groupe parent
+-- img :        String  Fichier image du sprite du bâtiment
+-- x, y :       Number  Position du bâtiment sur la map
+-- destination: String  Nom du bâtiment dans lequel le personnage va entrer par la porte
+-- porteX :     Number  Positionnement en x de la porte sur le bâtiment
+-- outline :    Bool    True pour que le corps physique s'ajuste à la forme du sprite, sinon le corps est un rectangle
 function Batiment:init(parent,img,x,y,destination,porteX,outline)
 
     local batiment = display.newGroup()
     local cPorte = require("cPorte")
 
+    -- Constructeur
     function batiment:init()
         local sprite = display.newImage(self,img,x,y)
         sprite.width= sprite.width*4

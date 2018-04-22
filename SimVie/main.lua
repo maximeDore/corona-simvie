@@ -3,6 +3,7 @@
 -- main.lua
 --
 -----------------------------------------------------------------------------------------
+
 -- Physiques
 local physics = require( "physics" )
 physics.start()
@@ -13,8 +14,11 @@ audio.setVolume( 0.75, { channel=1 } )
 -- Applique un filtre qui rend l'image moins floue (pour mieux voir les pixels)
 display.setDefault( "magTextureFilter", "nearest" )
 
+-- Instancie le splashscreen
  local cSplash = require("cSplashscreen")
  cSplash:init()
 
+
+ -- Tests
 -- local cMenu = require("cMenu")
 -- cMenu:init()
