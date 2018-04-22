@@ -99,10 +99,10 @@ function Jeu:init()
     end
 
     function jeu:key(e)
-        if e.keyName == "b" then
+        if e.keyName == "back" then
             _G.infos:menu()
+            return true
         end
-        return true
     end
 
     jeu:init()
