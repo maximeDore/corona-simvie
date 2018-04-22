@@ -81,6 +81,7 @@ function Jeu:init()
 
     -- Détruire le jeu et tous ses enfants
     function jeu:kill()
+        Runtime:removeEventListener( "key", jeu )
         local function recursiveKill(group) -- fonction locale récursive appelant la fonction kill de chaque enfant (removeEventListeners)
             for i=group.numChildren,1,-1 do
                 if group[i].numChildren~=nil then
@@ -100,7 +101,9 @@ function Jeu:init()
 
     function jeu:key(e)
         if e.keyName == "back" then
-            _G.infos:menu()
+            if e.phase == "down" then
+                _G.infos:menu()
+            end
             return true
         end
     end

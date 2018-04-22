@@ -573,9 +573,24 @@ function Telephone:init( parent, perso, jeu )
     end
 
     function telephone:menu()
-        screenHome.isVisible = false
-        screenMenu.isVisible = true
-        transition.to( self, { time = 500, y = posUp, transition=easing.outQuart } )
+
+        if screenHome.isVisible == false and self.y == posUp then
+            screenHome.isVisible = true
+            screenContacts.isVisible = false
+            screenStats.isVisible = false
+            screenInventaire.isVisible = false
+            screenBanque.isVisible = false
+            screenMenu.isVisible = false
+            screenAlertes.isVisible = false
+            screenMenu.isVisible = false
+            screenSave.isVisible = false
+        elseif screenHome.isVisible == true and self.y == posUp then
+            transition.to( self, { time = 500, y = posDown, transition=easing.outQuart } )
+        else
+            screenHome.isVisible = false
+            screenMenu.isVisible = true
+            transition.to( self, { time = 500, y = posUp, transition=easing.outQuart } )
+        end
     end
     
     function telephone:kill()
