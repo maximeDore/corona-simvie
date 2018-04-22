@@ -98,7 +98,17 @@ function Jeu:init()
         cMenu:init()
     end
 
+    function jeu:key(e)
+        if e.keyName == "b" then
+            _G.infos:menu()
+        end
+        return true
+    end
+
     jeu:init()
+
+    Runtime:addEventListener( "key", jeu )
+
     return jeu
 end
 

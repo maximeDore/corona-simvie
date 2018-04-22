@@ -232,9 +232,11 @@ function Infos:init( heureDepart, indexDepart, map, perso, jeu )
         end
         self:updateMoney()
     end
-
     function infos:updateBoutons()
         telephone:updateBoutons()
+    end
+    function infos:menu()
+        telephone:menu()
     end
     
     function infos:promotion()

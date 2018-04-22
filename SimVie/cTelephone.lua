@@ -448,7 +448,8 @@ function Telephone:init( parent, perso, jeu )
         self:updateStats()
         self:updateEnergie()
         self:updateInventaire()
-    end
+
+    end --init()
     
 
 ------ UPDATES  ------------------------------------------------------------------------------
@@ -569,6 +570,12 @@ function Telephone:init( parent, perso, jeu )
             screenInventaire[4]:enable()
         end
 
+    end
+
+    function telephone:menu()
+        screenHome.isVisible = false
+        screenMenu.isVisible = true
+        transition.to( self, { time = 500, y = posUp, transition=easing.outQuart } )
     end
     
     function telephone:kill()
