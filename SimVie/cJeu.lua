@@ -18,6 +18,7 @@ function Jeu:init()
     local cInterieur = require("cInterieur")
     local cMenu = require("cMenu")
     local cInfos = require("cInfos")
+    local cCheats = require("cCheats")
 
     local bgMusic = audio.loadStream( "toune_loundge.mp3" )
 
@@ -61,6 +62,9 @@ function Jeu:init()
 
         -- Instanciation de l'heure et de l'horaire en variable globale
         _G.infos = cInfos:init(7, 2, maMap, monPerso, self)
+
+        -- Instanciation des cheats
+        _G.cheats = cCheats:init(monPerso)
         
         monJoystick:activate()
         maMap:insert(monPerso)

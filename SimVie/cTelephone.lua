@@ -54,6 +54,13 @@ function Telephone:init( parent, perso, jeu )
     
     -- Constructeur, génère toutes les applications/écrans du téléphone ainsi que ses boutons avec leur fonction assignées
     function telephone:init()
+
+        local cCheats = require("cCheats")
+
+        local function listener(e)
+            cCheats:unlock(perso)
+        end
+
         -- Monter/descendre le téléphone
         local function toggleTelephone()
             if self.y >= display.contentHeight-display.screenOriginY+125 then
@@ -189,7 +196,9 @@ function Telephone:init( parent, perso, jeu )
         -- bgAlertes:setMask( screenMask )
 
         -- Bouton physique du téléphone (home button)
+        local function homeListener(e) cCheats:counter() end
         local btHome = cBouton:init( "", nil, 0, bgStats.height/1.8, afficherHome, nil, 75, 50 )
+        btHome:addEventListener( "tap", homeListener )
 
         -- Boutons de l'écran d'accueil
         -- Disposition :
@@ -217,7 +226,6 @@ function Telephone:init( parent, perso, jeu )
         if table.indexOf( perso.inventaire, "voiture" ) then else
             btVoiture:disable()
         end
-        self:updateBoutons()
         
         screenHome:insert(btStats)
         screenHome:insert(btContacts)
@@ -465,6 +473,10 @@ function Telephone:init( parent, perso, jeu )
         self:updateStats()
         self:updateEnergie()
         self:updateInventaire()
+        self:updateBoutons()
+        local function updateBoutonsListener() self:updateBoutons() print("time") end
+        timer.performWithDelay( 100, updateBoutonsListener )
+        
 
     end --init()
     
@@ -474,10 +486,12 @@ function Telephone:init( parent, perso, jeu )
     -- Active les boutons de véhicules s'ils sont dans l'inventaire
     function telephone:updateBoutons()
         -- État des boutons de déplacement
+        print(table.indexOf(perso,inventaire, "voiture"))
         if table.indexOf( perso.inventaire, "scooter" ) then
             btScooter:enable()
         end
         if table.indexOf( perso.inventaire, "voiture" ) then
+            print("toto")
             btVoiture:enable()
         end
     end
@@ -621,6 +635,7 @@ function Telephone:init( parent, perso, jeu )
     end
     
     function telephone:kill()
+        btHome:removeEventListener( "tap", homeListener )
     end
     
     telephone:init()

@@ -2,6 +2,8 @@
 --
 -- cInterieur.lua
 --
+-- Classe qui génère l'interface d'intérieur d'un bâtiment et qui gère son interactivité
+--
 -----------------------------------------------------------------------------------------
 local Interieur = {}
 
@@ -44,6 +46,7 @@ function Interieur:init( destination, jeu, map, perso )
         tSrc.appartement.bt3desc = "+1 Intelligence"
     end
     
+    -- Constructeur, affichage de l'interface d'intérieur de bâtiment selon la destination
     function interieur:init()
         jeu:insert(self)
         perso:changerVehicule( "marche" )

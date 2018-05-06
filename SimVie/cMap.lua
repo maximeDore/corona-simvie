@@ -38,7 +38,7 @@ function Map:init( perso )
         -- Bâtiments avec physiques
         local gymTop = cBatiment:init(self,"gymTop.png",-1356.8,525)
         local depTop = cBatiment:init(self,"depanneurTop.png",-2275,435)
-        local panneauPub = cBatiment:init(self,"panneauPub.png",-2275,-525)
+        local panneauPub = cBatiment:init(self,"panneauPub.png",-2275,-525, nil, nil, nil, perso)
         
         -- Bâtiments avec intérieur
         -- Batiment:init( parent, img, x, y, destination, porteX, outline )

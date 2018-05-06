@@ -107,6 +107,9 @@ function Infos:init( heureDepart, indexDepart, map, perso, jeu )
 
     ------ GETTERS  ------------------------------------------------------------------------------
 
+    function infos:getTelephone()
+        return telephone
+    end
     function infos:getHeure()
         return heure
     end

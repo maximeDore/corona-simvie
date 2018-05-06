@@ -14,7 +14,8 @@ local Batiment = {}
 -- destination: String  Nom du bâtiment dans lequel le personnage va entrer par la porte
 -- porteX :     Number  Positionnement en x de la porte sur le bâtiment
 -- outline :    Bool    True pour que le corps physique s'ajuste à la forme du sprite, sinon le corps est un rectangle
-function Batiment:init(parent,img,x,y,destination,porteX,outline)
+-- perso :      Object  Personnage du jeu, pour accéder à ses méthodes avec les cheats
+function Batiment:init(parent,img,x,y,destination,porteX,outline,perso)
 
     local batiment = display.newGroup()
     local cPorte = require("cPorte")
@@ -36,6 +37,11 @@ function Batiment:init(parent,img,x,y,destination,porteX,outline)
         end
         parent:insert(self)
     end
+    
+    function batiment:kill()
+    end
+
+
     batiment:init()
     return batiment
 end
