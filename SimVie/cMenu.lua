@@ -23,17 +23,19 @@ function Menu:init()
     local btCommencer
     local btContinuer
     local fade
+    local nouvellePartie
     
     -- Définit la carrière du personnage et fait une transition en fondu noir avant de supprimer le menu
     local function listener()
         -- Initialisation et destruction
         local function listener2()
-            if _G.data == nil then
-                if forNum>intNum then
+            if _G.data == nil or nouvellePartie ~= nil then
+                if _G.forNum>_G.intNum then
                     _G.carriere = "sports"
                 else
                     _G.carriere = "sciences"            
                 end
+                _G.data = nil
                 cInstructions:init()
             else 
                 audio.fadeOut( { 1, 1000 } )
@@ -125,9 +127,12 @@ function Menu:init()
     end
 
     -- Suppression du menu, ses enfants et tous ses écouteurs
-    -- @params bool Destruction sans fondu (défaut avec fondu)
-    function menu:kill( param )
+    -- @params
+    -- param:       bool    Destruction sans fondu (défaut avec fondu)
+    -- new:         bool    Commencer une nouvelle partie (défaut nil)
+    function menu:kill( param, new )
         btCredits:removeEventListener( "touch", afficherCredits )
+        nouvellePartie = new
         local function recursiveKill(group) -- fonction locale appelant la fonction kill de chaque enfant (removeEventListeners)
             for i=group.numChildren,1,-1 do
                 if group[i].numChildren~=nil then

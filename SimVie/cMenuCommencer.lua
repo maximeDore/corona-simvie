@@ -75,7 +75,7 @@ function MenuCommencer:init()
             elseif pointsRestants ~= 0 then
                 erreurMsg.text = "Vous devez assigner tous vos points."
             else
-                self.parent:kill()
+                self.parent:kill( nil, true )
             end
         end
 

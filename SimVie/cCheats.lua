@@ -15,8 +15,8 @@ function Cheats:init( perso )
     local cheats = {}
 
     function cheats:vehicles( perso )
-        table.insert( perso.inventaire, "voiture")
-        table.insert( perso.inventaire, "scooter")
+        perso.inventaire["voiture"] = true
+        perso.inventaire["scooter"] = true
     end
     
     function cheats:money( perso )
@@ -42,6 +42,9 @@ end
 function Cheats:unlock(e)
 
     if self.numTaps == 13 then
+        local telephone = _G.infos.getTelephone()
+        telephone.unlockCheats()
+
         onOff = true
         print("cheats unlocked")
     else
@@ -51,9 +54,6 @@ function Cheats:unlock(e)
     counter = nil
     self.numTaps = 0
 
-    local telephone = _G.infos.getTelephone()
-
-    telephone.unlockCheats()
 
 end
 

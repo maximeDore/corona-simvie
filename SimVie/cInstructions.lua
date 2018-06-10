@@ -41,6 +41,7 @@ function Instructions:init()
         display.setStatusBar( display.HiddenStatusBar )
         -- Index du tableau de narration
         local cpt = 1
+        
         -- Tableau des textes narratifs
         local textes = {
             "Vous etes jeune, sans experience et vous souhaitez vous eloigner de chez vous.",

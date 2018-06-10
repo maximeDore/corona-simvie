@@ -72,9 +72,9 @@ function Interieur:init( destination, jeu, map, perso )
             self:kill()
         end
         local function ajouterFor( pt )
-            if infos:getHeure() < 6 or perso.inventaire["Tapis roulant"] == true and (destination=="appartement" or destination=="loft") then
+            if infos:getHeure() < 6 and destination ~= "appartement" and destination ~= "loft" then
                 retroaction.text = "Il est trop tot pour s'entrainer."
-            elseif infos:getHeure() < 22 then
+            elseif infos:getHeure() < 22 or perso.inventaire["Tapis roulant"] == true and (destination=="appartement" or destination=="loft") then
                 if pt==1 then
                     if perso:setEnergie( -10 ) then
                         perso.forNum = perso.forNum + pt
@@ -373,7 +373,7 @@ function Interieur:init( destination, jeu, map, perso )
             if destination == "appartement" and perso.inventaire["loft"] == true then
                 btRetour.x = display.contentCenterX
                 btRetour.y = display.contentCenterY*1.25
-                retroaction.text = "Vous n'habitez plus ici desormais."
+                retroaction.text = "Vous n'habitez plus ici."
             -- Si le perso entre dans un bâtiment de travail et qu'il ne travaille pas là
             elseif evenement ~= nil and destination == evenement[1].destination then
                 btRetour.x = display.contentCenterX
