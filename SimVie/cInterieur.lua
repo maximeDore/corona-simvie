@@ -72,7 +72,7 @@ function Interieur:init( destination, jeu, map, perso )
             self:kill()
         end
         local function ajouterFor( pt )
-            if infos:getHeure() < 6 or (table.indexOf(perso.inventaire, "Tapis roulant") == nil and (destination=="appartement" or destination=="loft")) then
+            if infos:getHeure() < 6 or perso.inventaire["Tapis roulant"] == true and (destination=="appartement" or destination=="loft") then
                 retroaction.text = "Il est trop tot pour s'entrainer."
             elseif infos:getHeure() < 22 then
                 if pt==1 then
@@ -180,9 +180,9 @@ function Interieur:init( destination, jeu, map, perso )
             local objet = objets[i]
             if objet.prix <= perso.money then
                 if objet.energie == nil then
-                    if objets[i].nom == "voiture" and table.indexOf( perso.inventaire, "loft" ) ~= nil or objets[i].nom ~= "voiture" then
-                        if table.indexOf( perso.inventaire, objets[i].nom ) == nil then
-                            table.insert( perso.inventaire, objet.nom )
+                    if objets[i].nom == "voiture" and perso.inventaire["loft"] or objets[i].nom ~= "voiture" then
+                        if perso.inventaire[objet.nom] == false then
+                            perso.inventaire[objet.nom] = true
                             perso:setMoney( -objet.prix )
                             retroaction.text = "Vous achetez un(e) "..objet.nom.." pour "..objet.prix.." $."
                             infos:updateBoutons()
@@ -362,15 +362,15 @@ function Interieur:init( destination, jeu, map, perso )
         
         local btRetour = cBouton:init("Retour",nil,display.contentCenterX*1.4,display.contentCenterY*1.5,retour)
         -- Si le perso entre dans un bâtiment qui n'est pas le loft ou qu'il a acheté le loft
-        if destination ~= "loft" or table.indexOf( perso.inventaire, "loft") ~= nil then
-            if (destination == "appartement" or destination == "loft") and table.indexOf( perso.inventaire, "Tapis roulant") == nil then
+        if destination ~= "loft" or perso.inventaire["loft"] == true then
+            if (destination == "appartement" or destination == "loft") and perso.inventaire["Tapis roulant"] ~= true then
                 src.bt3 = nil
             end
             if destination == "banque" and evenement ~= nil and evenement[1].destination == "banque" then
                 inputBanque = false
             end
             -- Si le perso entre dans l'appartement et qu'il a acheté le loft
-            if destination == "appartement" and table.indexOf( perso.inventaire, "loft" ) ~= nil then
+            if destination == "appartement" and perso.inventaire["loft"] == true then
                 btRetour.x = display.contentCenterX
                 btRetour.y = display.contentCenterY*1.25
                 retroaction.text = "Vous n'habitez plus ici desormais."
@@ -405,7 +405,7 @@ function Interieur:init( destination, jeu, map, perso )
                 end
             end
         -- Si le joueur n'a pas acheté le loft
-        elseif destination == "loft" and table.indexOf( perso.inventaire, "loft" ) == nil then 
+        elseif destination == "loft" and perso.inventaire["loft"] ~= true then 
             local bt1 = cBouton:init("Acheter loft",objets[7].prix.."$",display.contentCenterX/1.65,display.contentCenterY,acheter,7)
             btRetour.y = bt1.y
             self:insert(bt1)

@@ -18,7 +18,7 @@ function donnees:saveTable( t, filename )
 	local path = system.pathForFile( filename, system.DocumentsDirectory )
 	local fichier = io.open(path, "w+")
 	if fichier then
-		local contenu = json.encode(t)
+		local contenu = json.encode(t, {indent=true})
 		fichier:write( contenu )
 		io.close( fichier )
 		return true
@@ -40,6 +40,7 @@ function donnees:loadTable( filename )
 		local contenu = fichier:read( "*a" )
 		monTableau = json.decode(contenu);
 		io.close( fichier )
+
 		return monTableau
 	end
 	return nil

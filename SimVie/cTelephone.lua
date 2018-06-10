@@ -24,6 +24,8 @@ function Telephone:init( parent, perso, jeu )
     local screenAlertes = display.newGroup()
     local screenMenu = display.newGroup()
     local screenHome = display.newGroup()
+    local screenCheats = display.newGroup()
+    local btCheats
     local contacts
     local contactDisplay1
     local contactDisplay2
@@ -81,6 +83,7 @@ function Telephone:init( parent, perso, jeu )
             screenAlertes.isVisible = false
             screenMenu.isVisible = false
             screenSave.isVisible = false
+            screenCheats.isVisible = false
         end
         local function afficherStats()
             screenHome.isVisible = false
@@ -105,6 +108,10 @@ function Telephone:init( parent, perso, jeu )
         local function afficherMenu()
             screenHome.isVisible = false
             screenMenu.isVisible = true
+        end
+        local function afficherCheats()
+            screenHome.isVisible = false
+            screenCheats.isVisible = true
         end
         -- Sauvegarde la partie
         local function save()
@@ -191,6 +198,7 @@ function Telephone:init( parent, perso, jeu )
         local bgStats = display.newImage( screenStats, "screenStats.png", 0, -10.5 )
         local bgBanque = display.newImage( screenBanque, "screenBanque.png", 0, -10.5 )
         local bgSave = display.newImage( screenSave, "screenSave.png", 0, -10.5 )
+        local bgCheats = display.newImage( screenCheats, "screen.png", 0, -10.5 )
         bgMenu = display.newImage( screenMenu, "screenMenu.png", 0, -10.5 ) -- Globale à la classe pour référence
 
         -- bgAlertes:setMask( screenMask )
@@ -202,10 +210,10 @@ function Telephone:init( parent, perso, jeu )
 
         -- Boutons de l'écran d'accueil
         -- Disposition :
-        -- BtStats  btContacts  btAlertes
-        -- btInventaire    btBanque    btMute
-        -- btSave   btMenu
-        -- btMarche btScooter   btVoiture
+        -- BtStats          btContacts      btAlertes
+        -- btInventaire     btBanque        btMute
+        -- btSave           btMenu          (btCheats)
+        -- btMarche         btScooter       btVoiture
         local btStats = cBouton:init( "btStats.png", nil, -bgStats.width/3.25, -bgStats.height*.35, afficherStats )
         local btContacts = cBouton:init( "btContacts.png", nil, 0, -bgStats.height*.35, afficherContacts )
         local btAlertes = cBouton:init( "btAlertes.png", nil, bgStats.width/3.25, -bgStats.height*.35, afficherAlertes )
@@ -214,18 +222,17 @@ function Telephone:init( parent, perso, jeu )
         local btMute = cBouton:init( "btMute.png", nil, bgStats.width/3.25, -bgStats.height*.15, mute )
         local btSave = cBouton:init( "btSave.png", nil, -bgStats.width/3.25, bgStats.height*.05, afficherSave )
         local btMenu = cBouton:init( "btMenu.png", nil, 0, bgStats.height*.05, afficherMenu )
+        btCheats = cBouton:init( "btCheats.png", nil, bgStats.width/3.25, bgStats.height*.05, afficherCheats )
+
+        btCheats.isVisible = false
 
         -- Boutons de déplacement
         btMarche = cBouton:init( "btMarche.png", nil, -bgStats.width/3.25, bgStats.height*.35, transport, "marche" )
         btScooter = cBouton:init( "btScooter.png", nil, 0, bgStats.height*.35, transport, "scooter" )
         btVoiture = cBouton:init( "btAuto.png", nil, bgStats.width/3.25, bgStats.height*.35, transport, "voiture" )
         -- État des boutons de déplacement
-        if table.indexOf( perso.inventaire, "scooter" ) then else
-            btScooter:disable()
-        end
-        if table.indexOf( perso.inventaire, "voiture" ) then else
-            btVoiture:disable()
-        end
+        btScooter:disable()
+        btVoiture:disable()
         
         screenHome:insert(btStats)
         screenHome:insert(btContacts)
@@ -238,6 +245,7 @@ function Telephone:init( parent, perso, jeu )
         screenHome:insert(btMarche)
         screenHome:insert(btScooter)
         screenHome:insert(btVoiture)
+        screenHome:insert(btCheats)
 
         -- Écran Statistiques   --------------------------------------------------------------------------------------------------------
         
@@ -454,6 +462,7 @@ function Telephone:init( parent, perso, jeu )
         screenAlertes.isVisible = false
         screenBanque.isVisible = false
         screenInventaire.isVisible = false
+        screenCheats.isVisible = false
 
         -- Insertions dans le téléphone
         self:insert(tapZone)
@@ -465,6 +474,7 @@ function Telephone:init( parent, perso, jeu )
         self:insert(screenInventaire)
         self:insert(screenMenu)
         self:insert(screenSave)
+        self:insert(screenCheats)
         self:insert(btHome)
 
         self.x = display.contentWidth*.85-display.screenOriginX
@@ -474,8 +484,6 @@ function Telephone:init( parent, perso, jeu )
         self:updateEnergie()
         self:updateInventaire()
         self:updateBoutons()
-        local function updateBoutonsListener() self:updateBoutons() print("time") end
-        timer.performWithDelay( 100, updateBoutonsListener )
         
 
     end --init()
@@ -486,12 +494,10 @@ function Telephone:init( parent, perso, jeu )
     -- Active les boutons de véhicules s'ils sont dans l'inventaire
     function telephone:updateBoutons()
         -- État des boutons de déplacement
-        print(table.indexOf(perso,inventaire, "voiture"))
-        if table.indexOf( perso.inventaire, "scooter" ) then
+        if perso.inventaire["scooter"] then
             btScooter:enable()
         end
-        if table.indexOf( perso.inventaire, "voiture" ) then
-            print("toto")
+        if perso.inventaire["voiture"] then
             btVoiture:enable()
         end
     end
@@ -632,6 +638,10 @@ function Telephone:init( parent, perso, jeu )
             screenMenu.isVisible = true
             transition.to( self, { time = 500, y = posUp, transition=easing.outQuart } )
         end
+    end
+
+    function telephone:unlockCheats()
+        btCheats.isVisible = true
     end
     
     function telephone:kill()

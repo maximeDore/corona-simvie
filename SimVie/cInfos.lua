@@ -43,7 +43,7 @@ function Infos:init( heureDepart, indexDepart, map, perso, jeu )
         -- Initialisation des contacts
         contacts = cContacts:init()
         
-        -- Chargement des données si partie chargée
+        -- Chargement des données si partie chargée et suppression de la variable globale
         if _G.data then
             heure = _G.data.heure
             emploiIndex = _G.data.emploiIndex
@@ -164,7 +164,7 @@ function Infos:init( heureDepart, indexDepart, map, perso, jeu )
                 end
                 self:updateBanque()
                 self:updateContacts()
-                if table.indexOf( perso.inventaire, "loft" ) == nil then
+                if perso.inventaire["loft"] ~= true then
                     self:updateLoyer( 5 )
                 end
                 jourDisplay.text = hebdo[jourIndex].." - jour "..cptJours

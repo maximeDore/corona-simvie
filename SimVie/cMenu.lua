@@ -67,11 +67,10 @@ function Menu:init()
 
         -- Démarre le jeu s'il y a une sauvegarde dans le sandbox
         local function continuer()
-            if donnees:loadTable( "sauvegarde.json" ) ~= nil then
+            if _G.data ~= nil then
                 btCommencer:disable()
                 btContinuer:disable()
                 btCredits:removeSelf()
-                _G.data = donnees:loadTable( "sauvegarde.json" )
                 listener()
             end
         end
@@ -102,7 +101,8 @@ function Menu:init()
         self:insert(btCredits)
 
         -- Désactive le bouton commencer s'il n'y a pas de partie sauvegardée dans le sandbox
-        if donnees:loadTable( "sauvegarde.json" ) == nil then
+        _G.data = donnees:loadTable( "sauvegarde.json" )
+        if _G.data == nil then
             btContinuer:disable()
         end
     end

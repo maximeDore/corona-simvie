@@ -50,9 +50,12 @@ function Jeu:init()
         local spawn = {}
         spawn.x = spawns.appartement.x
         spawn.y = spawns.appartement.y
-        if _G.data ~= nil and table.indexOf( _G.data.inventaire, "loft" ) ~= nil then
+
+        if _G.data ~= nil and _G.data.inventaire["loft"] then
             spawn.x, spawn.y = spawns.loft.x, spawns.loft.y
         end
+
+        inventaire = nil
 
         -- Instanciation des éléments de jeu
         monJoystick = cJoystick:init(50,125)

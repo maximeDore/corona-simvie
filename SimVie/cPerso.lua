@@ -74,13 +74,20 @@ function Perso:init(xorig, yorig, map, joystick, jeu)
         self.vit = 0
         self.angRad = 0
         self.avatar:play()
-        local inventaire = { cafe = { nb=1, nrg=5, max=5 }, barreNrg = { nb=0, nrg=10, max=5 }, boissonNrg = { nb=0, nrg=25, max=2 } }
+        local inventaire = {
+            cafe = { nb=1, nrg=5, max=5 },
+            barreNrg = { nb=0, nrg=10, max=5 },
+            boissonNrg = { nb=0, nrg=25, max=2 }, 
+            voiture = false,
+            scooter = false,
+            tapisRoulant = false
+        }
         -- Données sauvegardées
         if _G.data == nil then
             self.energie = 100
             self.money = 100
             self.banque = 0
-            self.inventaire = { cafe = { nb=1, nrg=5, max=5 }, barreNrg = { nb=0, nrg=10, max=5 }, boissonNrg = { nb=0, nrg=25, max=2 } }
+            self.inventaire = inventaire
             self.forNum = _G.forNum
             self.intNum = _G.intNum
             self.chaNum = _G.chaNum
@@ -194,47 +201,45 @@ function Perso:init(xorig, yorig, map, joystick, jeu)
                     audio.play( sfxVehicules[vehicule], { channel=5, loops=-1 } )
                 end
             end
-
-            if table.indexOf( self.inventaire, vehicule ) ~= nil or vehicule == "marche"  then
-                -- Visuel du personnage
-                self.avatar:removeSelf()
-                if vehicule == "marche" then
-                    self.avatar = display.newSprite(self, marcheImageSheet, spriteSheetPerso:getSpriteIndex())
-                elseif vehicule == "scooter" then
-                    self.avatar = display.newSprite(self, scooterImageSheet, spriteSheetScooter:getSpriteIndex())
-                elseif vehicule == "voiture" then
-                    self.avatar = display.newSprite(self, voitureImageSheet, spriteSheetVoiture:getSpriteIndex())
-                end
-                -- Vitesse
-                self.vitModif = vehicules[vehicule].mod
-                audio.stop( 5 )
-                if vehicule ~= "marche" then
-                    audio.play( sfxVehicules[vehicule.."Start"], { channel=5, onComplete=listener } )
-                elseif self.vehiculeActif ~= "marche" then
-                    audio.play( sfxVehicules[self.vehiculeActif.."Off"], { channel=6 } )
-                end
-                self.vehiculeActif = vehicule
-
-                -- Suppression et réinstanciation du corps de physique
-                timer.performWithDelay(1,function()
-                    physics.removeBody( self )
-                    local w,h
-                    local bodyShape
-                    if vehicule == "marche" then
-                        w,h = self.width/2,self.height/2
-                        bodyShape = { w-10,h-10,  w,h,  w,h+h/2-10,  w-10,h+h/2,  -w+10,h+h/2,  -w,h+h/2-10,  -w,h,  -w+10,h-10 }
-                    elseif vehicule == "scooter" then
-                        w,h = self.width/2*vehicules[vehicule].size,self.height*vehicules[vehicule].size
-                        bodyShape = { w-10,h-100,  w,h-90,  w,h+h/2-110,  w-10,h+h/2-100,  -w+10,h+h/2-100,  -w,h+h/2-110,  -w,h-90,  -w+10,h-100 }
-                    elseif vehicule == "voiture" then
-                        w,h = self.width/2*vehicules[vehicule].size,self.height*vehicules[vehicule].size
-                        bodyShape = { w+20-10,h-180,  w+20,h-170,  w+20,h+h/2-160,  w+20-10,h+h/2-150,  -w-20+10,h+h/2-150,  -w-20,h+h/2-160,  -w-20,h-170,  -w-20+10,h-180 }
-                    end
-                    physics.addBody( perso, { density=1, friction=1, bounce=0, shape=bodyShape } )
-                    perso.isFixedRotation = true
-                end)
-                
+            
+            -- Visuel du personnage
+            self.avatar:removeSelf()
+            if vehicule == "marche" then
+                self.avatar = display.newSprite(self, marcheImageSheet, spriteSheetPerso:getSpriteIndex())
+            elseif vehicule == "scooter" then
+                self.avatar = display.newSprite(self, scooterImageSheet, spriteSheetScooter:getSpriteIndex())
+            elseif vehicule == "voiture" then
+                self.avatar = display.newSprite(self, voitureImageSheet, spriteSheetVoiture:getSpriteIndex())
             end
+            -- Vitesse
+            self.vitModif = vehicules[vehicule].mod
+            audio.stop( 5 )
+            if vehicule ~= "marche" then
+                audio.play( sfxVehicules[vehicule.."Start"], { channel=5, onComplete=listener } )
+            elseif self.vehiculeActif ~= "marche" then
+                audio.play( sfxVehicules[self.vehiculeActif.."Off"], { channel=6 } )
+            end
+            self.vehiculeActif = vehicule
+
+            -- Suppression et réinstanciation du corps de physique
+            timer.performWithDelay(1,function()
+                physics.removeBody( self )
+                local w,h
+                local bodyShape
+                if vehicule == "marche" then
+                    w,h = self.width/2,self.height/2
+                    bodyShape = { w-10,h-10,  w,h,  w,h+h/2-10,  w-10,h+h/2,  -w+10,h+h/2,  -w,h+h/2-10,  -w,h,  -w+10,h-10 }
+                elseif vehicule == "scooter" then
+                    w,h = self.width/2*vehicules[vehicule].size,self.height*vehicules[vehicule].size
+                    bodyShape = { w-10,h-100,  w,h-90,  w,h+h/2-110,  w-10,h+h/2-100,  -w+10,h+h/2-100,  -w,h+h/2-110,  -w,h-90,  -w+10,h-100 }
+                elseif vehicule == "voiture" then
+                    w,h = self.width/2*vehicules[vehicule].size,self.height*vehicules[vehicule].size
+                    bodyShape = { w+20-10,h-180,  w+20,h-170,  w+20,h+h/2-160,  w+20-10,h+h/2-150,  -w-20+10,h+h/2-150,  -w-20,h+h/2-160,  -w-20,h-170,  -w-20+10,h-180 }
+                end
+                physics.addBody( perso, { density=1, friction=1, bounce=0, shape=bodyShape } )
+                perso.isFixedRotation = true
+            end)
+
             self:assombrir( infos:getHeure() )
         end
     end

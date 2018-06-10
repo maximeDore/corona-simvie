@@ -41,7 +41,7 @@ end
 
 function Cheats:unlock(e)
 
-    if self.numTaps > 15 then
+    if self.numTaps == 13 then
         onOff = true
         print("cheats unlocked")
     else
@@ -50,6 +50,10 @@ function Cheats:unlock(e)
     timer.cancel(counter)
     counter = nil
     self.numTaps = 0
+
+    local telephone = _G.infos.getTelephone()
+
+    telephone.unlockCheats()
 
 end
 
