@@ -9,17 +9,19 @@ local Cheats = {}
 local delay = 2500
 local onOff = false
 local counter
+local telephone
 
 function Cheats:init( perso )
     self.numTaps = 0
     local cheats = {}
 
-    function cheats:vehicles( perso )
+    function cheats:vehicles()
         perso.inventaire["voiture"] = true
         perso.inventaire["scooter"] = true
+        telephone:updateBoutons()
     end
     
-    function cheats:money( perso )
+    function cheats:money()
         perso:setMoney(10000)
     end
 
@@ -42,7 +44,7 @@ end
 function Cheats:unlock(e)
 
     if self.numTaps == 13 then
-        local telephone = _G.infos.getTelephone()
+        telephone = _G.infos.getTelephone()
         telephone.unlockCheats()
 
         onOff = true
@@ -53,7 +55,6 @@ function Cheats:unlock(e)
     timer.cancel(counter)
     counter = nil
     self.numTaps = 0
-
 
 end
 

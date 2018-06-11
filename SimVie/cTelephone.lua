@@ -452,6 +452,45 @@ function Telephone:init( parent, perso, jeu )
         nbBoisson.y = nbBarre.y + 69
         nbBoisson:setFillColor(0,0,0)
 
+
+---------- Écran Cheats     ------------------------------------------------------------------------------------------------------------
+
+        local function moneyCheat()
+            _G.cheats.money()
+        end
+        local function vehicleCheat()
+            _G.cheats.vehicles()
+        end
+
+        -- Boutons de l'écran d'accueil
+        -- Disposition :
+        -- btCash           btVehicules     --
+        -- --               --              --
+        -- --               --              --
+        -- --               --              --
+        local btCash = cBouton:init( "btBanque.png", nil, -bgStats.width/3.25, -bgStats.height*.35, moneyCheat )
+        local btVehicules = cBouton:init( "btAuto.png", nil, 0, -bgStats.height*.35, vehicleCheat )
+        -- local btAlertes = cBouton:init( "btAlertes.png", nil, bgStats.width/3.25, -bgStats.height*.35, afficherAlertes )
+        -- local btInventaire = cBouton:init( "btInventaire.png", nil, -bgStats.width/3.25, -bgStats.height*.15, afficherInventaire )
+        -- local btBanque = cBouton:init( "btBanque.png", nil, 0, -bgStats.height*.15, afficherBanque )
+        -- local btMute = cBouton:init( "btMute.png", nil, bgStats.width/3.25, -bgStats.height*.15, mute )
+        -- local btSave = cBouton:init( "btSave.png", nil, -bgStats.width/3.25, bgStats.height*.05, afficherSave )
+        -- local btMenu = cBouton:init( "btMenu.png", nil, 0, bgStats.height*.05, afficherMenu )
+        -- local btCheats = cBouton:init( "btCheats.png", nil, bgStats.width/3.25, bgStats.height*.05, afficherCheats )
+        
+        screenCheats:insert(btCash)
+        screenCheats:insert(btVehicules)
+        -- screenCheats:insert(btAlertes)
+        -- screenCheats:insert(btInventaire)
+        -- screenCheats:insert(btBanque)
+        -- screenCheats:insert(btMute)
+        -- screenCheats:insert(btSave)
+        -- screenCheats:insert(btMenu)
+        -- screenCheats:insert(btMarche)
+        -- screenCheats:insert(btScooter)
+        -- screenCheats:insert(btVoiture)
+        -- screenCheats:insert(btCheats)
+
 ----------------------------------------------------------------------------------------------------------------------------------------
 
         -- Cacher les écrans par défaut
