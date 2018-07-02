@@ -7,6 +7,7 @@
 -----------------------------------------------------------------------------------------
 local Cheats = {}
 local delay = 2500
+local tapCount = 10
 local onOff = false
 local counter
 local telephone
@@ -43,7 +44,7 @@ end
 
 function Cheats:unlock(e)
 
-    if self.numTaps == 13 then
+    if self.numTaps == tapCount then
         telephone = _G.infos.getTelephone()
         telephone.unlockCheats()
 

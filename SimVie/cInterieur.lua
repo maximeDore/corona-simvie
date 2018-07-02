@@ -178,7 +178,10 @@ function Interieur:init( destination, jeu, map, perso )
         --acheter un objet selon l'index de l'objet
         local function acheter( i )
             local objet = objets[i]
-            if objet.prix <= perso.money then
+
+            if perso.inventaire[objet.nom] == true then
+                retroaction.text = "Vous possedez deja ceci."
+            elseif objet.prix <= perso.money then
                 if objet.energie == nil then
                     if objets[i].nom == "voiture" and perso.inventaire["loft"] or objets[i].nom ~= "voiture" then
                         if perso.inventaire[objet.nom] == false then
@@ -186,12 +189,16 @@ function Interieur:init( destination, jeu, map, perso )
                             perso:setMoney( -objet.prix )
                             retroaction.text = "Vous achetez un(e) "..objet.nom.." pour "..objet.prix.." $."
                             infos:updateBoutons()
-                        else
-                            retroaction.text = "Vous possedez deja ceci."
                         end
                     else 
                         retroaction.text = "Vous devez posseder un loft pour acheter une voiture."
                     end
+                elseif objet.nom == "loft" then
+                    retour()
+                    perso.inventaire[objet.nom] = true
+                    perso:setMoney( -objet.prix )
+                    retroaction.text = "Vous achetez un(e) "..objet.nom.." pour "..objet.prix.." $."
+                    jeu:entrerBatiment(destination)
                 else
                     if objets[i].max > perso.inventaire[objets[i].slug].nb then
                         retroaction.text = "Vous achetez un(e) "..objet.nom.." pour "..objet.prix.." $."
@@ -202,10 +209,6 @@ function Interieur:init( destination, jeu, map, perso )
                         print("max atteint")
                         retroaction.text = "Vous ne pouvez posseder plus de "..objets[i].max.." "..objets[i].nom.."s."
                     end
-                end
-                if objet.nom == "loft" then
-                    retour()
-                    jeu:entrerBatiment(destination)
                 end
             else
                 retroaction.text = "Vous n'avez pas assez d'argent."
