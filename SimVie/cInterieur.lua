@@ -182,7 +182,7 @@ function Interieur:init( destination, jeu, map, perso )
             if perso.inventaire[objet.nom] == true then
                 retroaction.text = "Vous possedez deja ceci."
             elseif objet.prix <= perso.money then
-                if objet.energie == nil then
+                if objet.energie == nil and objet.nom ~= "loft" then
                     if objets[i].nom == "voiture" and perso.inventaire["loft"] or objets[i].nom ~= "voiture" then
                         if perso.inventaire[objet.nom] == false then
                             perso.inventaire[objet.nom] = true

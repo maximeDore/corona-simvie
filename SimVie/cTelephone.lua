@@ -535,9 +535,13 @@ function Telephone:init( parent, perso, jeu )
         -- État des boutons de déplacement
         if perso.inventaire["scooter"] then
             btScooter:enable()
+        else
+            btScooter:disable()
         end
         if perso.inventaire["voiture"] then
             btVoiture:enable()
+        else
+            btVoiture:disable()
         end
     end
 

@@ -17,6 +17,7 @@ function Instructions:init()
     local posUp = display.contentHeight-display.screenOriginY-250
     local posDown = display.contentHeight-display.screenOriginY+210
     local bgContacts
+    local btContacts
     local fade
     local bg1
     local bg2
@@ -79,6 +80,7 @@ function Instructions:init()
         -- Monter/descendre le téléphone
         local function toggleTelephone()
             if telephone.y >= display.contentHeight-display.screenOriginY+125 and cpt >= #textes-4 then
+                btContacts:enable()
                 isPhoneUp = true
                 transition.to( telephone, { time = 500, y = posUp, transition=easing.outQuart } )
                 if cpt == #textes-4 then
@@ -173,7 +175,7 @@ function Instructions:init()
         --  btSave   btMenu
         --  btMarche btScooter   btVoiture
         local btStats = cBouton:init( "btStats.png", nil, -bgContacts.width/3.25, -bgContacts.height*.35, dummy )
-        local btContacts = cBouton:init( "btContacts.png", nil, 0, -bgContacts.height*.35, afficherContacts )
+        btContacts = cBouton:init( "btContacts.png", nil, 0, -bgContacts.height*.35, afficherContacts )
         local btAlertes = cBouton:init( "btAlertes.png", nil, bgContacts.width/3.25, -bgContacts.height*.35, dummy )
         local btInventaire = cBouton:init( "btGps.png", nil, -bgContacts.width/3.25, -bgContacts.height*.15, dummy )
         local btBanque = cBouton:init( "btBanque.png", nil, 0, -bgContacts.height*.15, dummy )
@@ -200,6 +202,18 @@ function Instructions:init()
         telephone:insert(btScooter)
         telephone:insert(btVoiture)
         telephone:insert(bgContacts)
+
+        btStats:disable()
+        btContacts:disable()
+        btAlertes:disable()
+        btInventaire:disable()
+        btBanque:disable()
+        btMute:disable()
+        btSave:disable()
+        btMenu:disable()
+        btMarche:disable()
+        btScooter:disable()
+        btVoiture:disable()
 
         self:insert(btSuivant)
         self:insert(narration)

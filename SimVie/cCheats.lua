@@ -17,13 +17,26 @@ function Cheats:init( perso )
     local cheats = {}
 
     function cheats:vehicles()
-        perso.inventaire["voiture"] = true
-        perso.inventaire["scooter"] = true
+        if perso.inventaire["voiture"] and perso.inventaire["scooter"] then
+            perso.inventaire["voiture"] = false
+            perso.inventaire["scooter"] = false
+        else
+            perso.inventaire["voiture"] = true
+            perso.inventaire["scooter"] = true
+        end
         telephone:updateBoutons()
     end
     
     function cheats:money()
-        perso:setMoney(10000)
+        perso:setMoney(1000)
+    end
+
+    function cheats:loft()
+        if perso.inventaire["loft"] then
+            perso.inventaire["loft"] = false
+        else
+            perso.inventaire["loft"] = true
+        end
     end
 
     return cheats
