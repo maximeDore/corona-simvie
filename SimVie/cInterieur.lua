@@ -14,14 +14,14 @@ function Interieur:init( destination, jeu, map, perso )
     local cBouton = require("cBouton")
     local retroaction
     local inputBanque
-    -- Tableau contenant les objets en vente et leur prix (index : 1-3 = dépanneur, 4-6 = magasin)
+    -- Tableau contenant les objets en vente et leur prix (index : 1-3 = dépanneur, 4+ = magasin)
     local objets = {
         -- Objets d'énergie (dépanneur)
         { nom = "Cafe", slug = "cafe", m = true, prix = 6, energie = 5, max = 5 },
         { nom = "Barre d'NRG", slug = "barreNrg", m = false, prix = 10, energie = 10, max = 5 },
         { nom = "Boisson NRG", slug = "boissonNrg", m = false, prix = 20, energie = 25, max = 2 },
         -- Objets de qualité de vie
-        { nom = "Tapis roulant", slug = "tapisRoulant", prix = 750, m = true },       --750
+        { nom = "Tapis roulant", slug = "tapisRoulant", m = true, prix = 750 },       --750
         { nom = "scooter", prix = 500, m = true },                                    --500
         { nom = "voiture", prix = 1500, m = false },                                  --1500
         { nom = "loft", prix = 3500, m = true }                                       --3500
@@ -39,6 +39,8 @@ function Interieur:init( destination, jeu, map, perso )
         faculte =       { titre = "Faculte des sciences", bg = "bgFaculte.png", bt1 = "Travailler", bt1desc = "$$$", bt2 = "Demander", bt2desc = "une promotion"}
     }
     if perso.carriere == "sciences" then
+        objets[4].nom = "Bibliotheque"
+        objets[4].m = false
         tSrc.magasin.bt1 = "Bibliotheque"
         tSrc.loft.bt3 = "Etudier"
         tSrc.loft.bt3desc = "+1 Intelligence"
@@ -380,7 +382,7 @@ function Interieur:init( destination, jeu, map, perso )
         local btRetour = cBouton:init("Retour",nil,display.contentCenterX*1.4,display.contentCenterY*1.5,retour)
         -- Si le perso entre dans un bâtiment qui n'est pas le loft ou qu'il a acheté le loft
         if destination ~= "loft" or perso.inventaire["loft"] == true then
-            if (destination == "appartement" or destination == "loft") and (perso.inventaire["Tapis roulant"] ~= true or perso.inventaire["tapisRoulant"] ~= true) then
+            if (destination == "appartement" or destination == "loft") and (perso.inventaire["Tapis roulant"] ~= true and perso.inventaire["tapisRoulant"] ~= true) then
                 src.bt3 = nil
             end
             if destination == "banque" and evenement ~= nil and evenement[1].destination == "banque" then
