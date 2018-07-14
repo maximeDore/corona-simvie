@@ -17,14 +17,14 @@ function Interieur:init( destination, jeu, map, perso )
     -- Tableau contenant les objets en vente et leur prix (index : 1-3 = dépanneur, 4-6 = magasin)
     local objets = {
         -- Objets d'énergie (dépanneur)
-        { nom = "Cafe", slug = "cafe", prix = 6, energie = 5, max = 5 },
-        { nom = "Barre d'NRG", slug = "barreNrg", prix = 10, energie = 10, max = 5 },
-        { nom = "Boisson NRG", slug = "boissonNrg", prix = 20, energie = 25, max = 2 },
+        { nom = "Cafe", slug = "cafe", m = true, prix = 6, energie = 5, max = 5 },
+        { nom = "Barre d'NRG", slug = "barreNrg", m = false, prix = 10, energie = 10, max = 5 },
+        { nom = "Boisson NRG", slug = "boissonNrg", m = false, prix = 20, energie = 25, max = 2 },
         -- Objets de qualité de vie
-        { nom = "Tapis roulant", prix = 750 },     --750
-        { nom = "scooter", prix = 500 },           --500
-        { nom = "voiture", prix = 1500 },          --1500
-        { nom = "loft", prix = 3500 }              --3500
+        { nom = "Tapis roulant", slug = "tapisRoulant", prix = 750, m = true },       --750
+        { nom = "scooter", prix = 500, m = true },                                    --500
+        { nom = "voiture", prix = 1500, m = false },                                  --1500
+        { nom = "loft", prix = 3500, m = true }                                       --3500
     }
     -- Tableau contenant des tableaux, contenant le nom de l'endroit et le texte affiché dans les boutons
     local tSrc = { 
@@ -178,36 +178,50 @@ function Interieur:init( destination, jeu, map, perso )
         --acheter un objet selon l'index de l'objet
         local function acheter( i )
             local objet = objets[i]
+            local nom = objet.nom
+            if perso.inventaire[nom] == nil and objet.slug ~= nil then
+                nom = objet.slug
+                if perso.inventaire[nom] == nil then
+                    perso.inventaire[nom] = false
+                end
+            elseif perso.inventaire[nom] == nil then
+                perso.inventaire[objet.nom] = false
+            elseif objet.slug ~= nil then
+                perso.inventaire[objet.slug] = false
+            end
+            print(perso.inventaire[nom])
 
-            if perso.inventaire[objet.nom] == true then
+            if perso.inventaire[nom] == true then
                 retroaction.text = "Vous possedez deja ceci."
+            elseif perso.inventaire[nom] == nil then
+                retroaction.text = "Erreur 204 : Pas de donnees a retourner"
             elseif objet.prix <= perso.money then
-                if objet.energie == nil and objet.nom ~= "loft" then
-                    if objets[i].nom == "voiture" and perso.inventaire["loft"] or objets[i].nom ~= "voiture" then
-                        if perso.inventaire[objet.nom] == false then
-                            perso.inventaire[objet.nom] = true
+                if objet.energie == nil and nom ~= "loft" then
+                    if nom == "voiture" and perso.inventaire["loft"] or nom ~= "voiture" then
+                        if perso.inventaire[nom] == false then
+                            perso.inventaire[nom] = true
                             perso:setMoney( -objet.prix )
-                            retroaction.text = "Vous achetez un(e) "..objet.nom.." pour "..objet.prix.." $."
+                            retroaction.text = "Vous achetez un"..(objet.m and " " or "e ")..objet.nom.." pour "..objet.prix.." $."
                             infos:updateBoutons()
                         end
                     else 
                         retroaction.text = "Vous devez posseder un loft pour acheter une voiture."
                     end
-                elseif objet.nom == "loft" then
+                elseif nom == "loft" then
                     retour()
-                    perso.inventaire[objet.nom] = true
+                    perso.inventaire[nom] = true
                     perso:setMoney( -objet.prix )
                     retroaction.text = "Vous achetez un(e) "..objet.nom.." pour "..objet.prix.." $."
                     jeu:entrerBatiment(destination)
                 else
-                    if objets[i].max > perso.inventaire[objets[i].slug].nb then
-                        retroaction.text = "Vous achetez un(e) "..objet.nom.." pour "..objet.prix.." $."
+                    if objet.max > perso.inventaire[objet.slug].nb then
+                        retroaction.text = "Vous achetez un"..(objet.m and " " or "e ")..objet.nom.." pour "..objet.prix.." $."
                         perso:setMoney( -objet.prix )
-                        perso.inventaire[objets[i].slug].nb = perso.inventaire[objets[i].slug].nb + 1
+                        perso.inventaire[objet.slug].nb = perso.inventaire[objet.slug].nb + 1
                         infos:updateInventaire()
                     else 
                         print("max atteint")
-                        retroaction.text = "Vous ne pouvez posseder plus de "..objets[i].max.." "..objets[i].nom.."s."
+                        retroaction.text = "Vous ne pouvez posseder plus de "..objet.max.." "..objet.nom.."s."
                     end
                 end
             else
@@ -366,7 +380,7 @@ function Interieur:init( destination, jeu, map, perso )
         local btRetour = cBouton:init("Retour",nil,display.contentCenterX*1.4,display.contentCenterY*1.5,retour)
         -- Si le perso entre dans un bâtiment qui n'est pas le loft ou qu'il a acheté le loft
         if destination ~= "loft" or perso.inventaire["loft"] == true then
-            if (destination == "appartement" or destination == "loft") and perso.inventaire["Tapis roulant"] ~= true then
+            if (destination == "appartement" or destination == "loft") and (perso.inventaire["Tapis roulant"] ~= true or perso.inventaire["tapisRoulant"] ~= true) then
                 src.bt3 = nil
             end
             if destination == "banque" and evenement ~= nil and evenement[1].destination == "banque" then

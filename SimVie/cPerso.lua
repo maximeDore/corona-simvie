@@ -80,7 +80,8 @@ function Perso:init(xorig, yorig, map, joystick, jeu)
             boissonNrg = { nb=0, nrg=25, max=2 }, 
             voiture = false,
             scooter = false,
-            tapisRoulant = false
+            tapisRoulant = false,
+            loft = false
         }
         -- Données sauvegardées
         if _G.data == nil then
