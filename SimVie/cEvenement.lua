@@ -54,6 +54,7 @@ function Evenement:init( chance )
             { auteur="Jean-Sebastien Richer", texte="Internet Explorer est excellent... pour telecharger Chrome."},
             { auteur="Jean-Sebastien Richer", texte="Je serais d'accord avec toi si tu avais raison."},
             { auteur="Jean-Sebastien Richer", texte="On est tous a 4 minutes de la mort, quand on respire ca réinitialise le compteur."},
+            { auteur="Jean-Sebastien Richer", texte="La vie serait tellement differente si les pets etaient aussi contagieux que les eternuements."},
             { auteur="Jean Plouffe", texte="Si les heures sont dans les doubles chiffres, c'est correct de prendre une biere."},
             -- Citations autres
             -- { auteur="Anonyme", texte="Le suicide n'est pas une option." },

@@ -66,8 +66,11 @@ function Instructions:init()
             narration2.text = textes[cpt]
             if cpt == #textes-4 then
                 btSuivant:disable()
+                transition.to( telephone, { time = 500, y = posDown - 50, transition=easing.outQuart } )
+            -- elseif cpt == #textes-3 then
             elseif cpt == #textes-2 then
                 btSuivant:disable()
+                btContacts:enable()
             elseif cpt == #textes-1 then
                 bgContacts.isVisible = true
             elseif cpt == #textes then
@@ -80,7 +83,6 @@ function Instructions:init()
         -- Monter/descendre le téléphone
         local function toggleTelephone()
             if telephone.y >= display.contentHeight-display.screenOriginY+125 and cpt >= #textes-4 then
-                btContacts:enable()
                 isPhoneUp = true
                 transition.to( telephone, { time = 500, y = posUp, transition=easing.outQuart } )
                 if cpt == #textes-4 then
@@ -113,7 +115,7 @@ function Instructions:init()
         -- Fonds d'écran parallaxe
         bg1 = display.newImage( self, "bg2.jpg", display.contentCenterX, display.contentCenterY)
         bg2 = display.newImage( self, "bg2.jpg", display.contentCenterX+bg1.width, display.contentCenterY )
-        bg2.x = bg2.x - 70
+        -- bg2.x = bg2.x - 70
         bg2.xScale = -1
         
         -- Affichage de la barre du haut

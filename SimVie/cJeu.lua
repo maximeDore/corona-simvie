@@ -23,7 +23,7 @@ function Jeu:init()
     local bgMusic = audio.loadStream( "toune_loundge.mp3" )
 
     -- Points d'apparition du personnage
-    local spawns = { 
+    local spawns = {
         appartement = { x = 946, y= 1150 },
         loft        = { x = -1275, y = -400 }
     }
