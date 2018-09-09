@@ -104,8 +104,9 @@ function Jeu:init()
         end
         recursiveKill(self)
         self:removeSelf()
-        infos:removeSelf()
+        _G.infos:removeSelf()
         _G.infos = nil
+        _G.cheats = nil
         cMenu:init()
     end
 

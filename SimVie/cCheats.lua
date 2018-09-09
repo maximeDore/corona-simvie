@@ -8,14 +8,15 @@
 local Cheats = {}
 local delay = 2500
 local tapCount = 10
-local onOff = false
 local counter
 local telephone
 
 function Cheats:init( perso )
     self.numTaps = 0
+    self.onOff = false
     local cheats = {}
 
+    -- Ajoute/retire les véhicules de l'inventaire
     function cheats:vehicles()
         if perso.inventaire["voiture"] and perso.inventaire["scooter"] then
             perso.inventaire["voiture"] = false
@@ -27,10 +28,12 @@ function Cheats:init( perso )
         telephone:updateBoutons()
     end
     
+    -- Donne 1000$
     function cheats:money()
         perso:setMoney(1000)
     end
 
+    -- Ajoute/retire le loft de l'inventaire
     function cheats:loft()
         if perso.inventaire["loft"] then
             perso.inventaire["loft"] = false
@@ -40,17 +43,16 @@ function Cheats:init( perso )
     end
 
     return cheats
-
 end
 
 function Cheats:counter()
 
-    if onOff == false then
+    if self.onOff == false then
         if counter == nil then
             counter = timer.performWithDelay(delay, function(e) self:unlock(e) end)
         end
         self.numTaps = self.numTaps + 1
-        print(self.numTaps, onOff)
+        print(self.numTaps, self.onOff)
     end
 
 end
@@ -61,7 +63,7 @@ function Cheats:unlock(e)
         telephone = _G.infos.getTelephone()
         telephone.unlockCheats()
 
-        onOff = true
+        self.onOff = true
         print("cheats unlocked")
     else
         print("clear")

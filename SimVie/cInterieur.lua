@@ -73,10 +73,59 @@ function Interieur:init( destination, jeu, map, perso )
             jeu:sortirBatiment()
             self:kill()
         end
+                retroaction.text = "Il est trop tot pour s'entrainer."
+            elseif infos:getHeure() < 22 or destination=="appartement" or destination=="loft" then
+                if pt==1 then
+                    if perso:setEnergie( -10 ) then
+                        perso.forNum = perso.forNum + pt
+                        retroaction.text = "Vous devenez plus fort : +"..pt.." Force"
+                        infos:updateHeure(1)
+                    else 
+                        retroaction.text = "Vous n'avez pas assez d'energie."
+                    end
+                elseif pt==2 and perso.money-20>=0 then
+                    if perso:setEnergie( -10 ) then
+                        perso:setMoney(-20)
+                        perso.forNum = perso.forNum + pt
+                        retroaction.text = "Vous devenez plus fort : +"..pt.." Force"
+                        infos:updateHeure(1)
+                    else 
+                        retroaction.text = "Vous n'avez pas assez d'energie."
+                    end
+                elseif pt==2 then
+                    retroaction.text = "Vous n'avez pas assez d'argent pour vous entrainer."
+                elseif pt==3 then
+                    if perso:setEnergie( -10 ) then
+                        infos:updateHeure(1)
+                        local rand = math.random(25)
+                        print(rand, perso.chaNum)
+                        if rand < perso.chaNum then
+                            random = math.random(5)
+                            perso.forNum = perso.forNum + random
+                            retroaction.text = "Vous devenez plus fort : +"..random.." Force"
+                            print(perso.forNum)
+                        else
+                            random = math.random(3)
+                            perso.forNum = perso.forNum - random
+                            if perso.forNum < 0 then
+                                perso.forNum = 0
+                            end
+                            retroaction.text = "Vous perdez votre masculinite : -"..random.." Force"
+                        end
+                    else 
+                        retroaction.text = "Vous n'avez pas assez d'energie."
+                    end
+                end
+                print(perso.forNum)
+                infos:updateStats( perso )
+            else
+                retroaction.text = "Il est trop tard pour s'entrainer."
+            end
+        end
         local function ajouterFor( pt )
             if infos:getHeure() < 6 and destination ~= "appartement" and destination ~= "loft" then
                 retroaction.text = "Il est trop tot pour s'entrainer."
-            elseif infos:getHeure() < 22 or perso.inventaire["Tapis roulant"] == true and (destination=="appartement" or destination=="loft") then
+            elseif infos:getHeure() < 22 or destination=="appartement" or destination=="loft" then
                 if pt==1 then
                     if perso:setEnergie( -10 ) then
                         perso.forNum = perso.forNum + pt
@@ -126,7 +175,7 @@ function Interieur:init( destination, jeu, map, perso )
         end
 
         local function ajouterInt( pt )
-            if infos:getHeure() < 6 and (destination~="appartement" or destination~="loft") then
+            if infos:getHeure() < 6 and destination ~= "appartement" and destination ~= "loft" then
                 retroaction.text = "Il est trop tot pour etudier."
             elseif infos:getHeure() < 22 or destination=="appartement" or destination=="loft" then
                 if pt==1 then

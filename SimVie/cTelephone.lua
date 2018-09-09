@@ -247,7 +247,7 @@ function Telephone:init( parent, perso, jeu )
         screenHome:insert(btVoiture)
         screenHome:insert(btCheats)
 
-        -- Écran Statistiques   --------------------------------------------------------------------------------------------------------
+---------- Écran Statistiques   --------------------------------------------------------------------------------------------------------
         
         -- Affichage des points d'aptitudes
         local optionsAptitudesNum = {
@@ -659,6 +659,8 @@ function Telephone:init( parent, perso, jeu )
 
     end
 
+----------------------------------------------------------------------------------------------
+
     -- Gère la fonction du bouton Back d'Android ou Windows Phone
     function telephone:menu()
         -- Si le téléphone est levé et qu'il est sur une application
@@ -683,10 +685,12 @@ function Telephone:init( parent, perso, jeu )
         end
     end
 
+    -- Affiche le bouton vers l'écran de cheats
     function telephone:unlockCheats()
         btCheats.isVisible = true
     end
     
+    -- Fonction appelée à la suppression du téléphone
     function telephone:kill()
         btHome:removeEventListener( "tap", homeListener )
     end
