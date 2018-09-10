@@ -24,7 +24,7 @@ function Jeu:init()
 
     -- Points d'apparition du personnage
     local spawns = {
-        appartement = { x = 946, y= 1150 },
+        appartement = { x = 946, y= 1100 },
         loft        = { x = -1275, y = -400 }
     }
 

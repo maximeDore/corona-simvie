@@ -116,6 +116,7 @@ function Telephone:init( parent, perso, jeu )
         -- Sauvegarde la partie
         local function save()
             print("Partie sauvegardée")
+            infos:feedback( "Partie sauvegardee avec succes" )
             donnees:prepForSave( perso, _G.infos )
             afficherHome()
         end
@@ -461,17 +462,23 @@ function Telephone:init( parent, perso, jeu )
         local function vehicleCheat()
             _G.cheats.vehicles()
         end
+        local function gmCheat()
+            _G.cheats.gmCheat()
+        end
+        local function loftCheat()
+            _G.cheats.loftCheat()
+        end
 
         -- Boutons de l'écran d'accueil
         -- Disposition :
-        -- btCash           btVehicules     --
+        -- btCash           btVehicules     btGm
         -- --               --              --
         -- --               --              --
         -- --               --              --
         local btCash = cBouton:init( "btBanque.png", nil, -bgStats.width/3.25, -bgStats.height*.35, moneyCheat )
         local btVehicules = cBouton:init( "btAuto.png", nil, 0, -bgStats.height*.35, vehicleCheat )
-        -- local btAlertes = cBouton:init( "btAlertes.png", nil, bgStats.width/3.25, -bgStats.height*.35, afficherAlertes )
-        -- local btInventaire = cBouton:init( "btInventaire.png", nil, -bgStats.width/3.25, -bgStats.height*.15, afficherInventaire )
+        local btGm = cBouton:init( "btGodmode.png", nil, bgStats.width/3.25, -bgStats.height*.35, gmCheat )
+        local btLoft = cBouton:init( "btMenu.png", nil, -bgStats.width/3.25, -bgStats.height*.15, loftCheat )
         -- local btBanque = cBouton:init( "btBanque.png", nil, 0, -bgStats.height*.15, afficherBanque )
         -- local btMute = cBouton:init( "btMute.png", nil, bgStats.width/3.25, -bgStats.height*.15, mute )
         -- local btSave = cBouton:init( "btSave.png", nil, -bgStats.width/3.25, bgStats.height*.05, afficherSave )
@@ -480,8 +487,8 @@ function Telephone:init( parent, perso, jeu )
         
         screenCheats:insert(btCash)
         screenCheats:insert(btVehicules)
-        -- screenCheats:insert(btAlertes)
-        -- screenCheats:insert(btInventaire)
+        screenCheats:insert(btGm)
+        screenCheats:insert(btLoft)
         -- screenCheats:insert(btBanque)
         -- screenCheats:insert(btMute)
         -- screenCheats:insert(btSave)
@@ -688,6 +695,7 @@ function Telephone:init( parent, perso, jeu )
     -- Affiche le bouton vers l'écran de cheats
     function telephone:unlockCheats()
         btCheats.isVisible = true
+        infos.feedback( "Cheats debloques" )
     end
     
     -- Fonction appelée à la suppression du téléphone

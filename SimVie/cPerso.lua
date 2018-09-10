@@ -290,7 +290,7 @@ function Perso:init(xorig, yorig, map, joystick, jeu)
         if e.phase=="began" then
             if e.other.type=="porte" then
                 jeu:entrerBatiment(e.other.destination)
-            elseif e.other.type=="auto" then
+            elseif e.other.type=="auto" and not _G.cheats.gm then
                 audio.play(sfxCrash, {channel=20})
                 jeu:kill()
             end

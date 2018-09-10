@@ -73,6 +73,8 @@ function Interieur:init( destination, jeu, map, perso )
             jeu:sortirBatiment()
             self:kill()
         end
+        -- local function ajouterAttr( attr, tRetro, verbe )
+            if infos:getHeure() < 6 and destination ~= "appartement" and destination ~= "loft" then
                 retroaction.text = "Il est trop tot pour s'entrainer."
             elseif infos:getHeure() < 22 or destination=="appartement" or destination=="loft" then
                 if pt==1 then
@@ -121,7 +123,7 @@ function Interieur:init( destination, jeu, map, perso )
             else
                 retroaction.text = "Il est trop tard pour s'entrainer."
             end
-        end
+        -- end
         local function ajouterFor( pt )
             if infos:getHeure() < 6 and destination ~= "appartement" and destination ~= "loft" then
                 retroaction.text = "Il est trop tot pour s'entrainer."

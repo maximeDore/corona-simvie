@@ -27,6 +27,9 @@ function Infos:init( heureDepart, indexDepart, map, perso, jeu )
     local telephone
     local interet
     local notification
+    local feedback
+    local feedbackTxt
+    local feedbackTimer
     local evenementDuJour = {}
 
     local tEmplois = {
@@ -78,34 +81,53 @@ function Infos:init( heureDepart, indexDepart, map, perso, jeu )
         barre.fill = degrade
 
         -- Affichage du jour
-        local optionsJourDisplay = {text = hebdo[jourIndex].." - jour "..cptJours, width = 500, x = display.screenOriginX+270, y = 25, font = "8-Bit Madness.ttf", fontSize = 50, align = "left"}
+        local optionsJourDisplay = {parent = self, text = hebdo[jourIndex].." - jour "..cptJours, width = 500, x = display.screenOriginX+270, y = 25, font = "8-Bit Madness.ttf", fontSize = 50, align = "left"}
         jourDisplay = display.newText(optionsJourDisplay)
 
         -- Affichage de l'heure
-        local optionsheureDisplay = {text = "", width = 256, x = display.contentCenterX, y = 25, font = "8-Bit Madness.ttf", fontSize = 50, align = "center"}
+        local optionsheureDisplay = {parent = self, text = "", width = 256, x = display.contentCenterX, y = 25, font = "8-Bit Madness.ttf", fontSize = 50, align = "center"}
         heureDisplay = display.newText(optionsheureDisplay)
 
         -- Affichage de l'argent
-        local optionsMoneyDisplay = {text = perso.money .. " $", width = 256, x = rightMarg-200, y = 25, font = "8-Bit Madness.ttf", fontSize = 50, align = "right"}
+        local optionsMoneyDisplay = {parent = self, text = perso.money .. " $", width = 256, x = rightMarg-200, y = 25, font = "8-Bit Madness.ttf", fontSize = 50, align = "right"}
         moneyDisplay = display.newText(optionsMoneyDisplay)
 
         -- Affichage du voyant de notification
-        notification = display.newImageRect( "bell.png", 30, 30 )
+        notification = display.newImageRect( self, "bell.png", 30, 30 )
         notification.x = rightMarg - notification.width/2 - 25
         notification.y = 25
 
-        self:insert(barre)
-        self:insert(jourDisplay)
-        self:insert(heureDisplay)
-        self:insert(moneyDisplay)
-        self:insert(notification)
+        feedback = display.newImageRect( self, "ui_box.png", display.contentCenterX, 200 )
+        feedback.x = display.contentCenterX
+        feedback.y = 175
+        feedback.alpha = 0
+        local optionsFeedbackTxt = {parent = self, text = "Partie sauvegardee avec succes", width = feedback.width*0.8, height = feedback.height*0.8, x = feedback.x, y = feedback.y, font = "8-Bit Madness.ttf", fontSize = 50, align = "center"}
+        feedbackTxt = display.newText( optionsFeedbackTxt )
+        feedbackTxt:setTextColor(1,0,0)
+        feedbackTxt.alpha = 0
 
         self:updateAlerte()
         self:updateHeure()
         telephone:updateAlertes( evenementDuJour )
     end
 
-    ------ GETTERS  ------------------------------------------------------------------------------
+    function infos:feedback( txt )
+        if feedbackTimer then
+            timer.cancel( feedbackTimer )
+            feedbackTimer = nil
+        end
+        transition.fadeIn( feedback )
+        transition.fadeIn( feedbackTxt )
+        print(txt)
+        feedbackTxt.text = txt
+
+        feedbackTimer = timer.performWithDelay( 1500, function()
+            transition.fadeOut( feedback )
+            transition.fadeOut( feedbackTxt )
+        end)
+    end
+
+------ GETTERS  ------------------------------------------------------------------------------
 
     function infos:getTelephone()
         return telephone
@@ -143,7 +165,7 @@ function Infos:init( heureDepart, indexDepart, map, perso, jeu )
         return emploiIndex
     end
     
-    ------ UPDATES  ------------------------------------------------------------------------------
+------ UPDATES  ------------------------------------------------------------------------------
 
     -- Met l'heure à jour en ajoutant le nombre en paramètre à l'heure actuelle
     -- Gère l'affichage du filtre nocturne selon l'heure du jour
@@ -192,15 +214,14 @@ function Infos:init( heureDepart, indexDepart, map, perso, jeu )
 
     -- Mise à jour quotidienne des contacts
     function infos:updateContacts()
-        local rand
         local rand1
         local rand2
         for i=1,#contacts do
             if perso.carriere == "sciences" then
-                rand2 = math.random( 4, 10 )
+                rand2 = math.random( 4, 8 )
                 rand1 = math.random( 0, 1  )
             else
-                rand1 = math.random( 4, 10 )
+                rand1 = math.random( 4, 8 )
                 rand2 = math.random( 0, 1  )
             end
             print(i.." "..rand1, rand2 )
@@ -246,12 +267,15 @@ function Infos:init( heureDepart, indexDepart, map, perso, jeu )
     function infos:menu()
         telephone:menu()
     end
+
+----------------------------------------------------------------------------------------------
     
     -- Augmente le niveau de carrière du personnage
     function infos:promotion()
         if tEmplois[perso.carriere][emploiIndex] ~= nil and tEmplois[perso.carriere][emploiIndex+1] ~= nil then 
             emploiIndex = emploiIndex + 1
             emploi = tEmplois[perso.carriere][emploiIndex]
+            -- infos:feedback( "Partie sauvegardee avec succes" )
         end
         self.updateStats()
     end

@@ -18,6 +18,9 @@ function Instructions:init()
     local posDown = display.contentHeight-display.screenOriginY+210
     local bgContacts
     local btContacts
+    local bgAlertes
+    local btAlertes
+    local notification
     local fade
     local bg1
     local bg2
@@ -28,7 +31,7 @@ function Instructions:init()
     local isPhoneUp = false
     
     -- Fondu noir avant la destruction de la page-écran et l'instanciation du jeu
-    local function listener()
+    local function start()
         local function listener2()
             instructions:kill()
             instructions:jouer()
@@ -45,47 +48,64 @@ function Instructions:init()
         
         -- Tableau des textes narratifs
         local textes = {
+            --1
             "Vous etes jeune, sans experience et vous souhaitez vous eloigner de chez vous.",
+            --2
             "C'est pourquoi vous voila en route vers Saint-Jerome. C'est le temps de vous faire une nouvelle vie." ,
+            --3
             "Vous qui etes "..( carriere == "sports" and "athletique" or "intelligent" )..", revez d'etre riche et celebre.",
+            --4
             "Vous vendez votre voiture, trouvez un appartement et "..( carriere == "sports" and "une place dans une petite equipe sportive professionnelle." or "un emploi minable dans une faculte de sciences." ),
+            --5
             "Vous devrez maintenant payer votre loyer, gerer votre niveau d'energie et placer votre argent en banque pour prosperer.",
-            "Votre telephone est votre meilleur outil. Touchez le haut du telephone pour le sortir ou le cacher.",
+            --6
+            "Votre telephone est votre meilleur outil. Touchez le haut du telephone pour le montrer ou le cacher.",
+            --7
             "C'est grace a celui-ci que vous pourrez utiliser un vehicule ou sauvegarder votre progression.",
+            --8
             "Il vous permettra aussi de voir l'avancement de certains collegues de travail. Touchez le bouton CONTACTS.",
-            "Tentez d'avoir une meilleure vie que vos autres contacts. Cet application affichera leurs statistiques de vie.",
+            --9
+            "Tentez d'avoir une meilleure vie que vos autres contacts. Cette application affichera leurs statistiques de vie.",
+            --10
+            "Parfois, vous recevrez des messages textes, certains vous avertirons des dernieres nouvelles en ville.",
+            --11
             "Vous devrez apprendre le reste par vous-meme, explorez votre nouvel environnement.\nBonne vie!"
         }
         
         -- Afficher le texte suivant/activer les animations/démarrer le jeu
         local function suivant()
-            if cpt ~= #textes-4 or isPhoneUp == true then
+            print(cpt)
+            if cpt ~= 6 or isPhoneUp == true then
                 cpt = cpt +1
             end
             narration.text = textes[cpt]
             narration2.text = textes[cpt]
-            if cpt == #textes-4 then
+            if cpt == 6 then
                 btSuivant:disable()
                 transition.to( telephone, { time = 500, y = posDown - 50, transition=easing.outQuart } )
-            -- elseif cpt == #textes-3 then
-            elseif cpt == #textes-2 then
+            elseif cpt == 8 then
                 btSuivant:disable()
                 btContacts:enable()
-            elseif cpt == #textes-1 then
+            elseif cpt == 9 then
                 bgContacts.isVisible = true
+            elseif cpt == 10 then
+                bgContacts.isVisible = false
+                btSuivant:disable()
+                btAlertes:enable()
+                notification.isVisible = true
             elseif cpt == #textes then
                 transition.to( telephone, { time = 500, y = posDown, transition=easing.outQuart } )
             elseif cpt > #textes then
-                listener()
+                start()
             end
         end
 
         -- Monter/descendre le téléphone
         local function toggleTelephone()
-            if telephone.y >= display.contentHeight-display.screenOriginY+125 and cpt >= #textes-4 then
+            if telephone.y >= display.contentHeight-display.screenOriginY+125 and cpt >= 6 then
                 isPhoneUp = true
                 transition.to( telephone, { time = 500, y = posUp, transition=easing.outQuart } )
-                if cpt == #textes-4 then
+                if cpt == 6 then
                     suivant()
                     btSuivant:enable()
                 end
@@ -97,10 +117,15 @@ function Instructions:init()
 
         -- Affiche l'écran Contacts du téléphone
         local function afficherContacts()
-            if cpt == #textes-2 then
-                suivant()
-                btSuivant:enable()
-            end
+            suivant()
+            btContacts:disable()
+            btSuivant:enable()
+        end
+        -- Affiche l'écran Alertes du téléphone
+        local function afficherAlertes()
+            suivant()
+            btAlertes:disable()
+            btSuivant:enable()
         end
         
         -- Fondu d'entrée
@@ -158,6 +183,12 @@ function Instructions:init()
         narration2.y = narration.y + 3
         narration:setFillColor(1,0,0)
 
+        notification = display.newImageRect( "bell.png", 30, 30 )
+        notification.x = display.contentWidth - display.screenOriginX - notification.width/2 - 25
+        notification.y = 25
+        notification.isVisible = false
+
+
     ------ Téléphone    ------------------------------------------------------------------------------------------------------------
 
         -- Fonction appelée par les boutons inactifs, pour éviter un plantage
@@ -167,6 +198,8 @@ function Instructions:init()
         local phone = display.newImage( telephone, "telephone.png" )
         bgContacts = display.newImage( "screenContacts.png", 0, -10.5 )
         bgContacts.isVisible = false
+        bgAlertes = display.newImage( "screenAlertes.png", 0, -10.5 )
+        bgAlertes.isVisible = false
         tapZone = cBouton:init( nil, nil, 0, -phone.height/2.25, toggleTelephone, nil, phone.width, phone.height/6 )
         telephone:insert(tapZone)
 
@@ -178,7 +211,7 @@ function Instructions:init()
         --  btMarche btScooter   btVoiture
         local btStats = cBouton:init( "btStats.png", nil, -bgContacts.width/3.25, -bgContacts.height*.35, dummy )
         btContacts = cBouton:init( "btContacts.png", nil, 0, -bgContacts.height*.35, afficherContacts )
-        local btAlertes = cBouton:init( "btAlertes.png", nil, bgContacts.width/3.25, -bgContacts.height*.35, dummy )
+        btAlertes = cBouton:init( "btAlertes.png", nil, bgContacts.width/3.25, -bgContacts.height*.35, afficherAlertes )
         local btInventaire = cBouton:init( "btGps.png", nil, -bgContacts.width/3.25, -bgContacts.height*.15, dummy )
         local btBanque = cBouton:init( "btBanque.png", nil, 0, -bgContacts.height*.15, dummy )
         local btMute = cBouton:init( "btMute.png", nil, bgContacts.width/3.25, -bgContacts.height*.15, dummy )
@@ -222,6 +255,7 @@ function Instructions:init()
         self:insert(narration2)
         self:insert(telephone)
         self:insert(titreDisplay)
+        self:insert(notification)
     end
 
     -- Démarrer le jeu
