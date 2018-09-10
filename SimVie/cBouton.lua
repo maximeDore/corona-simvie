@@ -21,7 +21,7 @@ function Bouton:init ( texte1, texte2, x, y, callbackFunc, callbackParam, width,
     local bouton = display.newGroup()
     local titre
     local sousTitre
-    local sfxToc = audio.loadSound( "toc.wav" )
+    local sfxToc = audio.loadSound( "ressources/sfx/toc.wav" )
 
     -- Si le paramètre de largeur existe, le bouton est un rectangle invisible
     if width~=nil then
@@ -36,11 +36,11 @@ function Bouton:init ( texte1, texte2, x, y, callbackFunc, callbackParam, width,
             if string.find( texte1, ".png" ) ~= nil then
                 self.image = display.newImage( self, texte1 )
             elseif texte1 ~= nil then
-                self.image = display.newImage( self, "bt.png" )
+                self.image = display.newImage( self, "ressources/img/bt.png" )
                 local optionsTitre = {
                         text = texte1,
                         y = -self.image.height/6,
-                        font = "Diskun.ttf",   
+                        font = "ressources/fonts/Diskun.ttf",   
                         fontSize = 60,
                         align = "center"  -- Alignment parameter
                     }
@@ -51,7 +51,7 @@ function Bouton:init ( texte1, texte2, x, y, callbackFunc, callbackParam, width,
                     local optionsSousTitre = {
                             text = texte2,
                             y = self.image.height/6,
-                            font = "Diskun.ttf",   
+                            font = "ressources/fonts/Diskun.ttf",   
                             fontSize = 50,
                             align = "center"  -- Alignment parameter
                         }

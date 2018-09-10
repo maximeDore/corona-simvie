@@ -17,7 +17,7 @@ function Menu:init()
     local cCredits = require("cCredits")
     local cDonnees = require("cDonnees")
     local cJeu = require("cJeu")
-    local bgMusic = audio.loadStream( "toune_menu.mp3" )
+    local bgMusic = audio.loadStream( "ressources/sfx/toune_menu.mp3" )
     local bg
     local menuCommencer
     local btCommencer
@@ -88,7 +88,7 @@ function Menu:init()
         transition.fadeOut( fade, { time=500, onComplete=fadeListener } )
         
         -- Image de fond
-        bg = display.newImage("bg.jpg",display.contentCenterX,display.contentCenterY)
+        bg = display.newImage("ressources/img/bg.jpg",display.contentCenterX,display.contentCenterY)
         local autos = autoMenu:init()
         self:insert(bg)
         self:insert(autos)
@@ -96,7 +96,7 @@ function Menu:init()
         -- Boutons
         btCommencer = bouton:init("Commencer",nil,display.contentCenterX/2,display.contentHeight/1.37,commencer)
         btContinuer = bouton:init("Continuer",nil,display.contentCenterX/.67,display.contentHeight/1.37,continuer)
-        btCredits = display.newText( { text = "Maxime Dore © 2018  |  voir les sources", width = display.contentWidth, x = display.contentCenterX, y = display.contentHeight-display.screenOriginY-15, font = "8-Bit Madness.ttf", fontSize =35, align = "center" } )
+        btCredits = display.newText( { text = "Maxime Dore © 2018  |  voir les sources", width = display.contentWidth, x = display.contentCenterX, y = display.contentHeight-display.screenOriginY-15, font = "ressources/fonts/8-Bit Madness.ttf", fontSize =35, align = "center" } )
         btCredits:setFillColor(.7,.5,.5)
         self:insert(btCommencer)
         self:insert(btContinuer)

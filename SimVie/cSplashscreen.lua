@@ -41,7 +41,7 @@ function Splash:init()
         }
         bg.fill = degrade
 
-        logo = display.newImage("logo.png", display.contentCenterX, display.contentCenterY)
+        logo = display.newImage("ressources/img/logo.png", display.contentCenterX, display.contentCenterY)
         logo.xScale = 1.5
         logo.yScale = 1.5
         timer.performWithDelay( 2500, listener)

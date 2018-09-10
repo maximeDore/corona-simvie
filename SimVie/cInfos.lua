@@ -81,27 +81,27 @@ function Infos:init( heureDepart, indexDepart, map, perso, jeu )
         barre.fill = degrade
 
         -- Affichage du jour
-        local optionsJourDisplay = {parent = self, text = hebdo[jourIndex].." - jour "..cptJours, width = 500, x = display.screenOriginX+270, y = 25, font = "8-Bit Madness.ttf", fontSize = 50, align = "left"}
+        local optionsJourDisplay = {parent = self, text = hebdo[jourIndex].." - jour "..cptJours, width = 500, x = display.screenOriginX+270, y = 25, font = "ressources/fonts/8-Bit Madness.ttf", fontSize = 50, align = "left"}
         jourDisplay = display.newText(optionsJourDisplay)
 
         -- Affichage de l'heure
-        local optionsheureDisplay = {parent = self, text = "", width = 256, x = display.contentCenterX, y = 25, font = "8-Bit Madness.ttf", fontSize = 50, align = "center"}
+        local optionsheureDisplay = {parent = self, text = "", width = 256, x = display.contentCenterX, y = 25, font = "ressources/fonts/8-Bit Madness.ttf", fontSize = 50, align = "center"}
         heureDisplay = display.newText(optionsheureDisplay)
 
         -- Affichage de l'argent
-        local optionsMoneyDisplay = {parent = self, text = perso.money .. " $", width = 256, x = rightMarg-200, y = 25, font = "8-Bit Madness.ttf", fontSize = 50, align = "right"}
+        local optionsMoneyDisplay = {parent = self, text = perso.money .. " $", width = 256, x = rightMarg-200, y = 25, font = "ressources/fonts/8-Bit Madness.ttf", fontSize = 50, align = "right"}
         moneyDisplay = display.newText(optionsMoneyDisplay)
 
         -- Affichage du voyant de notification
-        notification = display.newImageRect( self, "bell.png", 30, 30 )
+        notification = display.newImageRect( self, "ressources/img/bell.png", 30, 30 )
         notification.x = rightMarg - notification.width/2 - 25
         notification.y = 25
 
-        feedback = display.newImageRect( self, "ui_box.png", display.contentCenterX, 200 )
+        feedback = display.newImageRect( self, "ressources/img/ui_box.png", display.contentCenterX, 150 )
         feedback.x = display.contentCenterX
-        feedback.y = 175
+        feedback.y = 135
         feedback.alpha = 0
-        local optionsFeedbackTxt = {parent = self, text = "Partie sauvegardee avec succes", width = feedback.width*0.8, height = feedback.height*0.8, x = feedback.x, y = feedback.y, font = "8-Bit Madness.ttf", fontSize = 50, align = "center"}
+        local optionsFeedbackTxt = {parent = self, text = "Partie sauvegardee avec succes", width = feedback.width*0.8, height = feedback.height*0.8, x = feedback.x, y = feedback.y, font = "ressources/fonts/8-Bit Madness.ttf", fontSize = 50, align = "center"}
         feedbackTxt = display.newText( optionsFeedbackTxt )
         feedbackTxt:setTextColor(1,0,0)
         feedbackTxt.alpha = 0
@@ -275,7 +275,7 @@ function Infos:init( heureDepart, indexDepart, map, perso, jeu )
         if tEmplois[perso.carriere][emploiIndex] ~= nil and tEmplois[perso.carriere][emploiIndex+1] ~= nil then 
             emploiIndex = emploiIndex + 1
             emploi = tEmplois[perso.carriere][emploiIndex]
-            -- infos:feedback( "Partie sauvegardee avec succes" )
+            infos:feedback( "PROMOTION!\n"..emploi.titre )
         end
         self.updateStats()
     end

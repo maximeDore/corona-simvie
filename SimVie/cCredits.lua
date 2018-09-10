@@ -58,11 +58,11 @@ function Credits:init()
         -- Instanciation du bouton
         btRetour = cBouton:init("Retour",nil,display.contentCenterX/2.25,display.contentCenterY*1.5,retour)
         -- Affichage du titre, du logo et des textes
-        local optionsTitreDisplay = {text = "CREDITS", width = 500, x = display.contentCenterX, y = 25, font = "8-Bit Madness.ttf", fontSize = 50, align = "center"}
+        local optionsTitreDisplay = {text = "CREDITS", width = 500, x = display.contentCenterX, y = 25, font = "ressources/fonts/8-Bit Madness.ttf", fontSize = 50, align = "center"}
         local titreDisplay = display.newText(optionsTitreDisplay)
-        local optionsTexte = {text = "-PROGRAMMATION-\nMaxime Dore\n\n-MUSIQUE-\nMaxime Dore\nHermes Maheu\n\n-GRAPHISME-\nMaxime Dore\n\n-SUPPORT MORAL-\nKyan Daigneault\n\nProduit dans le cadre du cours de Production de jeu video de Techniques d'integration multimedia du Cegep de Saint-Jerome © 2018", width = display.contentWidth/3*1.5, x = display.contentCenterX*1.4, y = display.contentCenterY, font = "8-Bit Madness.ttf", fontSize = 45, align = "center"}
+        local optionsTexte = {text = "-PROGRAMMATION-\nMaxime Dore\n\n-MUSIQUE-\nMaxime Dore\nHermes Maheu\n\n-GRAPHISME-\nMaxime Dore\n\n-SUPPORT MORAL-\nKyan Daigneault\n\nProduit dans le cadre du cours de Production de jeu video de Techniques d'integration multimedia du Cegep de Saint-Jerome © 2018", width = display.contentWidth/3*1.5, x = display.contentCenterX*1.4, y = display.contentCenterY, font = "ressources/fonts/8-Bit Madness.ttf", fontSize = 45, align = "center"}
         texte = display.newText( optionsTexte )
-        logo = display.newImage( self, "logo.png", btRetour.x, display.contentCenterY/1.5 )
+        logo = display.newImage( self, "ressources/img/logo.png", btRetour.x, display.contentCenterY/1.5 )
         
         self:insert(titreDisplay)
         self:insert(texte)

@@ -52,7 +52,7 @@ function Telephone:init( parent, perso, jeu )
     local barreEnergie
     local balanceDisplay
     local interetDisplay
-    local screenMask = graphics.newMask( "screen.png" )
+    local screenMask = graphics.newMask( "ressources/img/screen.png" )
     
     -- Constructeur, génère toutes les applications/écrans du téléphone ainsi que ses boutons avec leur fonction assignées
     function telephone:init()
@@ -187,20 +187,20 @@ function Telephone:init( parent, perso, jeu )
         end
 
         contacts = parent.getContacts()
-        phone = display.newImage( self, "telephone.png" )
+        phone = display.newImage( self, "ressources/img/telephone.png" )
         -- Zone de contact dans le haut du téléphone où il faut taper pour le monter/descendre
         tapZone = cBouton:init( nil, nil, 0, -phone.height/2.25, toggleTelephone, nil, phone.width, phone.height/6 )
         self:insert(tapZone)
 
         -- Fonds des différents écrans
-        local bgAlertes = display.newImage( screenAlertes, "screenAlertes.png", 0, -10.5 )
-        local bgInventaire = display.newImage( screenInventaire, "screenInventaire.png", 0, -10.5 )
-        local bgContacts = display.newImage( screenContacts, "screenContacts.png", 0, -10.5 )
-        local bgStats = display.newImage( screenStats, "screenStats.png", 0, -10.5 )
-        local bgBanque = display.newImage( screenBanque, "screenBanque.png", 0, -10.5 )
-        local bgSave = display.newImage( screenSave, "screenSave.png", 0, -10.5 )
-        local bgCheats = display.newImage( screenCheats, "screen.png", 0, -10.5 )
-        bgMenu = display.newImage( screenMenu, "screenMenu.png", 0, -10.5 ) -- Globale à la classe pour référence
+        local bgAlertes = display.newImage( screenAlertes, "ressources/img/screenAlertes.png", 0, -10.5 )
+        local bgInventaire = display.newImage( screenInventaire, "ressources/img/screenInventaire.png", 0, -10.5 )
+        local bgContacts = display.newImage( screenContacts, "ressources/img/screenContacts.png", 0, -10.5 )
+        local bgStats = display.newImage( screenStats, "ressources/img/screenStats.png", 0, -10.5 )
+        local bgBanque = display.newImage( screenBanque, "ressources/img/screenBanque.png", 0, -10.5 )
+        local bgSave = display.newImage( screenSave, "ressources/img/screenSave.png", 0, -10.5 )
+        local bgCheats = display.newImage( screenCheats, "ressources/img/screen.png", 0, -10.5 )
+        bgMenu = display.newImage( screenMenu, "ressources/img/screenMenu.png", 0, -10.5 ) -- Globale à la classe pour référence
 
         -- bgAlertes:setMask( screenMask )
 
@@ -215,22 +215,22 @@ function Telephone:init( parent, perso, jeu )
         -- btInventaire     btBanque        btMute
         -- btSave           btMenu          (btCheats)
         -- btMarche         btScooter       btVoiture
-        local btStats = cBouton:init( "btStats.png", nil, -bgStats.width/3.25, -bgStats.height*.35, afficherStats )
-        local btContacts = cBouton:init( "btContacts.png", nil, 0, -bgStats.height*.35, afficherContacts )
-        local btAlertes = cBouton:init( "btAlertes.png", nil, bgStats.width/3.25, -bgStats.height*.35, afficherAlertes )
-        local btInventaire = cBouton:init( "btInventaire.png", nil, -bgStats.width/3.25, -bgStats.height*.15, afficherInventaire )
-        local btBanque = cBouton:init( "btBanque.png", nil, 0, -bgStats.height*.15, afficherBanque )
-        local btMute = cBouton:init( "btMute.png", nil, bgStats.width/3.25, -bgStats.height*.15, mute )
-        local btSave = cBouton:init( "btSave.png", nil, -bgStats.width/3.25, bgStats.height*.05, afficherSave )
-        local btMenu = cBouton:init( "btMenu.png", nil, 0, bgStats.height*.05, afficherMenu )
-        btCheats = cBouton:init( "btCheats.png", nil, bgStats.width/3.25, bgStats.height*.05, afficherCheats )
+        local btStats = cBouton:init( "ressources/img/btStats.png", nil, -bgStats.width/3.25, -bgStats.height*.35, afficherStats )
+        local btContacts = cBouton:init( "ressources/img/btContacts.png", nil, 0, -bgStats.height*.35, afficherContacts )
+        local btAlertes = cBouton:init( "ressources/img/btAlertes.png", nil, bgStats.width/3.25, -bgStats.height*.35, afficherAlertes )
+        local btInventaire = cBouton:init( "ressources/img/btInventaire.png", nil, -bgStats.width/3.25, -bgStats.height*.15, afficherInventaire )
+        local btBanque = cBouton:init( "ressources/img/btBanque.png", nil, 0, -bgStats.height*.15, afficherBanque )
+        local btMute = cBouton:init( "ressources/img/btMute.png", nil, bgStats.width/3.25, -bgStats.height*.15, mute )
+        local btSave = cBouton:init( "ressources/img/btSave.png", nil, -bgStats.width/3.25, bgStats.height*.05, afficherSave )
+        local btMenu = cBouton:init( "ressources/img/btMenu.png", nil, 0, bgStats.height*.05, afficherMenu )
+        btCheats = cBouton:init( "ressources/img/btCheats.png", nil, bgStats.width/3.25, bgStats.height*.05, afficherCheats )
 
         btCheats.isVisible = false
 
         -- Boutons de déplacement
-        btMarche = cBouton:init( "btMarche.png", nil, -bgStats.width/3.25, bgStats.height*.35, transport, "marche" )
-        btScooter = cBouton:init( "btScooter.png", nil, 0, bgStats.height*.35, transport, "scooter" )
-        btVoiture = cBouton:init( "btAuto.png", nil, bgStats.width/3.25, bgStats.height*.35, transport, "voiture" )
+        btMarche = cBouton:init( "ressources/img/btMarche.png", nil, -bgStats.width/3.25, bgStats.height*.35, transport, "marche" )
+        btScooter = cBouton:init( "ressources/img/btScooter.png", nil, 0, bgStats.height*.35, transport, "scooter" )
+        btVoiture = cBouton:init( "ressources/img/btAuto.png", nil, bgStats.width/3.25, bgStats.height*.35, transport, "voiture" )
         -- État des boutons de déplacement
         btScooter:disable()
         btVoiture:disable()
@@ -257,7 +257,7 @@ function Telephone:init( parent, perso, jeu )
             y = bgStats.y-bgStats.height/6.5,
             width = 100,
             height = 100,
-            font = "8-Bit Madness.ttf",
+            font = "ressources/fonts/8-Bit Madness.ttf",
             fontSize = 40,
             align = "center"  -- Alignment parameter
         }
@@ -271,7 +271,7 @@ function Telephone:init( parent, perso, jeu )
             y = bgStats.y+bgStats.height/12,
             width = 235,
             height = 50,
-            font = "8-Bit Madness.ttf",
+            font = "ressources/fonts/8-Bit Madness.ttf",
             fontSize = 30,
             align = "center"  -- Alignment parameter
         }
@@ -291,7 +291,7 @@ function Telephone:init( parent, perso, jeu )
             y = bgStats.height/2.45,
             width = 200,
             height = 100,
-            font = "8-Bit Madness.ttf",
+            font = "ressources/fonts/8-Bit Madness.ttf",
             fontSize = 40,
             align = "center"  -- Alignment parameter
         }
@@ -314,7 +314,7 @@ function Telephone:init( parent, perso, jeu )
             y = bgStats.y-bgStats.height/4.5,
             width = 175,
             height = 50,
-            font = "8-Bit Madness.ttf",
+            font = "ressources/fonts/8-Bit Madness.ttf",
             fontSize = 30,
             align = "left"  -- Alignment parameter
         }
@@ -342,16 +342,16 @@ function Telephone:init( parent, perso, jeu )
 
 ---------- Écran Menu           --------------------------------------------------------------------------------------------------------
 
-        btOui = cBouton:init( "btOui.png", nil, -bgMenu.width/4.15, 0, quitter )
-        btNon = cBouton:init( "btNon.png", nil, bgMenu.width/4.25, 0, afficherHome )
+        btOui = cBouton:init( "ressources/img/btOui.png", nil, -bgMenu.width/4.15, 0, quitter )
+        btNon = cBouton:init( "ressources/img/btNon.png", nil, bgMenu.width/4.25, 0, afficherHome )
         screenMenu:insert(btOui)
         screenMenu:insert(btNon)
 
 
 ---------- Écran Save           --------------------------------------------------------------------------------------------------------
 
-        btOui = cBouton:init( "btOui.png", nil, -bgMenu.width/4.15, 0, save )
-        btNon = cBouton:init( "btNon.png", nil, bgMenu.width/4.25, 0, afficherHome )
+        btOui = cBouton:init( "ressources/img/btOui.png", nil, -bgMenu.width/4.15, 0, save )
+        btNon = cBouton:init( "ressources/img/btNon.png", nil, bgMenu.width/4.25, 0, afficherHome )
         screenSave:insert(btOui)
         screenSave:insert(btNon)
 
@@ -364,7 +364,7 @@ function Telephone:init( parent, perso, jeu )
             y = -bgMenu.height*.075,
             width = 200,
             height = 100,
-            font = "8-Bit Madness.ttf",
+            font = "ressources/fonts/8-Bit Madness.ttf",
             fontSize = 40,
             align = "right"  -- Alignment parameter
         }
@@ -377,7 +377,7 @@ function Telephone:init( parent, perso, jeu )
             y = bgMenu.height*.135,
             width = 200,
             height = 100,
-            font = "8-Bit Madness.ttf",
+            font = "ressources/fonts/8-Bit Madness.ttf",
             fontSize = 40,
             align = "right"  -- Alignment parameter
         }
@@ -390,16 +390,16 @@ function Telephone:init( parent, perso, jeu )
 ---------- Écran Alertes        --------------------------------------------------------------------------------------------------------
 
         alertContent = display.newContainer( screenAlertes, bgMenu.width, bgMenu.height )
-        bgAlerteContenu = display.newImage( alertContent, "alertContent.png", bgMenu.width, 25 )
+        bgAlerteContenu = display.newImage( alertContent, "ressources/img/alertContent.png", bgMenu.width, 25 )
         contenuAlerte = display.newRect( alertContent, bgMenu.width, bgAlerteContenu.y, bgAlerteContenu.width*.9, bgAlerteContenu.height*.9 )
         contenuAlerte.alpha = 0.75
 
-        btRetour = cBouton:init( "flecheRetour.png", nil, -bgMenu.width/2.5, -bgMenu.height/2.4, cacherAlerte )
+        btRetour = cBouton:init( "ressources/img/flecheRetour.png", nil, -bgMenu.width/2.5, -bgMenu.height/2.4, cacherAlerte )
         btRetour.isVisible = false
         alertContent:insert( btRetour )
 
         for i=1,4 do
-            local alerteItem = cBouton:init( "alertItem.png", nil, 0, -bgMenu.height/3.85+((i-1)*69), afficherAlerte, i )
+            local alerteItem = cBouton:init( "ressources/img/alertItem.png", nil, 0, -bgMenu.height/3.85+((i-1)*69), afficherAlerte, i )
             alerteItem.type = "listItem"
             alerteItem:disable()
             alertContent:insert(alerteItem)
@@ -412,7 +412,7 @@ function Telephone:init( parent, perso, jeu )
             y = -bgMenu.height/2+245,
             width = bgMenu.width-40,
             height = 300,
-            font = "8-Bit Madness.ttf",
+            font = "ressources/fonts/8-Bit Madness.ttf",
             fontSize = 25,
             align = "left"  -- Alignment parameter
         }
@@ -425,9 +425,9 @@ function Telephone:init( parent, perso, jeu )
 
 ---------- Écran Inventaire     --------------------------------------------------------------------------------------------------------
 
-        local cafeItem = cBouton:init( "itemCafe.png", nil, 0, -bgInventaire.height/3.85, consommer, "cafe" )
-        local barreItem = cBouton:init( "itemBarre.png", nil, 0, -bgInventaire.height/3.85+69, consommer, "barreNrg" )
-        local boissonItem = cBouton:init( "itemBoisson.png", nil, 0, -bgInventaire.height/3.85+138, consommer, "boissonNrg" )
+        local cafeItem = cBouton:init( "ressources/img/itemCafe.png", nil, 0, -bgInventaire.height/3.85, consommer, "cafe" )
+        local barreItem = cBouton:init( "ressources/img/itemBarre.png", nil, 0, -bgInventaire.height/3.85+69, consommer, "barreNrg" )
+        local boissonItem = cBouton:init( "ressources/img/itemBoisson.png", nil, 0, -bgInventaire.height/3.85+138, consommer, "boissonNrg" )
 
         screenInventaire:insert(cafeItem)
         screenInventaire:insert(barreItem)
@@ -440,7 +440,7 @@ function Telephone:init( parent, perso, jeu )
             y = -bgInventaire.height/3.65,
             width = 50,
             height = 25,
-            font = "8-Bit Madness.ttf",
+            font = "ressources/fonts/8-Bit Madness.ttf",
             fontSize = 25,
             align = "right"  -- Alignment parameter
         }
@@ -475,15 +475,15 @@ function Telephone:init( parent, perso, jeu )
         -- --               --              --
         -- --               --              --
         -- --               --              --
-        local btCash = cBouton:init( "btBanque.png", nil, -bgStats.width/3.25, -bgStats.height*.35, moneyCheat )
-        local btVehicules = cBouton:init( "btAuto.png", nil, 0, -bgStats.height*.35, vehicleCheat )
-        local btGm = cBouton:init( "btGodmode.png", nil, bgStats.width/3.25, -bgStats.height*.35, gmCheat )
-        local btLoft = cBouton:init( "btMenu.png", nil, -bgStats.width/3.25, -bgStats.height*.15, loftCheat )
-        -- local btBanque = cBouton:init( "btBanque.png", nil, 0, -bgStats.height*.15, afficherBanque )
-        -- local btMute = cBouton:init( "btMute.png", nil, bgStats.width/3.25, -bgStats.height*.15, mute )
-        -- local btSave = cBouton:init( "btSave.png", nil, -bgStats.width/3.25, bgStats.height*.05, afficherSave )
-        -- local btMenu = cBouton:init( "btMenu.png", nil, 0, bgStats.height*.05, afficherMenu )
-        -- local btCheats = cBouton:init( "btCheats.png", nil, bgStats.width/3.25, bgStats.height*.05, afficherCheats )
+        local btCash = cBouton:init( "ressources/img/btBanque.png", nil, -bgStats.width/3.25, -bgStats.height*.35, moneyCheat )
+        local btVehicules = cBouton:init( "ressources/img/btAuto.png", nil, 0, -bgStats.height*.35, vehicleCheat )
+        local btGm = cBouton:init( "ressources/img/btGodmode.png", nil, bgStats.width/3.25, -bgStats.height*.35, gmCheat )
+        local btLoft = cBouton:init( "ressources/img/btMenu.png", nil, -bgStats.width/3.25, -bgStats.height*.15, loftCheat )
+        -- local btBanque = cBouton:init( "ressources/img/btBanque.png", nil, 0, -bgStats.height*.15, afficherBanque )
+        -- local btMute = cBouton:init( "ressources/img/btMute.png", nil, bgStats.width/3.25, -bgStats.height*.15, mute )
+        -- local btSave = cBouton:init( "ressources/img/btSave.png", nil, -bgStats.width/3.25, bgStats.height*.05, afficherSave )
+        -- local btMenu = cBouton:init( "ressources/img/btMenu.png", nil, 0, bgStats.height*.05, afficherMenu )
+        -- local btCheats = cBouton:init( "ressources/img/btCheats.png", nil, bgStats.width/3.25, bgStats.height*.05, afficherCheats )
         
         screenCheats:insert(btCash)
         screenCheats:insert(btVehicules)
@@ -623,9 +623,9 @@ function Telephone:init( parent, perso, jeu )
             if alertContent[i].type == "listItem" and cpt<nb then
                 cpt = cpt + 1
                 if tEvents[cpt].auteur ~= nil then
-                    alertContent[i].image.fill = { type="image", filename="alertItem2.png" }
+                    alertContent[i].image.fill = { type="image", filename="ressources/img/alertItem2.png" }
                 else 
-                    alertContent[i].image.fill = { type="image", filename="alertItem.png" }
+                    alertContent[i].image.fill = { type="image", filename="ressources/img/alertItem.png" }
                 end
                 alertContent[i]:enable()
                 alertContent[i].type = "bouton"
@@ -695,7 +695,6 @@ function Telephone:init( parent, perso, jeu )
     -- Affiche le bouton vers l'écran de cheats
     function telephone:unlockCheats()
         btCheats.isVisible = true
-        infos.feedback( "Cheats debloques" )
     end
     
     -- Fonction appelée à la suppression du téléphone

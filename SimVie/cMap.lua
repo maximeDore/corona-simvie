@@ -19,7 +19,7 @@ function Map:init( perso )
 
     -- Constructeur, construit tous les bâtiments et 
     function map:init()
-        local ville = display.newImageRect(self, "map.png", 6800, 3400)
+        local ville = display.newImageRect(self, "ressources/img/map.png", 6800, 3400)
 
         -- Limites physiques de la map
         local murNord = display.newRect( self, ville.x, -ville.height/2, ville.width, 50 )
@@ -36,22 +36,22 @@ function Map:init( perso )
         murEst.isVisible = false
 
         -- Bâtiments avec physiques
-        local gymTop = cBatiment:init(self,"gymTop.png",-1356.8,525)
-        local depTop = cBatiment:init(self,"depanneurTop.png",-2275,435)
-        local panneauPub = cBatiment:init(self,"panneauPub.png",-2275,-525, nil, nil, nil, perso)
+        local gymTop = cBatiment:init(self,"ressources/img/gymTop.png",-1356.8,525)
+        local depTop = cBatiment:init(self,"ressources/img/depanneurTop.png",-2275,435)
+        local panneauPub = cBatiment:init(self,"ressources/img/panneauPub.png",-2275,-525, nil, nil, nil, perso)
         
         -- Bâtiments avec intérieur
         -- Batiment:init( parent, img, x, y, destination, porteX, outline )
-        local gym = cBatiment:init(self,"gym.png",-1356.8,854.4,"gym",193.24)
-        local depanneur = cBatiment:init(self,"depanneur.png",-2566.5,854.4,"depanneur",-64)
-        local magasin = cBatiment:init(self,"magasin.png",1425,526,"magasin",0,true)
-        local banque = cBatiment:init(self,"banque.png",100,650,"banque",3)
-        local appartement = cBatiment:init(self,"appartement.png",890,670,"appartement",46)
-        local clotureLoft = cBatiment:init(self,"clotureLoft.png",-1429 ,-625, nil,nil,true)
-        local loft = cBatiment:init(self,"loft.png",-1429 ,-800, "loft",-45,true)
-        local universite = cBatiment:init(self,"universite.png",296,-735,"universite",0)
-        local centreSportif = cBatiment:init(self,"centreSportif.png",1519,-777,"centresportif",-177)
-        local faculte = cBatiment:init(self,"faculte.png",2330,675,"faculte",-40,true)
+        local gym = cBatiment:init(self,"ressources/img/gym.png",-1356.8,854.4,"gym",193.24)
+        local depanneur = cBatiment:init(self,"ressources/img/depanneur.png",-2566.5,854.4,"depanneur",-64)
+        local magasin = cBatiment:init(self,"ressources/img/magasin.png",1425,526,"magasin",0,true)
+        local banque = cBatiment:init(self,"ressources/img/banque.png",100,650,"banque",3)
+        local appartement = cBatiment:init(self,"ressources/img/appartement.png",890,670,"appartement",46)
+        local clotureLoft = cBatiment:init(self,"ressources/img/clotureLoft.png",-1429 ,-625, nil,nil,true)
+        local loft = cBatiment:init(self,"ressources/img/loft.png",-1429 ,-800, "loft",-45,true)
+        local universite = cBatiment:init(self,"ressources/img/universite.png",296,-735,"universite",0)
+        local centreSportif = cBatiment:init(self,"ressources/img/centreSportif.png",1519,-777,"centresportif",-177)
+        local faculte = cBatiment:init(self,"ressources/img/faculte.png",2330,675,"faculte",-40,true)
 
         -- Instanciation des autos
         for i=1,nbAutos*2,2 do

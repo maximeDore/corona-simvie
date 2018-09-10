@@ -134,12 +134,12 @@ function Instructions:init()
         transition.fadeOut( fade, { time=500, onComplete=fadeListener } )
 
         -- Visuels des voitures
-        local sprites = { "autoSideVert.png", "autoSideGris.png", "autoSideBleu.png" }
+        local sprites = { "ressources/img/autoSideVert.png", "ressources/img/autoSideGris.png", "ressources/img/autoSideBleu.png" }
         local rand = math.random( #sprites )
 
         -- Fonds d'écran parallaxe
-        bg1 = display.newImage( self, "bg2.jpg", display.contentCenterX, display.contentCenterY)
-        bg2 = display.newImage( self, "bg2.jpg", display.contentCenterX+bg1.width, display.contentCenterY )
+        bg1 = display.newImage( self, "ressources/img/bg2.jpg", display.contentCenterX, display.contentCenterY)
+        bg2 = display.newImage( self, "ressources/img/bg2.jpg", display.contentCenterX+bg1.width, display.contentCenterY )
         -- bg2.x = bg2.x - 70
         bg2.xScale = -1
         
@@ -154,7 +154,7 @@ function Instructions:init()
         barre.fill = degrade
 
         -- Affichage du titre
-        local optionsJourDisplay = {text = "INTRODUCTION", width = 500, x = display.contentCenterX, y = 25, font = "8-Bit Madness.ttf", fontSize = 50, align = "center"}
+        local optionsJourDisplay = {text = "INTRODUCTION", width = 500, x = display.contentCenterX, y = 25, font = "ressources/fonts/8-Bit Madness.ttf", fontSize = 50, align = "center"}
         local titreDisplay = display.newText(optionsJourDisplay)
 
         -- Voiture
@@ -173,7 +173,7 @@ function Instructions:init()
             y = bg1.height/3,
             width = display.contentWidth-200,
             height = display.contentCenterY,
-            font = "8-Bit Madness.ttf",   
+            font = "ressources/fonts/8-Bit Madness.ttf",   
             fontSize = 75,
             align = "center"  -- Alignment parameter
         }
@@ -183,7 +183,7 @@ function Instructions:init()
         narration2.y = narration.y + 3
         narration:setFillColor(1,0,0)
 
-        notification = display.newImageRect( "bell.png", 30, 30 )
+        notification = display.newImageRect( "ressources/img/bell.png", 30, 30 )
         notification.x = display.contentWidth - display.screenOriginX - notification.width/2 - 25
         notification.y = 25
         notification.isVisible = false
@@ -195,10 +195,10 @@ function Instructions:init()
         local function dummy()
         end
 
-        local phone = display.newImage( telephone, "telephone.png" )
-        bgContacts = display.newImage( "screenContacts.png", 0, -10.5 )
+        local phone = display.newImage( telephone, "ressources/img/telephone.png" )
+        bgContacts = display.newImage( "ressources/img/screenContacts.png", 0, -10.5 )
         bgContacts.isVisible = false
-        bgAlertes = display.newImage( "screenAlertes.png", 0, -10.5 )
+        bgAlertes = display.newImage( "ressources/img/screenAlertes.png", 0, -10.5 )
         bgAlertes.isVisible = false
         tapZone = cBouton:init( nil, nil, 0, -phone.height/2.25, toggleTelephone, nil, phone.width, phone.height/6 )
         telephone:insert(tapZone)
@@ -209,18 +209,18 @@ function Instructions:init()
         --  btInventaire    btBanque    btMute
         --  btSave   btMenu
         --  btMarche btScooter   btVoiture
-        local btStats = cBouton:init( "btStats.png", nil, -bgContacts.width/3.25, -bgContacts.height*.35, dummy )
-        btContacts = cBouton:init( "btContacts.png", nil, 0, -bgContacts.height*.35, afficherContacts )
-        btAlertes = cBouton:init( "btAlertes.png", nil, bgContacts.width/3.25, -bgContacts.height*.35, afficherAlertes )
-        local btInventaire = cBouton:init( "btGps.png", nil, -bgContacts.width/3.25, -bgContacts.height*.15, dummy )
-        local btBanque = cBouton:init( "btBanque.png", nil, 0, -bgContacts.height*.15, dummy )
-        local btMute = cBouton:init( "btMute.png", nil, bgContacts.width/3.25, -bgContacts.height*.15, dummy )
-        local btSave = cBouton:init( "btSave.png", nil, -bgContacts.width/3.25, bgContacts.height*.05, dummy )
-        local btMenu = cBouton:init( "btMenu.png", nil, 0, bgContacts.height*.05, dummy )
+        local btStats = cBouton:init( "ressources/img/btStats.png", nil, -bgContacts.width/3.25, -bgContacts.height*.35, dummy )
+        btContacts = cBouton:init( "ressources/img/btContacts.png", nil, 0, -bgContacts.height*.35, afficherContacts )
+        btAlertes = cBouton:init( "ressources/img/btAlertes.png", nil, bgContacts.width/3.25, -bgContacts.height*.35, afficherAlertes )
+        local btInventaire = cBouton:init( "ressources/img/btGps.png", nil, -bgContacts.width/3.25, -bgContacts.height*.15, dummy )
+        local btBanque = cBouton:init( "ressources/img/btBanque.png", nil, 0, -bgContacts.height*.15, dummy )
+        local btMute = cBouton:init( "ressources/img/btMute.png", nil, bgContacts.width/3.25, -bgContacts.height*.15, dummy )
+        local btSave = cBouton:init( "ressources/img/btSave.png", nil, -bgContacts.width/3.25, bgContacts.height*.05, dummy )
+        local btMenu = cBouton:init( "ressources/img/btMenu.png", nil, 0, bgContacts.height*.05, dummy )
         -- Boutons de déplacement
-        local btMarche = cBouton:init( "btMarche.png", nil, -bgContacts.width/3.25, bgContacts.height*.35, dummy )
-        local btScooter = cBouton:init( "btScooter.png", nil, 0, bgContacts.height*.35, dummy )
-        local btVoiture = cBouton:init( "btAuto.png", nil, bgContacts.width/3.25, bgContacts.height*.35, dummy )
+        local btMarche = cBouton:init( "ressources/img/btMarche.png", nil, -bgContacts.width/3.25, bgContacts.height*.35, dummy )
+        local btScooter = cBouton:init( "ressources/img/btScooter.png", nil, 0, bgContacts.height*.35, dummy )
+        local btVoiture = cBouton:init( "ressources/img/btAuto.png", nil, bgContacts.width/3.25, bgContacts.height*.35, dummy )
 
         telephone.x = display.contentWidth*.85-display.screenOriginX
         telephone.y = posDown

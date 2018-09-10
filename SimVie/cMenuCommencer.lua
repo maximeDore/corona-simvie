@@ -80,14 +80,14 @@ function MenuCommencer:init()
         end
 
         -- fond de l'interface
-        local box = display.newImage("UIBox.png", display.contentCenterX ,display.contentCenterY)
+        local box = display.newImage("ressources/img/UIBox.png", display.contentCenterX ,display.contentCenterY)
 
         -- textes
         local optionsTitre = {
                 text = "Nouvelle vie",
                 x = display.contentCenterX,
                 y = display.contentCenterY/2.75,
-                font = "Diskun.ttf",   
+                font = "ressources/fonts/Diskun.ttf",   
                 fontSize = 100,
                 align = "center"  -- Alignment parameter
             }
@@ -97,7 +97,7 @@ function MenuCommencer:init()
                 x = display.contentCenterX/1.75,
                 y = display.contentCenterY*.93,
                 width = 250,
-                font = "Diskun.ttf",   
+                font = "ressources/fonts/Diskun.ttf",   
                 fontSize = 50,
                 align = "right"  -- Alignment parameter
             }
@@ -107,7 +107,7 @@ function MenuCommencer:init()
                 x = display.contentWidth/1.5,
                 y = display.contentCenterY*.93,
                 width = 45,
-                font = "Diskun.ttf",
+                font = "ressources/fonts/Diskun.ttf",
                 fontSize = 50,
                 align = "center"  -- Alignment parameter
             }
@@ -116,7 +116,7 @@ function MenuCommencer:init()
             text = "",
             x = display.contentCenterX,
             y = display.contentCenterY/1.8,
-            font = "Diskun.ttf",   
+            font = "ressources/fonts/Diskun.ttf",   
             fontSize = 35,
             align = "center"  -- Alignment parameter
         }
@@ -132,20 +132,20 @@ function MenuCommencer:init()
         self:insert(erreurMsg)
 
         -- Boutons aptitudes 
-        btForPlus = bouton:init("btFleche.png",nil,display.contentWidth/1.35,display.contentCenterY*.86,ajouterPoint,"for")
-        btForMoins = bouton:init("btFleche.png",nil,display.contentWidth/1.70,display.contentCenterY*.86,enleverPoint,"for")
+        btForPlus = bouton:init("ressources/img/btFleche.png",nil,display.contentWidth/1.35,display.contentCenterY*.86,ajouterPoint,"for")
+        btForMoins = bouton:init("ressources/img/btFleche.png",nil,display.contentWidth/1.70,display.contentCenterY*.86,enleverPoint,"for")
         btForMoins.xScale = -1
         self:insert(btForPlus)
         self:insert(btForMoins)
 
-        btIntPlus = bouton:init("btFleche.png",nil,display.contentWidth/1.35,display.contentCenterY*.99,ajouterPoint,"int")
-        btIntMoins = bouton:init("btFleche.png",nil,display.contentWidth/1.70,display.contentCenterY*.99,enleverPoint,"int")
+        btIntPlus = bouton:init("ressources/img/btFleche.png",nil,display.contentWidth/1.35,display.contentCenterY*.99,ajouterPoint,"int")
+        btIntMoins = bouton:init("ressources/img/btFleche.png",nil,display.contentWidth/1.70,display.contentCenterY*.99,enleverPoint,"int")
         btIntMoins.xScale = -1
         self:insert(btIntPlus)
         self:insert(btIntMoins)
 
-        btChaPlus = bouton:init("btFleche.png",nil,display.contentWidth/1.35,display.contentCenterY/.895,ajouterPoint,"cha")
-        btChaMoins = bouton:init("btFleche.png",nil,display.contentWidth/1.70,display.contentCenterY/.895,enleverPoint,"cha")
+        btChaPlus = bouton:init("ressources/img/btFleche.png",nil,display.contentWidth/1.35,display.contentCenterY/.895,ajouterPoint,"cha")
+        btChaMoins = bouton:init("ressources/img/btFleche.png",nil,display.contentWidth/1.70,display.contentCenterY/.895,enleverPoint,"cha")
         btChaMoins.xScale = -1
         self:insert(btChaPlus)
         self:insert(btChaMoins)

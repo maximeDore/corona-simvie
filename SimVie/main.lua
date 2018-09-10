@@ -3,6 +3,7 @@
 -- main.lua
 --
 -----------------------------------------------------------------------------------------
+-- Raccourci vers le dossier des ressources
 
 -- Physiques
 local physics = require( "physics" )

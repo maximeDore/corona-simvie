@@ -30,17 +30,17 @@ function AutoMenu:init()
         autoMenu:insert(autoResetter)
         
         -- Voitures
-        autoGrise = display.newImage("autoSideGris.png",math.random(display.contentWidth),display.contentHeight*0.82)
+        autoGrise = display.newImage("ressources/img/autoSideGris.png",math.random(display.contentWidth),display.contentHeight*0.82)
         autoGrise.xScale = -2
         autoGrise.yScale = 2
         autoMenu:insert(autoGrise)
     
-        autoBleue = display.newImage("autoSideBleu.png",math.random(display.contentWidth),display.contentHeight*0.58)
+        autoBleue = display.newImage("ressources/img/autoSideBleu.png",math.random(display.contentWidth),display.contentHeight*0.58)
         autoBleue.xScale = -2
         autoBleue.yScale = 2
         autoMenu:insert(autoBleue)
     
-        autoVerte = display.newImage("autoSideVert.png",math.random(display.contentWidth),display.contentHeight*0.69)
+        autoVerte = display.newImage("ressources/img/autoSideVert.png",math.random(display.contentWidth),display.contentHeight*0.69)
         autoVerte.xScale = -2
         autoVerte.yScale = 2
         autoMenu:insert(autoVerte)

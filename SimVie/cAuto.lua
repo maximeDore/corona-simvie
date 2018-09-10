@@ -16,14 +16,14 @@ function Auto:init(actualWp)
     local sprite
     -- noms des fichiers images
     local src = {
-        {"autoSideGris.png","autoTopGris.png","autoDownGris.png"},
-        {"autoSideVert.png","autoTopVert.png","autoDownVert.png"},
-        {"autoSideBleu.png","autoTopBleu.png","autoDownBleu.png"}
+        {"ressources/img/autoSideGris.png","ressources/img/autoTopGris.png","ressources/img/autoDownGris.png"},
+        {"ressources/img/autoSideVert.png","ressources/img/autoTopVert.png","ressources/img/autoDownVert.png"},
+        {"ressources/img/autoSideBleu.png","ressources/img/autoTopBleu.png","ressources/img/autoDownBleu.png"}
     }
     local active = true
     local rand = math.random( 3 )
-    local sideOutline = graphics.newOutline( 2, "autoSideBleu.png" )
-    local topOutline = graphics.newOutline( 2, "autoTopBleu.png" )
+    local sideOutline = graphics.newOutline( 2, "ressources/img/autoSideBleu.png" )
+    local topOutline = graphics.newOutline( 2, "ressources/img/autoTopBleu.png" )
     local width
 
     -- Transitions vers les points de repères

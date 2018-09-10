@@ -19,13 +19,11 @@ function Cheats:init( perso )
 
     -- Ajoute/retire les véhicules de l'inventaire
     function cheats:vehicles()
+        perso.inventaire["voiture"] = not perso.inventaire["voiture"]
+        perso.inventaire["scooter"] = not perso.inventaire["scooter"]
         if perso.inventaire["voiture"] and perso.inventaire["scooter"] then
-            perso.inventaire["voiture"] = false
-            perso.inventaire["scooter"] = false
             infos:feedback( "Vehicules bloque" )
         else
-            perso.inventaire["voiture"] = true
-            perso.inventaire["scooter"] = true
             infos:feedback( "Vehicules debloque" )
         end
         telephone:updateBoutons()
@@ -39,11 +37,10 @@ function Cheats:init( perso )
 
     -- Ajoute/retire le loft de l'inventaire
     function cheats:loftCheat()
+        perso.inventaire["loft"] = not perso.inventaire["loft"]
         if perso.inventaire["loft"] then
-            perso.inventaire["loft"] = false
             infos:feedback( "Loft bloque" )
         else
-            perso.inventaire["loft"] = true
             infos:feedback( "Loft debloque" )
         end
     end
@@ -52,9 +49,9 @@ function Cheats:init( perso )
     function cheats:gmCheat()
         _G.cheats.gm = not _G.cheats.gm
         if _G.cheats.gm == true then
-            infos:feedback( "Godmode desactive" )
-        else 
             infos:feedback( "Godmode active" )
+        else 
+            infos:feedback( "Godmode desactive" )
         end
     end
 

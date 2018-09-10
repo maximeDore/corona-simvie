@@ -11,9 +11,9 @@ local Perso = {}
 local spriteSheetPerso = require("sports_anim")
 local spriteSheetScooter = require("scooter_anim")
 local spriteSheetVoiture = require("voiture_anim")
-local marcheImageSheet = graphics.newImageSheet("sports_anim.png", spriteSheetPerso:getSheet() )
-local scooterImageSheet = graphics.newImageSheet("scooter_anim.png", spriteSheetScooter:getSheet() )
-local voitureImageSheet = graphics.newImageSheet("voiture_anim.png", spriteSheetVoiture:getSheet() )
+local marcheImageSheet = graphics.newImageSheet("ressources/img/sports_anim.png", spriteSheetPerso:getSheet() )
+local scooterImageSheet = graphics.newImageSheet("ressources/img/scooter_anim.png", spriteSheetScooter:getSheet() )
+local voitureImageSheet = graphics.newImageSheet("ressources/img/voiture_anim.png", spriteSheetVoiture:getSheet() )
 
 local sprites = {
     marche = {
@@ -36,17 +36,17 @@ local sprites = {
 -- Effets sonores
 local sfxVehicules = {
     -- Marche
-    marche = audio.loadSound('footstep.wav'),
+    marche = audio.loadSound('ressources/sfx/footstep.wav'),
     --Scooter
-    scooterStart = audio.loadSound('scooter_start.wav'),
-    scooter = audio.loadSound('scooter_idle.wav'),
-    scooterOff = audio.loadSound('scooter_off.wav'),
+    scooterStart = audio.loadSound('ressources/sfx/scooter_start.wav'),
+    scooter = audio.loadSound('ressources/sfx/scooter_idle.wav'),
+    scooterOff = audio.loadSound('ressources/sfx/scooter_off.wav'),
     --Voiture
-    voitureStart = audio.loadSound('saturn_start.wav'),
-    voiture = audio.loadSound('saturn_idle.wav'),
-    voitureOff = audio.loadSound('saturn_off.wav')
+    voitureStart = audio.loadSound('ressources/sfx/saturn_start.wav'),
+    voiture = audio.loadSound('ressources/sfx/saturn_idle.wav'),
+    voitureOff = audio.loadSound('ressources/sfx/saturn_off.wav')
 }
-local sfxCrash = audio.loadSound('car_crash.wav')
+local sfxCrash = audio.loadSound('ressources/sfx/car_crash.wav')
 
 
 -- Méthode init du perso
@@ -252,6 +252,7 @@ function Perso:init(xorig, yorig, map, joystick, jeu)
             self:setEnergie( self.inventaire[aliment].nrg )
             infos:updateEnergie()
             self.inventaire[aliment].nb = self.inventaire[aliment].nb - 1
+            infos:feedback( "Vous consommez un(e) "..aliment..".\n+"..self.inventaire[aliment].nrg.." energie" )
         else
             print("rupture de stock")
         end

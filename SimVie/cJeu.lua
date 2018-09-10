@@ -20,7 +20,7 @@ function Jeu:init()
     local cInfos = require("cInfos")
     local cCheats = require("cCheats")
 
-    local bgMusic = audio.loadStream( "toune_loundge.mp3" )
+    local bgMusic = audio.loadStream( "ressources/sfx/toune_loundge.mp3" )
 
     -- Points d'apparition du personnage
     local spawns = {
