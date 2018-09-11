@@ -252,7 +252,7 @@ function Perso:init(xorig, yorig, map, joystick, jeu)
             self:setEnergie( self.inventaire[aliment].nrg )
             infos:updateEnergie()
             self.inventaire[aliment].nb = self.inventaire[aliment].nb - 1
-            infos:feedback( "Vous consommez un(e) "..aliment..".\n+"..self.inventaire[aliment].nrg.." energie" )
+            infos:feedback( "Vous recuperez\n"..self.inventaire[aliment].nrg.."\nd'energie" )
         else
             print("rupture de stock")
         end

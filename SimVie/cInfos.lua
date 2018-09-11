@@ -118,7 +118,6 @@ function Infos:init( heureDepart, indexDepart, map, perso, jeu )
         end
         transition.fadeIn( feedback )
         transition.fadeIn( feedbackTxt )
-        print(txt)
         feedbackTxt.text = txt
 
         feedbackTimer = timer.performWithDelay( 1500, function()

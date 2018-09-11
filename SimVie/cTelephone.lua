@@ -116,7 +116,7 @@ function Telephone:init( parent, perso, jeu )
         -- Sauvegarde la partie
         local function save()
             print("Partie sauvegardée")
-            infos:feedback( "Partie sauvegardee avec succes" )
+            _G.infos:feedback( "Partie sauvegardee avec succes" )
             donnees:prepForSave( perso, _G.infos )
             afficherHome()
         end
@@ -129,8 +129,10 @@ function Telephone:init( parent, perso, jeu )
             toggleTelephone()
             if audio.pause() > 0 then
                 audio.pause( 1 )
+                _G.infos:feedback( "Musique en sourdine" )
             else
                 audio.resume( 1 )
+                _G.infos:feedback( "Musique retablie" )
             end
         end
 
@@ -459,14 +461,17 @@ function Telephone:init( parent, perso, jeu )
         local function moneyCheat()
             _G.cheats.money()
         end
-        local function vehicleCheat()
-            _G.cheats.vehicles()
+        local function vehiclesCheat()
+            _G.cheats.vehiclesCheat()
         end
         local function gmCheat()
             _G.cheats.gmCheat()
         end
         local function loftCheat()
             _G.cheats.loftCheat()
+        end
+        local function hbCheat()
+            _G.cheats:hbCheat()
         end
 
         -- Boutons de l'écran d'accueil
@@ -476,14 +481,14 @@ function Telephone:init( parent, perso, jeu )
         -- --               --              --
         -- --               --              --
         local btCash = cBouton:init( "ressources/img/btBanque.png", nil, -bgStats.width/3.25, -bgStats.height*.35, moneyCheat )
-        local btVehicules = cBouton:init( "ressources/img/btAuto.png", nil, 0, -bgStats.height*.35, vehicleCheat )
+        local btVehicules = cBouton:init( "ressources/img/btAuto.png", nil, 0, -bgStats.height*.35, vehiclesCheat )
         local btGm = cBouton:init( "ressources/img/btGodmode.png", nil, bgStats.width/3.25, -bgStats.height*.35, gmCheat )
         local btLoft = cBouton:init( "ressources/img/btMenu.png", nil, -bgStats.width/3.25, -bgStats.height*.15, loftCheat )
         -- local btBanque = cBouton:init( "ressources/img/btBanque.png", nil, 0, -bgStats.height*.15, afficherBanque )
         -- local btMute = cBouton:init( "ressources/img/btMute.png", nil, bgStats.width/3.25, -bgStats.height*.15, mute )
         -- local btSave = cBouton:init( "ressources/img/btSave.png", nil, -bgStats.width/3.25, bgStats.height*.05, afficherSave )
         -- local btMenu = cBouton:init( "ressources/img/btMenu.png", nil, 0, bgStats.height*.05, afficherMenu )
-        -- local btCheats = cBouton:init( "ressources/img/btCheats.png", nil, bgStats.width/3.25, bgStats.height*.05, afficherCheats )
+        local btHitbox = cBouton:init( "ressources/img/btHitbox.png", nil, bgStats.width/3.25, bgStats.height*.05, hbCheat )
         
         screenCheats:insert(btCash)
         screenCheats:insert(btVehicules)
@@ -496,7 +501,7 @@ function Telephone:init( parent, perso, jeu )
         -- screenCheats:insert(btMarche)
         -- screenCheats:insert(btScooter)
         -- screenCheats:insert(btVoiture)
-        -- screenCheats:insert(btCheats)
+        screenCheats:insert(btHitbox)
 
 ----------------------------------------------------------------------------------------------------------------------------------------
 

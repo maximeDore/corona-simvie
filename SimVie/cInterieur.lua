@@ -30,11 +30,11 @@ function Interieur:init( destination, jeu, map, perso )
     local tSrc = { 
         gym =           { titre = "Gym", bg = "ressources/img/bgGym.png", bt1 = "Courir", bt1desc = "+1 force", bt2 = "S'entrainer", bt2desc = "+2 Force, -20$", bt3 = "Steroides", bt3desc = "? For (chance)" },
         universite =    { titre = "Universite", bg = "ressources/img/bgUniversite.png", bt1 = "Etudier", bt1desc = "+1 intelligence", bt2 = "Classe", bt2desc = "+2 int, -20$", bt3 = "Tricher", bt3desc = "?int (chance)"},
-        depanneur =     { titre = "Depanneur", bg = "bg.jpg", bt1 = "Cafe", bt1desc = "+5 nrg, -"..objets[1].prix.."$", bt2 = "Barre d'nrg", bt2desc = "+10 nrg, -"..objets[2].prix.."$", bt3 = "Boisson NRG", bt3desc = "+25 nrg, -"..objets[3].prix.."$" },
+        depanneur =     { titre = "Depanneur", bg = "ressources/img/bg.jpg", bt1 = "Cafe", bt1desc = "+5 nrg, -"..objets[1].prix.."$", bt2 = "Barre d'nrg", bt2desc = "+10 nrg, -"..objets[2].prix.."$", bt3 = "Boisson NRG", bt3desc = "+25 nrg, -"..objets[3].prix.."$" },
         magasin =       { titre = "Magasin", bg = "ressources/img/bgMagasin.png", bt1 = "Tapis Roulant", bt1desc = objets[4].prix.."$", bt2 = "Mobilette", bt2desc = "+12.5 vit, -"..objets[5].prix.."$", bt3 = "Voiture", bt3desc = "+20 vit, -"..objets[6].prix.."$" },
         banque =        { titre = "Banque", bg = "ressources/img/bgBanque.png", bt1 = "Deposer", bt2 = "Retirer" },
         appartement =   { titre = "Appartement", bg = "ressources/img/bgAppartement.png", bt1 = "Dormir", bt1desc = "+80 nrg, +9h", bt2 = "Sieste", bt2desc = "+5 nrg, +1h", bt3 = "S'entrainer", bt3desc = "+1 For" },
-        loft =          { titre = "Loft", bg = "bg.jpg", bt1 = "Dormir", bt1desc = "+100 nrg, +9h", bt2 = "Sieste", bt2desc = "+5 nrg, +1h", bt3 = "S'entrainer", bt3desc = "+1 For"},
+        loft =          { titre = "Loft", bg = "ressources/img/bg.jpg", bt1 = "Dormir", bt1desc = "+100 nrg, +9h", bt2 = "Sieste", bt2desc = "+5 nrg, +1h", bt3 = "S'entrainer", bt3desc = "+1 For"},
         centresportif = { titre = "Centre Sportif", bg = "ressources/img/bgCentreSportif.png", bt1 = "Travailler", bt1desc = "$$$", bt2 = "Demander", bt2desc = "une promotion"},
         faculte =       { titre = "Faculte des sciences", bg = "ressources/img/bgFaculte.png", bt1 = "Travailler", bt1desc = "$$$", bt2 = "Demander", bt2desc = "une promotion"}
     }
@@ -60,7 +60,7 @@ function Interieur:init( destination, jeu, map, perso )
 
         -- Fond d'écran
         local bg
-        if src.bg == "bg.jpg" then
+        if src.bg == "ressources/img/bg.jpg" then
             bg = display.newRect(self, display.contentCenterX, display.contentCenterY, display.contentWidth-display.screenOriginX*2, display.contentHeight-display.screenOriginY)
         else 
             bg = display.newImageRect(self, src.bg, display.contentWidth-display.screenOriginX*2, display.contentHeight-display.screenOriginY)
@@ -69,13 +69,19 @@ function Interieur:init( destination, jeu, map, perso )
         end
 
         -- Fonctions locales des boutons
+        -- Sortir du bâtiment et revenir dans le monde
         local function retour()
             jeu:sortirBatiment()
             self:kill()
         end
-        -- local function ajouterAttr( attr, tRetro, verbe )
+        -- Afficher l'horaire du bâtiment
+        local function horaire()
+            -- Afficher l'horaire ici ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        end
+        -- Augmenter/diminuer un attribut
+        local function ajouterAttr( attr, tRetro, verbe )
             if infos:getHeure() < 6 and destination ~= "appartement" and destination ~= "loft" then
-                retroaction.text = "Il est trop tot pour s'entrainer."
+                retroaction.text = "Il est trop tot pour "..verbe.."."
             elseif infos:getHeure() < 22 or destination=="appartement" or destination=="loft" then
                 if pt==1 then
                     if perso:setEnergie( -10 ) then
@@ -121,9 +127,9 @@ function Interieur:init( destination, jeu, map, perso )
                 print(perso.forNum)
                 infos:updateStats( perso )
             else
-                retroaction.text = "Il est trop tard pour s'entrainer."
+                retroaction.text = "Il est trop tard pour "..verbe.."."
             end
-        -- end
+        end
         local function ajouterFor( pt )
             if infos:getHeure() < 6 and destination ~= "appartement" and destination ~= "loft" then
                 retroaction.text = "Il est trop tot pour s'entrainer."
@@ -430,7 +436,16 @@ function Interieur:init( destination, jeu, map, perso )
         retroaction = display.newText( optionsRetroaction )
         retroaction:setFillColor(1,0,0)
         
-        local btRetour = cBouton:init("Retour",nil,display.contentCenterX*1.4,display.contentCenterY*1.5,retour)
+        local btRetour = cBouton:init("ressources/img/exit.png",nil,display.contentCenterX*1.4,display.contentCenterY*1.5,retour)
+        btRetour.x = display.contentWidth - display.screenOriginX - 100
+        btRetour.y = titre.y
+        local btHoraire = cBouton:init("ressources/img/horaire.png",nil,display.contentCenterX*1.4,display.contentCenterY*1.5,horaire)
+        btHoraire.x = display.screenOriginX + 100
+        btHoraire.y =  titre.y
+        local bt1
+        local bt2
+        local bt3
+        local bt4
         -- Si le perso entre dans un bâtiment qui n'est pas le loft ou qu'il a acheté le loft
         if destination ~= "loft" or perso.inventaire["loft"] == true then
             if (destination == "appartement" or destination == "loft") and (perso.inventaire["Tapis roulant"] ~= true and perso.inventaire["tapisRoulant"] ~= true) then
@@ -441,50 +456,50 @@ function Interieur:init( destination, jeu, map, perso )
             end
             -- Si le perso entre dans l'appartement et qu'il a acheté le loft
             if destination == "appartement" and perso.inventaire["loft"] == true then
-                btRetour.x = display.contentCenterX
-                btRetour.y = display.contentCenterY*1.25
+                -- btRetour.x = display.contentCenterX
+                -- btRetour.y = display.contentCenterY*1.25
                 retroaction.text = "Vous n'habitez plus ici."
             -- Si le perso entre dans un bâtiment de travail et qu'il ne travaille pas là
             elseif evenement ~= nil and destination == evenement[1].destination then
-                btRetour.x = display.contentCenterX
-                btRetour.y = display.contentCenterY*1.25
+                -- btRetour.x = display.contentCenterX
+                -- btRetour.y = display.contentCenterY*1.25
                 retroaction.text = "L'etablissement est ferme aujourd'hui."
             elseif (perso.carriere == "sports" and destination == "faculte") or (perso.carriere == "sciences" and destination == "centresportif") then
-                btRetour.x = display.contentCenterX
-                btRetour.y = display.contentCenterY*1.25
+                -- btRetour.x = display.contentCenterX
+                -- btRetour.y = display.contentCenterY*1.25
                 retroaction.text = "Vous ne travaillez pas ici."
             else
-                local bt1 = cBouton:init(src.bt1,src.bt1desc,display.contentCenterX/1.65,display.contentCenterY,func.bt1,func.bt1param)
+                bt1 = cBouton:init(src.bt1,src.bt1desc,display.contentCenterX/1.65,display.contentCenterY,func.bt1,func.bt1param)
                 self:insert(bt1)
                 -- S'il y a un troisième bouton à générer
                 if src.bt3~=nil then
-                    local bt3 = cBouton:init(src.bt3,src.bt3desc,display.contentCenterX/1.65,display.contentCenterY*1.5,func.bt3,func.bt3param)
+                    bt3 = cBouton:init(src.bt3,src.bt3desc,display.contentCenterX/1.65,display.contentCenterY*1.5,func.bt3,func.bt3param)
                     self:insert(bt3)
                 -- Si le bâtiment n'est pas la banque
                 elseif destination ~= "banque" then
                     if src.bt2==nil then
-                        btRetour.y = bt1.y
+                        -- btRetour.y = bt1.y
                     else
-                        btRetour.x = bt1.x
+                        -- btRetour.x = bt1.x
                     end
                 end
                 -- S'il y a un deuxième bouton à générer
                 if src.bt2~=nil then
-                    local bt2 = cBouton:init(src.bt2,src.bt2desc,display.contentCenterX*1.4,display.contentCenterY,func.bt2,func.bt2param)
+                    bt2 = cBouton:init(src.bt2,src.bt2desc,display.contentCenterX*1.4,display.contentCenterY,func.bt2,func.bt2param)
                     self:insert(bt2)
                 end
             end
         -- Si le joueur n'a pas acheté le loft
         elseif destination == "loft" and perso.inventaire["loft"] ~= true then 
-            local bt1 = cBouton:init("Acheter loft",objets[7].prix.."$",display.contentCenterX/1.65,display.contentCenterY,acheter,7)
-            btRetour.y = bt1.y
+            bt1 = cBouton:init("Acheter loft",objets[7].prix.."$",display.contentCenterX/1.65,display.contentCenterY,acheter,7)
+            -- btRetour.y = bt1.y
             self:insert(bt1)
         end
 
         -- Champ de texte pour la banque
         if destination == "banque" and inputBanque ~= false then
             local btBanque = display.newImage( self, "ressources/img/bt.png" )
-            inputBanque = native.newTextField( display.contentCenterX/1.65, display.contentCenterY*1.5, btRetour.width-50, btRetour.height/2 )
+            inputBanque = native.newTextField( display.contentCenterX/1.65, display.contentCenterY*1.5, bt1.width-50, bt1.height/2 )
             inputBanque.inputType = "number"
             inputBanque.placeholder = "-Montant-"
             inputBanque.isFontSizeScaled = true
@@ -498,6 +513,7 @@ function Interieur:init( destination, jeu, map, perso )
         self:insert(titre)
         self:insert(retroaction)
         self:insert(btRetour)
+        self:insert(btHoraire)
     end
 
     function interieur:kill()
