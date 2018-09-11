@@ -26,17 +26,28 @@ function Interieur:init( destination, jeu, map, perso )
         { nom = "voiture", prix = 1500, m = false },                                  --1500
         { nom = "loft", prix = 3500, m = true }                                       --3500
     }
+    local tHoraires = {
+        gym =           { ouv = 6, ferm = 22 },
+        universite =    { ouv = 6, ferm = 22 },
+        -- depanneur =     { ouv = 0, ferm = 25 },
+        magasin =       { ouv = 9, ferm = 18 },
+        -- banque =        { ouv = 0, ferm = 24 },
+        -- appartement =   { ouv = , ferm =  },
+        -- loft =          { ouv = , ferm =  },
+        centresportif = { ouv = 8, ferm = 16 },
+        faculte =       { ouv = 8, ferm = 16 }
+    }
     -- Tableau contenant des tableaux, contenant le nom de l'endroit et le texte affiché dans les boutons
     local tSrc = { 
         gym =           { titre = "Gym", bg = "ressources/img/bgGym.png", bt1 = "Courir", bt1desc = "+1 force", bt2 = "S'entrainer", bt2desc = "+2 Force, -20$", bt3 = "Steroides", bt3desc = "? For (chance)" },
-        universite =    { titre = "Universite", bg = "ressources/img/bgUniversite.png", bt1 = "Etudier", bt1desc = "+1 intelligence", bt2 = "Classe", bt2desc = "+2 int, -20$", bt3 = "Tricher", bt3desc = "?int (chance)"},
+        universite =    { titre = "Universite", bg = "ressources/img/bgUniversite.png", bt1 = "Etudier", bt1desc = "+1 intelligence", bt2 = "Classe", bt2desc = "+2 int, -20$", bt3 = "Tricher", bt3desc = "?int (chance)" },
         depanneur =     { titre = "Depanneur", bg = "ressources/img/bg.jpg", bt1 = "Cafe", bt1desc = "+5 nrg, -"..objets[1].prix.."$", bt2 = "Barre d'nrg", bt2desc = "+10 nrg, -"..objets[2].prix.."$", bt3 = "Boisson NRG", bt3desc = "+25 nrg, -"..objets[3].prix.."$" },
         magasin =       { titre = "Magasin", bg = "ressources/img/bgMagasin.png", bt1 = "Tapis Roulant", bt1desc = objets[4].prix.."$", bt2 = "Mobilette", bt2desc = "+12.5 vit, -"..objets[5].prix.."$", bt3 = "Voiture", bt3desc = "+20 vit, -"..objets[6].prix.."$" },
         banque =        { titre = "Banque", bg = "ressources/img/bgBanque.png", bt1 = "Deposer", bt2 = "Retirer" },
         appartement =   { titre = "Appartement", bg = "ressources/img/bgAppartement.png", bt1 = "Dormir", bt1desc = "+80 nrg, +9h", bt2 = "Sieste", bt2desc = "+5 nrg, +1h", bt3 = "S'entrainer", bt3desc = "+1 For" },
-        loft =          { titre = "Loft", bg = "ressources/img/bg.jpg", bt1 = "Dormir", bt1desc = "+100 nrg, +9h", bt2 = "Sieste", bt2desc = "+5 nrg, +1h", bt3 = "S'entrainer", bt3desc = "+1 For"},
-        centresportif = { titre = "Centre Sportif", bg = "ressources/img/bgCentreSportif.png", bt1 = "Travailler", bt1desc = "$$$", bt2 = "Demander", bt2desc = "une promotion"},
-        faculte =       { titre = "Faculte des sciences", bg = "ressources/img/bgFaculte.png", bt1 = "Travailler", bt1desc = "$$$", bt2 = "Demander", bt2desc = "une promotion"}
+        loft =          { titre = "Loft", bg = "ressources/img/bg.jpg", bt1 = "Dormir", bt1desc = "+100 nrg, +9h", bt2 = "Sieste", bt2desc = "+5 nrg, +1h", bt3 = "S'entrainer", bt3desc = "+1 For" },
+        centresportif = { titre = "Centre Sportif", bg = "ressources/img/bgCentreSportif.png", bt1 = "Travailler", bt1desc = "$$$", bt2 = "Demander", bt2desc = "une promotion" },
+        faculte =       { titre = "Faculte des sciences", bg = "ressources/img/bgFaculte.png", bt1 = "Travailler", bt1desc = "$$$", bt2 = "Demander", bt2desc = "une promotion" }
     }
     if perso.carriere == "sciences" then
         objets[4].nom = "Bibliotheque"
@@ -47,6 +58,10 @@ function Interieur:init( destination, jeu, map, perso )
         tSrc.appartement.bt3 = "Etudier"
         tSrc.appartement.bt3desc = "+1 Intelligence"
     end
+    local attrStr = {
+        force = { adj = "fort", gamble1 = "Vous depassez vos limites", gamble2 = "Vous perdez votre masculinite", verbe1 = "s'entrainer", verbe2 = "vous entrainer" },
+        intelligence = { adj = "intelligent", gamble1 = "Vous trichez avec succes", gamble2 = "Vous vous faites prendre", verbe1 = "etudier", verbe2 = "assister au cours" }
+    }
     
     -- Constructeur, affichage de l'interface d'intérieur de bâtiment selon la destination
     function interieur:init()
@@ -79,14 +94,14 @@ function Interieur:init( destination, jeu, map, perso )
             -- Afficher l'horaire ici ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
         end
         -- Augmenter/diminuer un attribut
-        local function ajouterAttr( attr, tRetro, verbe )
+        local function ajouterAttr( nom, attr, tStr, pt )
             if infos:getHeure() < 6 and destination ~= "appartement" and destination ~= "loft" then
-                retroaction.text = "Il est trop tot pour "..verbe.."."
+                retroaction.text = "Il est trop tot pour "..tStr["verbe1"].."."
             elseif infos:getHeure() < 22 or destination=="appartement" or destination=="loft" then
                 if pt==1 then
                     if perso:setEnergie( -10 ) then
-                        perso.forNum = perso.forNum + pt
-                        retroaction.text = "Vous devenez plus fort : +"..pt.." Force"
+                        perso[attr] = perso[attr] + pt
+                        retroaction.text = "Vous devenez plus "..tStr["adj"].." : +"..pt.." "..nom
                         infos:updateHeure(1)
                     else 
                         retroaction.text = "Vous n'avez pas assez d'energie."
@@ -94,14 +109,14 @@ function Interieur:init( destination, jeu, map, perso )
                 elseif pt==2 and perso.money-20>=0 then
                     if perso:setEnergie( -10 ) then
                         perso:setMoney(-20)
-                        perso.forNum = perso.forNum + pt
-                        retroaction.text = "Vous devenez plus fort : +"..pt.." Force"
+                        perso[attr] = perso[attr] + pt
+                        retroaction.text = "Vous devenez plus "..tStr["adj"].." : +"..pt.." "..nom
                         infos:updateHeure(1)
                     else 
                         retroaction.text = "Vous n'avez pas assez d'energie."
                     end
                 elseif pt==2 then
-                    retroaction.text = "Vous n'avez pas assez d'argent pour vous entrainer."
+                    retroaction.text = "Vous n'avez pas assez d'argent pour "..tStr["verbe2"].."."
                 elseif pt==3 then
                     if perso:setEnergie( -10 ) then
                         infos:updateHeure(1)
@@ -109,129 +124,33 @@ function Interieur:init( destination, jeu, map, perso )
                         print(rand, perso.chaNum)
                         if rand < perso.chaNum then
                             random = math.random(5)
-                            perso.forNum = perso.forNum + random
-                            retroaction.text = "Vous devenez plus fort : +"..random.." Force"
-                            print(perso.forNum)
+                            perso[attr] = perso[attr] + random
+                            retroaction.text = tStr["gamble1"].." : +"..random.." "..nom
+                            print(perso[attr])
                         else
                             random = math.random(3)
-                            perso.forNum = perso.forNum - random
-                            if perso.forNum < 0 then
-                                perso.forNum = 0
+                            perso[attr] = perso[attr] - random
+                            if perso[attr] < 0 then
+                                perso[attr] = 0
                             end
-                            retroaction.text = "Vous perdez votre masculinite : -"..random.." Force"
+                            retroaction.text = tStr["gamble2"].." : -"..random.." "..nom
                         end
                     else 
                         retroaction.text = "Vous n'avez pas assez d'energie."
                     end
                 end
-                print(perso.forNum)
+                print(perso.forNum, perso.intNum)
                 infos:updateStats( perso )
             else
-                retroaction.text = "Il est trop tard pour "..verbe.."."
+                retroaction.text = "Il est trop tard pour "..tStr["verb1"].."."
             end
         end
         local function ajouterFor( pt )
-            if infos:getHeure() < 6 and destination ~= "appartement" and destination ~= "loft" then
-                retroaction.text = "Il est trop tot pour s'entrainer."
-            elseif infos:getHeure() < 22 or destination=="appartement" or destination=="loft" then
-                if pt==1 then
-                    if perso:setEnergie( -10 ) then
-                        perso.forNum = perso.forNum + pt
-                        retroaction.text = "Vous devenez plus fort : +"..pt.." Force"
-                        infos:updateHeure(1)
-                    else 
-                        retroaction.text = "Vous n'avez pas assez d'energie."
-                    end
-                elseif pt==2 and perso.money-20>=0 then
-                    if perso:setEnergie( -10 ) then
-                        perso:setMoney(-20)
-                        perso.forNum = perso.forNum + pt
-                        retroaction.text = "Vous devenez plus fort : +"..pt.." Force"
-                        infos:updateHeure(1)
-                    else 
-                        retroaction.text = "Vous n'avez pas assez d'energie."
-                    end
-                elseif pt==2 then
-                    retroaction.text = "Vous n'avez pas assez d'argent pour vous entrainer."
-                elseif pt==3 then
-                    if perso:setEnergie( -10 ) then
-                        infos:updateHeure(1)
-                        local rand = math.random(25)
-                        print(rand, perso.chaNum)
-                        if rand < perso.chaNum then
-                            random = math.random(5)
-                            perso.forNum = perso.forNum + random
-                            retroaction.text = "Vous devenez plus fort : +"..random.." Force"
-                            print(perso.forNum)
-                        else
-                            random = math.random(3)
-                            perso.forNum = perso.forNum - random
-                            if perso.forNum < 0 then
-                                perso.forNum = 0
-                            end
-                            retroaction.text = "Vous perdez votre masculinite : -"..random.." Force"
-                        end
-                    else 
-                        retroaction.text = "Vous n'avez pas assez d'energie."
-                    end
-                end
-                print(perso.forNum)
-                infos:updateStats( perso )
-            else
-                retroaction.text = "Il est trop tard pour s'entrainer."
-            end
+            ajouterAttr( "Force", "forNum", attrStr["force"], pt )
         end
 
         local function ajouterInt( pt )
-            if infos:getHeure() < 6 and destination ~= "appartement" and destination ~= "loft" then
-                retroaction.text = "Il est trop tot pour etudier."
-            elseif infos:getHeure() < 22 or destination=="appartement" or destination=="loft" then
-                if pt==1 then
-                    if perso:setEnergie( -10 ) then
-                        perso.intNum = perso.intNum + pt
-                        retroaction.text = "Vous devenez plus intelligent : +"..pt.." Int"
-                        infos:updateHeure(1)
-                    else 
-                        retroaction.text = "Vous n'avez pas assez d'energie."
-                    end
-                elseif pt==2 and perso.money-20>=0 then
-                    if perso:setEnergie( -10 ) then
-                        perso:setMoney(-20)
-                        perso.intNum = perso.intNum + pt
-                        retroaction.text = "Vous devenez plus intelligent : +"..pt.." Int"
-                        infos:updateHeure(1)
-                    else 
-                        retroaction.text = "Vous n'avez pas assez d'energie."
-                    end
-                elseif pt==2 then
-                    retroaction.text = "Vous n'avez pas assez d'argent pour assister au cours."
-                elseif pt==3 then
-                    if perso:setEnergie( -10 ) then
-                        infos:updateHeure(1)
-                        local rand = math.random(25)
-                        print(rand, perso.chaNum)
-                        if rand < perso.chaNum then
-                            random = math.random(5)
-                            perso.intNum = perso.intNum + random
-                            retroaction.text = "Vous trichez avec succes : +"..random.." int"
-                            print(perso.intNum)
-                        else
-                            random = math.random(3)
-                            perso.intNum = perso.intNum - random
-                            if perso.intNum < 0 then
-                                perso.intNum = 0
-                            end
-                            retroaction.text = "Vous vous faites prendre : -"..random.." int"
-                        end
-                    else 
-                        retroaction.text = "Vous n'avez pas assez d'energie."
-                    end
-                end
-                print(perso.intNum)
-                infos:updateStats( perso )
-            else
-                retroaction.text = "Il est trop tard pour etudier."
-            end
+            ajouterAttr( "Intelligence", "intNum", attrStr["intelligence"], pt )
         end
 
         --acheter un objet selon l'index de l'objet
