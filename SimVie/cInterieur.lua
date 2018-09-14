@@ -10,8 +10,10 @@ local Interieur = {}
 function Interieur:init( destination, jeu, map, perso )
 
     local interieur = display.newGroup()
+    local horaire = display.newGroup()
     local cJeu = require("cJeu")
     local cBouton = require("cBouton")
+    local ferme
     local retroaction
     local inputBanque
     -- Tableau contenant les objets en vente et leur prix (index : 1-3 = dépanneur, 4+ = magasin)
@@ -148,7 +150,6 @@ function Interieur:init( destination, jeu, map, perso )
         local function ajouterFor( pt )
             ajouterAttr( "Force", "forNum", attrStr["force"], pt )
         end
-
         local function ajouterInt( pt )
             ajouterAttr( "Intelligence", "intNum", attrStr["intelligence"], pt )
         end
@@ -219,7 +220,7 @@ function Interieur:init( destination, jeu, map, perso )
                             -- Détecter le niveau de carriere du perso
                             emploiIndex = infos:getEmploiIndex()
                             perso:setMoney( 4 * emploiIndex/2 * 6 )
-                            retroaction.text = "Vous travailler pendant 5 heures."
+                            retroaction.text = "Vous travaillez pendant 5 heures."
                         else 
                             retroaction.text = "Vous n'avez pas assez d'energie."
                         end
@@ -365,6 +366,21 @@ function Interieur:init( destination, jeu, map, perso )
         local bt2
         local bt3
         local bt4
+
+        -- Insertion du visuel
+        self:insert(titre)
+        self:insert(retroaction)
+        self:insert(btRetour)
+        self:insert(btHoraire)
+
+        -- Si le perso entre dans un bâtiment fermé
+        if (destination == "centresportif" or destination == "faculte") and infos:getJour() == "Dimanche" then
+            retroaction.text = "Cet endroit n'ouvre pas les dimanches."
+            ferme = true
+
+            return
+        end
+
         -- Si le perso entre dans un bâtiment qui n'est pas le loft ou qu'il a acheté le loft
         if destination ~= "loft" or perso.inventaire["loft"] == true then
             if (destination == "appartement" or destination == "loft") and (perso.inventaire["Tapis roulant"] ~= true and perso.inventaire["tapisRoulant"] ~= true) then
@@ -427,12 +443,6 @@ function Interieur:init( destination, jeu, map, perso )
             btBanque.x, btBanque.y = inputBanque.x, inputBanque.y
             self:insert(inputBanque)
         end
-
-        -- Insertion du visuel
-        self:insert(titre)
-        self:insert(retroaction)
-        self:insert(btRetour)
-        self:insert(btHoraire)
     end
 
     function interieur:kill()
