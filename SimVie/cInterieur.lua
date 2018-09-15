@@ -10,10 +10,13 @@ local Interieur = {}
 function Interieur:init( destination, jeu, map, perso )
 
     local interieur = display.newGroup()
-    local horaire = display.newGroup()
     local cJeu = require("cJeu")
     local cBouton = require("cBouton")
-    local ferme
+    local horaireDisplay
+    local bt1
+    local bt2
+    local bt3
+    local bt4
     local retroaction
     local inputBanque
     -- Tableau contenant les objets en vente et leur prix (index : 1-3 = dépanneur, 4+ = magasin)
@@ -33,7 +36,7 @@ function Interieur:init( destination, jeu, map, perso )
         universite =    { ouv = 6, ferm = 22 },
         -- depanneur =     { ouv = 0, ferm = 25 },
         magasin =       { ouv = 9, ferm = 18 },
-        -- banque =        { ouv = 0, ferm = 24 },
+        -- banque =        { ouv = 0, ferm = 25 },
         -- appartement =   { ouv = , ferm =  },
         -- loft =          { ouv = , ferm =  },
         centresportif = { ouv = 8, ferm = 16 },
@@ -91,15 +94,46 @@ function Interieur:init( destination, jeu, map, perso )
             jeu:sortirBatiment()
             self:kill()
         end
-        -- Afficher l'horaire du bâtiment
+
+        -- Si le perso entre dans un bâtiment fermé
+        local function checkHoraire()
+            if tHoraires[destination] ~= nil then
+                local ouv = tHoraires[destination].ouv
+                local ferm  = tHoraires[destination].ferm
+                local heure = _G.infos:getHeure()
+                
+                if heure < ouv or heure >= ferm then
+                    retroaction.text = "Cet etablissement est ferme."
+
+                    retour()
+                    jeu:entrerBatiment(destination)
+                end
+            end
+        end
+        -- Afficher l'horaire du bâtiment ou le cacher
         local function horaire()
+            retroaction.text = ""
             -- Afficher l'horaire ici ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            if bt1 then
+                bt1.isVisible = not bt1.isVisible
+            end
+            if bt2 then
+                bt2.isVisible = not bt2.isVisible
+            end
+            if bt3 then
+                bt3.isVisible = not bt3.isVisible
+            end
+            if bt4 then
+                bt4.isVisible = not bt4.isVisible
+            end
+
+            horaireDisplay.isVisible = not horaireDisplay.isVisible
         end
         -- Augmenter/diminuer un attribut
         local function ajouterAttr( nom, attr, tStr, pt )
-            if infos:getHeure() < 6 and destination ~= "appartement" and destination ~= "loft" then
-                retroaction.text = "Il est trop tot pour "..tStr["verbe1"].."."
-            elseif infos:getHeure() < 22 or destination=="appartement" or destination=="loft" then
+            -- if infos:getHeure() < 6 and destination ~= "appartement" and destination ~= "loft" then
+            --     retroaction.text = "Il est trop tot pour "..tStr["verbe1"].."."
+            -- elseif infos:getHeure() < 22 or destination=="appartement" or destination=="loft" then
                 if pt==1 then
                     if perso:setEnergie( -10 ) then
                         perso[attr] = perso[attr] + pt
@@ -143,9 +177,11 @@ function Interieur:init( destination, jeu, map, perso )
                 end
                 print(perso.forNum, perso.intNum)
                 infos:updateStats( perso )
-            else
-                retroaction.text = "Il est trop tard pour "..tStr["verb1"].."."
-            end
+            -- else
+            --     retroaction.text = "Il est trop tard pour "..tStr["verb1"].."."
+            -- end
+
+            checkHoraire()
         end
         local function ajouterFor( pt )
             ajouterAttr( "Force", "forNum", attrStr["force"], pt )
@@ -211,10 +247,10 @@ function Interieur:init( destination, jeu, map, perso )
         -- enlève du temps (5h) et donne de l'argent en fonction du poste du joueur
         local function travailler()
             if (perso.carriere == "sciences" and destination == "faculte") or (perso.carriere == "sports" and destination == "centresportif") then
-                if infos:getJour() ~= "Dimanche" then
-                    if infos:getHeure() < 8 then
-                        retroaction.text = "Il est trop tot pour travailler."
-                    elseif infos:getHeure() <= 16 then
+                -- if infos:getJour() ~= "Dimanche" then
+                    -- if infos:getHeure() < 8 then
+                    --     retroaction.text = "Il est trop tot pour travailler."
+                    -- elseif infos:getHeure() <= 16 then
                         if perso:setEnergie( -30 ) then
                             infos:updateHeure(5)
                             -- Détecter le niveau de carriere du perso
@@ -224,13 +260,15 @@ function Interieur:init( destination, jeu, map, perso )
                         else 
                             retroaction.text = "Vous n'avez pas assez d'energie."
                         end
-                    else 
-                        retroaction.text = "Il est trop tard pour travailler."
-                    end
-                else
-                    retroaction.text = "Cet endroit n'ouvre pas les dimanches."
-                end
+                    -- else 
+                    --     retroaction.text = "Il est trop tard pour travailler."
+                    -- end
+                -- else
+                --     retroaction.text = "Cet endroit n'ouvre pas les dimanches."
+                -- end
             end
+
+            checkHoraire()
         end
 
         -- Augmente l'indice de carrière du personnage s'il a assez de points d'aptitudes
@@ -334,6 +372,7 @@ function Interieur:init( destination, jeu, map, perso )
 
         -- Titre de l'endroit actuel
         local optionsTitre = {
+            parent = self,
             text = src.titre,
             x = display.contentCenterX,
             y = display.contentCenterY/2.75,
@@ -346,6 +385,7 @@ function Interieur:init( destination, jeu, map, perso )
 
         -- Message de rétroaction selon l'interaction du joueur
         local optionsRetroaction = {
+            parent = self,
             text = "",
             x = display.contentCenterX,
             y = display.contentCenterY/1.6,
@@ -359,26 +399,59 @@ function Interieur:init( destination, jeu, map, perso )
         local btRetour = cBouton:init("ressources/img/exit.png",nil,display.contentCenterX*1.4,display.contentCenterY*1.5,retour)
         btRetour.x = display.contentWidth - display.screenOriginX - 100
         btRetour.y = titre.y
-        local btHoraire = cBouton:init("ressources/img/horaire.png",nil,display.contentCenterX*1.4,display.contentCenterY*1.5,horaire)
-        btHoraire.x = display.screenOriginX + 100
-        btHoraire.y =  titre.y
-        local bt1
-        local bt2
-        local bt3
-        local bt4
+        local btHoraire
+
+        -- Affiche le bouton horaire si le bâtiment a un horaire
+        if tHoraires[destination] ~= nil then
+            btHoraire = cBouton:init("ressources/img/horaire.png",nil,display.contentCenterX*1.4,display.contentCenterY*1.5,horaire)
+            self:insert(btHoraire)
+            btHoraire.x = display.screenOriginX + 100
+            btHoraire.y =  titre.y
+            local dimancheHoraire
+            if destination == "centresportif" or destination == "faculte" then
+                dimancheHoraire = "Dim : Ferme"
+            else
+                dimancheHoraire = "Dim : "..tHoraires[destination].ouv.."h - "..tHoraires[destination].ferm.."h"
+            end
+
+            local optionsHoraire = {
+                parent = self,
+                text = dimancheHoraire.."\nLun : "..tHoraires[destination].ouv.."h - "..tHoraires[destination].ferm.."h"..
+                    "\nMar : "..tHoraires[destination].ouv.."h - "..tHoraires[destination].ferm.."h"..
+                    "\nMer : "..tHoraires[destination].ouv.."h - "..tHoraires[destination].ferm.."h"..
+                    "\nJeu : "..tHoraires[destination].ouv.."h - "..tHoraires[destination].ferm.."h"..
+                    "\nVen : "..tHoraires[destination].ouv.."h - "..tHoraires[destination].ferm.."h"..
+                    "\nSam : "..tHoraires[destination].ouv.."h - "..tHoraires[destination].ferm.."h",
+                x = display.contentCenterX,
+                y = display.contentCenterY*1.3,
+                font = "ressources/fonts/Diskun.ttf",   
+                fontSize = 50,
+                align = "center"  -- Alignment parameter
+            }
+
+            horaireDisplay = display.newText( optionsHoraire )
+            horaireDisplay:setFillColor(1,0,0)
+            horaireDisplay.isVisible = false
+        end
 
         -- Insertion du visuel
-        self:insert(titre)
-        self:insert(retroaction)
         self:insert(btRetour)
-        self:insert(btHoraire)
 
-        -- Si le perso entre dans un bâtiment fermé
+        -- Détecte si le bâtiment est ouvert actuellement et met fin à la fonction si ce n'est pas le cas
         if (destination == "centresportif" or destination == "faculte") and infos:getJour() == "Dimanche" then
-            retroaction.text = "Cet endroit n'ouvre pas les dimanches."
-            ferme = true
+            retroaction.text = "Cet etablissement n'ouvre pas les dimanches."
 
             return
+        elseif tHoraires[destination] ~= nil then
+            local ouv = tHoraires[destination].ouv
+            local ferm  = tHoraires[destination].ferm
+            local heure = _G.infos:getHeure()
+            
+            if heure < ouv or heure >= ferm then
+                retroaction.text = "Cet etablissement est ferme."
+
+                return
+            end
         end
 
         -- Si le perso entre dans un bâtiment qui n'est pas le loft ou qu'il a acheté le loft

@@ -168,7 +168,7 @@ function Infos:init( heureDepart, indexDepart, map, perso, jeu )
 
     -- Met l'heure à jour en ajoutant le nombre en paramètre à l'heure actuelle
     -- Gère l'affichage du filtre nocturne selon l'heure du jour
-    function infos:updateHeure(nb)
+    function infos:updateHeure( nb )
         if nb ~= nil then
             if heure+nb >= 24 then
                 -- Appel de l'événement du jour
@@ -186,7 +186,7 @@ function Infos:init( heureDepart, indexDepart, map, perso, jeu )
                 self:updateBanque()
                 self:updateContacts()
                 if perso.inventaire["loft"] ~= true then
-                    self:updateLoyer( 5 )
+                    self:updateLoyer( 10 )
                 end
                 jourDisplay.text = hebdo[jourIndex].." - jour "..cptJours
             else
