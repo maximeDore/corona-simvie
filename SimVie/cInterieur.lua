@@ -42,12 +42,27 @@ function Interieur:init( destination, jeu, map, perso )
         centresportif = { ouv = 8, ferm = 16 },
         faculte =       { ouv = 8, ferm = 16 }
     }
+    local evenement = infos:getEvenement()
+
+    if evenement ~= nil and evenement[1].destination == "depanneur" and evenement[1].status == "rabais" then
+        for i=1,3 do
+            objets[i].prix = math.floor(objets[i].prix*0.8)
+        end
+    end
+    if evenement ~= nil and evenement[1].destination == "magasin" and evenement[1].status == "rabais" then
+        for i=4,6 do
+            objets[i].prix = math.floor(objets[i].prix*0.9)
+        end
+    end
+    if evenement ~= nil and evenement[1].destination == "loft" and evenement[1].status == "rabais" then
+        objets[7].prix = math.floor(objets[7].prix*0.8)
+    end
     -- Tableau contenant des tableaux, contenant le nom de l'endroit et le texte affiché dans les boutons
     local tSrc = { 
         gym =           { titre = "Gym", bg = "ressources/img/bgGym.png", bt1 = "Courir", bt1desc = "+1 force", bt2 = "S'entrainer", bt2desc = "+2 Force, -20$", bt3 = "Steroides", bt3desc = "? For (chance)" },
         universite =    { titre = "Universite", bg = "ressources/img/bgUniversite.png", bt1 = "Etudier", bt1desc = "+1 intelligence", bt2 = "Classe", bt2desc = "+2 int, -20$", bt3 = "Tricher", bt3desc = "?int (chance)" },
         depanneur =     { titre = "Depanneur", bg = "ressources/img/bg.jpg", bt1 = "Cafe", bt1desc = "+5 nrg, -"..objets[1].prix.."$", bt2 = "Barre d'nrg", bt2desc = "+10 nrg, -"..objets[2].prix.."$", bt3 = "Boisson NRG", bt3desc = "+25 nrg, -"..objets[3].prix.."$" },
-        magasin =       { titre = "Magasin", bg = "ressources/img/bgMagasin.png", bt1 = "Tapis Roulant", bt1desc = objets[4].prix.."$", bt2 = "Mobilette", bt2desc = "+12.5 vit, -"..objets[5].prix.."$", bt3 = "Voiture", bt3desc = "+20 vit, -"..objets[6].prix.."$" },
+        magasin =       { titre = "Magasin", bg = "ressources/img/bgMagasin.png", bt1 = "Tapis Roulant", bt1desc = "-"..objets[4].prix.."$", bt2 = "Mobilette", bt2desc = "+12.5 vit, -"..objets[5].prix.."$", bt3 = "Voiture", bt3desc = "+20 vit, -"..objets[6].prix.."$" },
         banque =        { titre = "Banque", bg = "ressources/img/bgBanque.png", bt1 = "Deposer", bt2 = "Retirer" },
         appartement =   { titre = "Appartement", bg = "ressources/img/bgAppartement.png", bt1 = "Dormir", bt1desc = "+80 nrg, +9h", bt2 = "Sieste", bt2desc = "+5 nrg, +1h", bt3 = "S'entrainer", bt3desc = "+1 For" },
         loft =          { titre = "Loft", bg = "ressources/img/bg.jpg", bt1 = "Dormir", bt1desc = "+100 nrg, +9h", bt2 = "Sieste", bt2desc = "+5 nrg, +1h", bt3 = "S'entrainer", bt3desc = "+1 For" },
@@ -76,7 +91,6 @@ function Interieur:init( destination, jeu, map, perso )
 
         -- Abréviation
         local src = tSrc[destination]
-        local evenement = infos:getEvenement()
 
         -- Fond d'écran
         local bg
@@ -459,7 +473,7 @@ function Interieur:init( destination, jeu, map, perso )
             if (destination == "appartement" or destination == "loft") and (perso.inventaire["Tapis roulant"] ~= true and perso.inventaire["tapisRoulant"] ~= true) then
                 src.bt3 = nil
             end
-            if destination == "banque" and evenement ~= nil and evenement[1].destination == "banque" then
+            if destination == "banque" and evenement ~= nil and (evenement[1].destination == "banque" and evenement[1].status == "ferme") then
                 inputBanque = false
             end
             -- Si le perso entre dans l'appartement et qu'il a acheté le loft
@@ -468,7 +482,7 @@ function Interieur:init( destination, jeu, map, perso )
                 -- btRetour.y = display.contentCenterY*1.25
                 retroaction.text = "Vous n'habitez plus ici."
             -- Si le perso entre dans un bâtiment de travail et qu'il ne travaille pas là
-            elseif evenement ~= nil and destination == evenement[1].destination then
+            elseif evenement ~= nil and destination == evenement[1].destination and evenement[1].status == "ferme" then
                 -- btRetour.x = display.contentCenterX
                 -- btRetour.y = display.contentCenterY*1.25
                 retroaction.text = "L'etablissement est ferme aujourd'hui."
@@ -484,12 +498,12 @@ function Interieur:init( destination, jeu, map, perso )
                     bt3 = cBouton:init(src.bt3,src.bt3desc,display.contentCenterX/1.65,display.contentCenterY*1.5,func.bt3,func.bt3param)
                     self:insert(bt3)
                 -- Si le bâtiment n'est pas la banque
-                elseif destination ~= "banque" then
-                    if src.bt2==nil then
-                        -- btRetour.y = bt1.y
-                    else
-                        -- btRetour.x = bt1.x
-                    end
+                -- elseif destination ~= "banque" then
+                --     if src.bt2==nil then
+                --         -- btRetour.y = bt1.y
+                --     else
+                --         -- btRetour.x = bt1.x
+                --     end
                 end
                 -- S'il y a un deuxième bouton à générer
                 if src.bt2~=nil then
