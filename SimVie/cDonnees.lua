@@ -50,7 +50,7 @@ end
 -- @params 
 -- perso	Object	Classe contenant le personnage
 -- infos	Object	Classe contenant les informations relatives au déroulement du jeu
-function donnees:prepForSave( perso, infos )
+function donnees:prepForSave( perso, infos, autosave )
 	local interet = infos:getInteret()
 	persoParams = {}
 	persoParams.force = perso.forNum
@@ -68,7 +68,11 @@ function donnees:prepForSave( perso, infos )
 	persoParams.money = perso.money
 	persoParams.banque = perso.banque
 	persoParams.inventaire = perso.inventaire
-	self:saveTable(persoParams, "sauvegarde.json")
+	if autosave then
+		self:saveTable(persoParams, "sauvegarde_auto.json")
+	else
+		self:saveTable(persoParams, "sauvegarde.json")
+	end
 end
 
 return donnees

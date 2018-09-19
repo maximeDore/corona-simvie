@@ -7,10 +7,9 @@
 -----------------------------------------------------------------------------------------
 local Jeu = {}
 
-function Jeu:init()
+function Jeu:init( slot )
 
     local jeu = display.newGroup()
-    local cDonnees = require("cDonnees")
     local cMap = require("cMap")
     local cCamera = require("cCamera")
     local cPerso = require("cPerso")
@@ -87,6 +86,12 @@ function Jeu:init()
         interieur:removeSelf()
         monJoystick:activate()
         monPerso:setDestination()
+        -- Sauvegarde la partie
+        -- local function save()
+            print("Partie sauvegardée automatiquement")
+            -- _G.infos:feedback( "Partie sauvegardee avec succes" )
+            donnees:prepForSave( monPerso, _G.infos, true )
+        -- end
     end
 
     -- Détruire le jeu, ses écouteurs et tous ses enfants

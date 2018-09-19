@@ -87,8 +87,8 @@ function Bouton:init ( texte1, texte2, x, y, callbackFunc, callbackParam, width,
     function bouton:disable()
         if self._tableListeners["touch"] then
             self:removeEventListener("touch", bouton)
+            self.alpha = .25
         end
-        self.alpha = .25
     end
 
     -- Supprime l'événement

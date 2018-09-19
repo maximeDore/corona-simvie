@@ -22,6 +22,10 @@ function Menu:init()
     local menuCommencer
     local btCommencer
     local btContinuer
+    local saveMenu = display.newGroup()
+    local btSave1
+    local btSave2
+    local btSaveRetour
     local fade
     local nouvellePartie
     
@@ -39,7 +43,7 @@ function Menu:init()
                 cInstructions:init()
             else 
                 audio.fadeOut( { 1, 1000 } )
-                cJeu:init(946,1150)
+                cJeu:init()
             end
             menu:removeSelf()
         end
@@ -68,13 +72,45 @@ function Menu:init()
         end
 
         -- Démarre le jeu s'il y a une sauvegarde dans le sandbox
-        local function continuer()
-            if _G.data ~= nil then
+        local function load( saveSlot )
+            if saveSlot == 1 then
+                _G.data = donnees:loadTable( "sauvegarde_auto.json" )
+                btCommencer:disable()
+                btContinuer:disable()
+                btCredits:removeSelf()
+                listener()
+            elseif saveSlot == 2 then
+                _G.data = donnees:loadTable( "sauvegarde.json" )
                 btCommencer:disable()
                 btContinuer:disable()
                 btCredits:removeSelf()
                 listener()
             end
+        end
+            
+        -- Démarre le jeu s'il y a une sauvegarde dans le sandbox
+        local function continuer( saveSlot )
+            if _G.data ~= nil then
+                btCommencer:disable()
+                btContinuer:disable()
+                btCommencer.isVisible = false
+                btContinuer.isVisible = false
+                saveMenu.isVisible = true
+                btSave1:enable()
+                btSave2:enable()
+                btSaveRetour:enable()
+            end
+        end
+        -- Démarre le jeu s'il y a une sauvegarde dans le sandbox
+        local function continuerRetour()
+            btCommencer:enable()
+            btContinuer:enable()
+            btCommencer.isVisible = true
+            btContinuer.isVisible = true
+            saveMenu.isVisible = false
+            btSave1:disable()
+            btSave2:disable()
+            btSaveRetour:disable()
         end
 
         -- Supprime le rectangle de fondu
@@ -82,15 +118,41 @@ function Menu:init()
             fade:removeSelf()
         end
 
+        -- Menu Continuer ---------------------------------------------------------------------------------------
+        local box = display.newImage( saveMenu, "ressources/img/UIBox.png", display.contentCenterX ,display.contentCenterY )
+        
+        -- textes
+        local optionsTitre = {
+            parent = saveMenu,
+            text = "Continuer une vie",
+            x = display.contentCenterX,
+            y = display.contentCenterY/2.75,
+            font = "ressources/fonts/Diskun.ttf",   
+            fontSize = 100,
+            align = "center"  -- Alignment parameter
+        }
+        local titre = display.newText( optionsTitre )
+        titre:setFillColor(1,0,0)
+
+        btSave1 = bouton:init("Sauvegarde","Automatique",display.contentCenterX/1.6,display.contentHeight/1.9,load, 1)
+        btSave2 = bouton:init("Sauvegarde","Manuelle",display.contentCenterX/.725,display.contentHeight/1.9,load, 2)
+        btSaveRetour = bouton:init("Retour",nil,display.contentCenterX/1.6,display.contentHeight/1.3,continuerRetour)
+
+        saveMenu:insert(btSave1)
+        saveMenu:insert(btSave2)
+        saveMenu:insert(btSaveRetour)
+        saveMenu.isVisible = false
+
+        self:insert(saveMenu)
+
         -- Fondu d'entrée
         fade = display.newRect(display.contentCenterX,display.contentCenterY,display.contentWidth*2,display.contentHeight)
         fade.fill = {0,0,0}
         transition.fadeOut( fade, { time=500, onComplete=fadeListener } )
         
         -- Image de fond
-        bg = display.newImage("ressources/img/bg.jpg",display.contentCenterX,display.contentCenterY)
+        bg = display.newImage( self, "ressources/img/bg.jpg",display.contentCenterX,display.contentCenterY)
         local autos = autoMenu:init()
-        self:insert(bg)
         self:insert(autos)
 
         -- Boutons
@@ -102,8 +164,13 @@ function Menu:init()
         self:insert(btContinuer)
         self:insert(btCredits)
 
+        saveMenu:toFront()
+
         -- Désactive le bouton commencer s'il n'y a pas de partie sauvegardée dans le sandbox
         _G.data = donnees:loadTable( "sauvegarde.json" )
+        if not _G.data then
+            _G.data = donnees:loadTable( "sauvegarde_auto.json" )
+        end
         if _G.data == nil then
             btContinuer:disable()
         end
