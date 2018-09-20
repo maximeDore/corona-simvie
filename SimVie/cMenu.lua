@@ -96,8 +96,12 @@ function Menu:init()
                 btCommencer.isVisible = false
                 btContinuer.isVisible = false
                 saveMenu.isVisible = true
-                btSave1:enable()
-                btSave2:enable()
+                if donnees:loadTable( "sauvegarde_auto.json" ) ~= nil then
+                    btSave1:enable() 
+                end
+                if donnees:loadTable( "sauvegarde.json" ) ~= nil then
+                    btSave2:enable()
+                end
                 btSaveRetour:enable()
             end
         end
@@ -137,6 +141,9 @@ function Menu:init()
         btSave1 = bouton:init("Sauvegarde","Automatique",display.contentCenterX/1.6,display.contentHeight/1.9,load, 1)
         btSave2 = bouton:init("Sauvegarde","Manuelle",display.contentCenterX/.725,display.contentHeight/1.9,load, 2)
         btSaveRetour = bouton:init("Retour",nil,display.contentCenterX/1.6,display.contentHeight/1.3,continuerRetour)
+
+        btSave1:disable()
+        btSave2:disable()
 
         saveMenu:insert(btSave1)
         saveMenu:insert(btSave2)
