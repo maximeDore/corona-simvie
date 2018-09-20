@@ -289,8 +289,8 @@ function Interieur:init( destination, jeu, map, perso )
         local function promotion()
             local emploi = infos:getEmploi()
             if perso.carriere == "sciences" then
-                infos:promotion()
                 if perso.intNum >= emploi.apt then
+                    infos:promotion()
                     if emploi.apt ~= infos:getEmploi().apt then
                         retroaction.text = "Promotion : "..infos:getEmploi().titre
                     else 

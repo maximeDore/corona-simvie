@@ -48,8 +48,9 @@ function Cheats:init( perso )
     
     -- Active/Désactive le godmode (invincibilité)
     function cheats:gmCheat()
-        Cheats.gm = not Cheats.gm
-        if Cheats.gm then
+        print(Cheats.gm)
+        _G.cheats.gm = not _G.cheats.gm
+        if _G.cheats.gm then
             infos:feedback( "Godmode active" )
         else 
             infos:feedback( "Godmode desactive" )

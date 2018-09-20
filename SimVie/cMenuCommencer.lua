@@ -25,7 +25,7 @@ function MenuCommencer:init()
         -- Ajoute un point de l'aptitude passée en paramètre
         local function ajouterPoint(apt)
             erreurMsg.text = ""
-            if pointsRestants > 0 then
+            -- if pointsRestants > 0 then
                 if apt=="for" then
                     forNum = forNum + 1
                 elseif apt=="int" then
@@ -39,10 +39,10 @@ function MenuCommencer:init()
                     end
                 end
                 pointsRestants = pointsRestants - 1
-                aptitudesNum.text = pointsRestants.." "..forNum.." "..intNum.." "..chaNum
-            else
-                erreurMsg.text = "Aucun point d'aptitudes restant."
-            end
+                aptitudesNum.text = pointsRestants.."\n"..forNum.."\n"..intNum.."\n"..chaNum
+            -- else
+            --     erreurMsg.text = "Aucun point d'aptitudes restant."
+            -- end
         end
 
         -- Enlève un point de l'aptitude passée en paramètre
@@ -60,7 +60,7 @@ function MenuCommencer:init()
             else
                 erreurMsg.text = "Valeur minimale atteinte."
             end
-            aptitudesNum.text = pointsRestants.." "..forNum.." "..intNum.." "..chaNum
+            aptitudesNum.text = pointsRestants.."\n"..forNum.."\n"..intNum.."\n"..chaNum
         end
 
         -- Demande au menu de supprimer le menuCommencer pour revenir au menu principal
@@ -103,10 +103,10 @@ function MenuCommencer:init()
             }
         local aptitudes = display.newText( optionsAptitudes )
         local optionsAptitudesNum = {
-                text = pointsRestants.." "..forNum.." "..intNum.." "..chaNum,
+                text = pointsRestants.."\n"..forNum.."\n"..intNum.."\n"..chaNum,
                 x = display.contentWidth/1.5,
                 y = display.contentCenterY*.93,
-                width = 45,
+                width = 100,
                 font = "ressources/fonts/Diskun.ttf",
                 fontSize = 50,
                 align = "center"  -- Alignment parameter

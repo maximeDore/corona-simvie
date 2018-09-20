@@ -459,16 +459,16 @@ function Telephone:init( parent, perso, jeu )
 ---------- Écran Cheats     ------------------------------------------------------------------------------------------------------------
 
         local function moneyCheat()
-            _G.cheats.money()
+            _G.cheats:money()
         end
         local function vehiclesCheat()
-            _G.cheats.vehiclesCheat()
+            _G.cheats:vehiclesCheat()
         end
         local function gmCheat()
-            _G.cheats.gmCheat()
+            _G.cheats:gmCheat()
         end
         local function loftCheat()
-            _G.cheats.loftCheat()
+            _G.cheats:loftCheat()
         end
         local function hbCheat()
             _G.cheats:hbCheat()
