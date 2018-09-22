@@ -25,7 +25,7 @@ function MenuCommencer:init()
         -- Ajoute un point de l'aptitude passée en paramètre
         local function ajouterPoint(apt)
             erreurMsg.text = ""
-            -- if pointsRestants > 0 then
+            if pointsRestants > 0 then
                 if apt=="for" then
                     forNum = forNum + 1
                 elseif apt=="int" then
@@ -40,9 +40,9 @@ function MenuCommencer:init()
                 end
                 pointsRestants = pointsRestants - 1
                 aptitudesNum.text = pointsRestants.."\n"..forNum.."\n"..intNum.."\n"..chaNum
-            -- else
-            --     erreurMsg.text = "Aucun point d'aptitudes restant."
-            -- end
+            else
+                erreurMsg.text = "Aucun point d'aptitudes restant."
+            end
         end
 
         -- Enlève un point de l'aptitude passée en paramètre
