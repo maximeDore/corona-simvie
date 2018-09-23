@@ -26,6 +26,8 @@ function Menu:init()
     local btSave1
     local btSave2
     local btSaveRetour
+    local save1
+    local save2
     local fade
     local nouvellePartie
     
@@ -63,6 +65,10 @@ function Menu:init()
         audio.stop( 1 )
         bgMusicChannel = audio.play( bgMusic, { channel=1, loops=-1, fadein=2000 } )
         
+        -- Chargement des sauvegardes
+        save1 = donnees:loadTable( "sauvegarde_auto.json" )
+        save2 = donnees:loadTable( "sauvegarde.json" )
+        
         -- Instancie le menu de personnalisation et cache les boutons du menu principal
         local function commencer()
             menuCommencer = cMenuCommencer:init()
@@ -74,13 +80,13 @@ function Menu:init()
         -- Démarre le jeu s'il y a une sauvegarde dans le sandbox
         local function load( saveSlot )
             if saveSlot == 1 then
-                _G.data = donnees:loadTable( "sauvegarde_auto.json" )
+                _G.data = save1
                 btCommencer:disable()
                 btContinuer:disable()
                 btCredits:removeSelf()
                 listener()
             elseif saveSlot == 2 then
-                _G.data = donnees:loadTable( "sauvegarde.json" )
+                _G.data = save2
                 btCommencer:disable()
                 btContinuer:disable()
                 btCredits:removeSelf()
@@ -90,7 +96,7 @@ function Menu:init()
             
         -- Démarre le jeu s'il y a une sauvegarde dans le sandbox
         local function continuer( saveSlot )
-            if _G.data ~= nil then
+            if save1 ~= nil or save2 ~= nil then
                 btCommencer:disable()
                 btContinuer:disable()
                 btCommencer.isVisible = false
@@ -138,8 +144,8 @@ function Menu:init()
         local titre = display.newText( optionsTitre )
         titre:setFillColor(1,0,0)
 
-        btSave1 = bouton:init("Sauvegarde","Automatique",display.contentCenterX/1.6,display.contentHeight/1.9,load, 1)
-        btSave2 = bouton:init("Sauvegarde","Manuelle",display.contentCenterX/.725,display.contentHeight/1.9,load, 2)
+        btSave1 = bouton:init("Sauvegarde 1","Automatique",display.contentCenterX/1.6,display.contentHeight/1.9,load, 1)
+        btSave2 = bouton:init("Sauvegarde 2","Jour "..save2.cptJours..", "..save2.money+save2.banque.."$",display.contentCenterX/.725,display.contentHeight/1.9,load, 2)
         btSaveRetour = bouton:init("Retour",nil,display.contentCenterX/1.6,display.contentHeight/1.3,continuerRetour)
 
         btSave1:disable()
@@ -165,20 +171,16 @@ function Menu:init()
         -- Boutons
         btCommencer = bouton:init("Commencer",nil,display.contentCenterX/2,display.contentHeight/1.37,commencer)
         btContinuer = bouton:init("Continuer",nil,display.contentCenterX/.67,display.contentHeight/1.37,continuer)
-        btCredits = display.newText( { text = "Maxime Dore © 2018  |  voir les sources", width = display.contentWidth, x = display.contentCenterX, y = display.contentHeight-display.screenOriginY-15, font = "ressources/fonts/8-Bit Madness.ttf", fontSize =35, align = "center" } )
+        btCredits = display.newText( { parent = self, text = "{MARTYR} © 2018 | Maxime Dore", width = display.contentWidth, x = display.contentCenterX, y = display.contentHeight-display.screenOriginY-15, font = "ressources/fonts/8-Bit Madness.ttf", fontSize =35, align = "center" } )
         btCredits:setFillColor(.7,.5,.5)
         self:insert(btCommencer)
         self:insert(btContinuer)
-        self:insert(btCredits)
 
+        -- Met le menu en premier plan
         saveMenu:toFront()
 
         -- Désactive le bouton commencer s'il n'y a pas de partie sauvegardée dans le sandbox
-        _G.data = donnees:loadTable( "sauvegarde.json" )
-        if not _G.data then
-            _G.data = donnees:loadTable( "sauvegarde_auto.json" )
-        end
-        if _G.data == nil then
+        if save1 == nil and save2 == nil then
             btContinuer:disable()
         end
     end

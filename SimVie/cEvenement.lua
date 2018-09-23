@@ -27,8 +27,12 @@ function Evenement:init( chance )
             { texte = "Message d'interet public : \n\nUne greve d'etudiants a provoque un feu dans l'universite, le batiment sera donc ferme aujourd'hui.", destination="universite", status = "ferme"},
             { texte = "Message d'interet public : \n\nEn raison de la fin de session, le depanneur est maintenant vide. La prochaine livraison sera demain.", destination="depanneur", status = "ferme"},
             { texte = "Message d'interet public : \n\nEn raison de la fin de session, le depanneur est maintenant vide. La prochaine livraison sera demain.", destination="depanneur", status = "ferme"},
-            { texte = "Message d'interet public : \n\nL'air climatise de la gym ne fonctionne plus. L'endroit n'ouvrira pas ses porte avant demain.", destination="gym", status = "ferme"},
-            { texte = "Message d'interet public : \n\nPuisque l'entraineur a fait une overdose de stimulants, la gym sera ferme.", destination="gym", status = "ferme"},
+            { texte = "Message d'interet public : \n\nL'air climatise du gym ne fonctionne plus. L'etablissement n'ouvrira pas ses porte avant demain.", destination="gym", status = "ferme"},
+            { texte = "Message d'interet public : \n\nPuisque l'entraineur a fait une overdose de stimulants, le gym sera ferme.", destination="gym", status = "ferme"},
+            -- Obstructions de map
+            -- Fermetures d'action
+            { texte = "Message d'interet public : \n\nPlusieurs equipement du gym sont hors d'usage. Seuls les tapis roulants seront disponibles aujourd'hui.", destination="gym", status = "fermeAction", action="bt2"},
+            -- Intérêt élevé
             -- Rabais
             { texte = "Message d'interet public : \n\nLiquidation monstre au magasin, tous les prix sont reduits de 10%!", destination="magasin", status = "rabais"},
             { texte = "Message d'interet public : \n\nMega rabais au depanneur, tout est offert a prix reduit de 20%", destination="depanneur", status = "rabais"},

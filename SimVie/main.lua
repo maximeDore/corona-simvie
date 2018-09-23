@@ -9,6 +9,8 @@ local physics = require( "physics" )
 physics.start()
 -- physics.setDrawMode("hybrid")
 physics.setGravity(0,0)
+-- Multitouch
+system.activate( "multitouch" )
 
 -- Volume de la musique de fond 25%
 audio.setVolume( 0.5, { channel=1 } )

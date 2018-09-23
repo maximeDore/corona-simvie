@@ -490,15 +490,31 @@ function Interieur:init( destination, jeu, map, perso )
             else
                 bt1 = cBouton:init(src.bt1,src.bt1desc,display.contentCenterX/1.65,display.contentCenterY,func.bt1,func.bt1param)
                 self:insert(bt1)
+    
+                -- Si l'événement condamne le bouton
+                if evenement ~= nil and destination == evenement[1].destination and evenement[1].status == "fermeAction" and evenement[1].action == "bt1" then
+                    bt1:disable()
+                end
+
                 -- S'il y a un troisième bouton à générer
                 if src.bt3~=nil then
                     bt3 = cBouton:init(src.bt3,src.bt3desc,display.contentCenterX/1.65,display.contentCenterY*1.5,func.bt3,func.bt3param)
                     self:insert(bt3)
+    
+                    -- Si l'événement condamne le bouton
+                    if evenement ~= nil and destination == evenement[1].destination and evenement[1].status == "fermeAction" and evenement[1].action == "bt3" then
+                        bt3:disable()
+                    end
                 end
                 -- S'il y a un deuxième bouton à générer
                 if src.bt2~=nil then
                     bt2 = cBouton:init(src.bt2,src.bt2desc,display.contentCenterX*1.4,display.contentCenterY,func.bt2,func.bt2param)
                     self:insert(bt2)
+    
+                    -- Si l'événement condamne le bouton
+                    if evenement ~= nil and destination == evenement[1].destination and evenement[1].status == "fermeAction" and evenement[1].action == "bt2" then
+                        bt2:disable()
+                    end
                 end
             end
         -- Si le joueur n'a pas acheté le loft
